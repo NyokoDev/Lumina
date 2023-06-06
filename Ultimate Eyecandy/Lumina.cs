@@ -48,13 +48,13 @@ namespace Lumina
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            UIHelperBase group = helper.AddGroup("Lumina");
+            UIHelperBase group = helper.AddGroup("Lumina (Beta)");
             group.AddButton("Launch LUT Editor", OpenLUTEditor);
         }
 
         private void OpenLUTEditor()
         {
-            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
+            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = lutEditorPath;
@@ -384,12 +384,12 @@ namespace Lumina
                 {
                     // CUSTOMIZATION WINDOW MODE - Color Correction
 
-                    GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Color Correction</size>");
+                    GUI.Label(new Rect(180, 60, 150, 26), "<size=14>LUT Creator</size>");
 
                     // Add the button below the label
-                    if (GUI.Button(new Rect(180, 90, 150, 30), "LUT Editor"))
+                    if (GUI.Button(new Rect(5, 80, 115, 30), "Launch LUT Editor"))
                     {
-                        string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
+                        string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
                         Process.Start(lutEditorPath);
                     }
                 }
