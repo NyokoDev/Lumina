@@ -12,6 +12,8 @@ using System.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.IO;
 using HarmonyLib;
+using System.Diagnostics;
+
 
 namespace Lumina
 {
@@ -44,8 +46,26 @@ namespace Lumina
 
         private Harmony harmony;
 
+        public void OnSettingsUI(UIHelperBase helper)
+        {
+            UIHelperBase group = helper.AddGroup("Lumina");
+            group.AddButton("Launch LUT Editor", OpenLUTEditor);
+        }
+
+        private void OpenLUTEditor()
+        {
+            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = lutEditorPath;
+            startInfo.UseShellExecute = true;
+
+            Process.Start(startInfo);
+        }
+
         public void OnEnabled()
         {
+
             while (true)
             {
                 var obj = GameObject.Find("Lumina");
@@ -225,7 +245,7 @@ namespace Lumina
             if (GUI.Button(new Rect(422, 4, 25, 20), "x"))
                 ShowUI = false;
 
-            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] { "Lightness", "Presets" });
+            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] { "Lightness", "Presets", "Color Correction" });
 
             if (windowMode == 0)
             {
@@ -360,6 +380,21 @@ namespace Lumina
                         Directory.CreateDirectory(path);
                     Application.OpenURL("file://" + path);
                 }
+                else if (windowMode == 2)
+                {
+                    // CUSTOMIZATION WINDOW MODE - Color Correction
+
+                    GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Color Correction</size>");
+
+                    // Add the button below the label
+                    if (GUI.Button(new Rect(180, 90, 150, 30), "LUT Editor"))
+                    {
+                        string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
+                        Process.Start(lutEditorPath);
+                    }
+                }
+
+
             }
         }
 

@@ -65,7 +65,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LUT Editor\Untitled.pdn" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LUT Editor\background.jpg" />
+    <Content Include="LUT Editor\default.png" />
+    <Content Include="LUT Editor\Lumina Lut Bundle 1.png" />
+    <Content Include="LUT Editor\lut.exe" />
+    <Content Include="LUT Editor\lut.ico" />
+    <Content Include="LUT Editor\lut.py" />
+    <Content Include="LUT Editor\PreviewImage.png" />
+    <Content Include="LUT Editor\thumbna24il.png" />
+    <Content Include="LUT Editor\thumbnail.png" />
+    <Content Include="LUT Editor\Untitled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
