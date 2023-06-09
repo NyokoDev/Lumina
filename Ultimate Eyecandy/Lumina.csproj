@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lumina - Copy.cs" />
     <Compile Include="Lumina.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

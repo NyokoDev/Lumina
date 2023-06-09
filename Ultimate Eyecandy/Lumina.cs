@@ -14,7 +14,6 @@ using ColossalFramework.IO;
 using HarmonyLib;
 using System.Diagnostics;
 
-
 namespace Lumina
 {
     public class LuminaMod : LoadingExtensionBase, IUserMod
@@ -48,9 +47,10 @@ namespace Lumina
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            UIHelperBase group = helper.AddGroup("Lumina (Beta)");
+            UIHelper group = (UIHelper)helper.AddGroup("Lumina (Beta)");
             group.AddButton("Launch LUT Editor", OpenLUTEditor);
         }
+
 
         private void OpenLUTEditor()
         {
@@ -212,8 +212,26 @@ namespace Lumina
                     {
                         ShowUI = !ShowUI;
                     }
+
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        if (Input.GetKeyDown(KeyCode.F7))
+                        {
+                            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
+
+                            ProcessStartInfo startInfo = new ProcessStartInfo();
+                            startInfo.FileName = lutEditorPath;
+                            startInfo.UseShellExecute = true;
+
+                            Process.Start(startInfo);
+                        }
+                    }
+
                 }
             }
+
+
+
 
             if (ShowUI)
             {
@@ -233,6 +251,7 @@ namespace Lumina
             }
         }
 
+
         void OnGUI()
         {
             if (ShowUI)
@@ -245,7 +264,7 @@ namespace Lumina
             if (GUI.Button(new Rect(422, 4, 25, 20), "x"))
                 ShowUI = false;
 
-            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] { "Lightness", "Presets", "Color Correction" });
+            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] { "Lightness", "Presets", "Color Correction", "Shadows & Effects" });
 
             if (windowMode == 0)
             {
@@ -299,7 +318,7 @@ namespace Lumina
                 lightingValues[5] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 345, 270, 25), lightingValues[5], -1f, 1f) * 20) / 20);
                 if (GUI.Button(new Rect(395, 340, 50, 30), lightingValues[5].ToString(), GUI.skin.label))
                     lightingValues[5] = 0;
-                // moon  temperature
+                // moon temperature
                 GUI.Label(new Rect(5, 370, 115, 30), "Moon Temperature");
                 lightingValues[6] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 375, 270, 25), lightingValues[6], -1f, 1f) * 20) / 20);
                 if (GUI.Button(new Rect(395, 370, 50, 30), lightingValues[6].ToString(), GUI.skin.label))
@@ -380,23 +399,60 @@ namespace Lumina
                         Directory.CreateDirectory(path);
                     Application.OpenURL("file://" + path);
                 }
-                else if (windowMode == 2)
+            }
+            else if (windowMode == 2)
+            {
+                // CUSTOMIZATION WINDOW MODE - Color Correction
+
+                GUI.Label(new Rect(180, 60, 150, 26), "<size=14>LUT Creator</size>");
+
+                // Add the button below the label
+                if (GUI.Button(new Rect(5, 80, 115, 30), "Launch LUT Editor"))
                 {
-                    // CUSTOMIZATION WINDOW MODE - Color Correction
-
-                    GUI.Label(new Rect(180, 60, 150, 26), "<size=14>LUT Creator</size>");
-
-                    // Add the button below the label
-                    if (GUI.Button(new Rect(5, 80, 115, 30), "Launch LUT Editor"))
-                    {
-                        string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
-                        Process.Start(lutEditorPath);
-                    }
+                    string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
+                    Process.Start(lutEditorPath);
                 }
+            }
+            else if (windowMode == 3)
+            {
+                // SHADOWS & EFFECTS WINDOW MODE
 
+                GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Shadow and Effects</size>");
+
+                // Adjust game shadows with sliders
+                GUI.Label(new Rect(5, 90, 115, 30), "Shadow Intensity");
+                shadowIntensity = GUI.HorizontalSlider(new Rect(120, 95, 270, 25), shadowIntensity, 0f, 1f);
+                GUI.Label(new Rect(395, 90, 50, 30), shadowIntensity.ToString(), GUI.skin.label);
+
+               
+
+                GUI.Label(new Rect(5, 150, 115, 30), "Shadow Bias");
+                shadowBias = GUI.HorizontalSlider(new Rect(120, 155, 270, 25), shadowBias, 0f, 1f);
+                GUI.Label(new Rect(395, 150, 50, 30), shadowBias.ToString(), GUI.skin.label);
+
+                
 
             }
         }
+
+
+        private void UpdateShadowSettings()
+        {
+            if (directionalLight != null)
+            {
+                directionalLight.shadowStrength = shadowIntensity;
+                directionalLight.shadowBias = shadowBias;
+            }
+        }
+
+        public Light directionalLight;
+        public float shadowIntensity = 0.5f;
+        public float shadowBias = 0.1f;
+
+
+
+
+
 
         public static void CalculateAll(float[] values, bool skyTonemapping)
         {
@@ -536,6 +592,7 @@ namespace Lumina
         }
 
         #region nyoko PART (LOGIC)
+        
 
         // Intensity Tweak
         private static float tweak_Intensity = 1.90f;
