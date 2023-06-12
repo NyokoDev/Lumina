@@ -13,6 +13,7 @@ using ColossalFramework.PlatformServices;
 using ColossalFramework.IO;
 using HarmonyLib;
 using System.Diagnostics;
+using ColossalFramework.UI;
 
 namespace Lumina
 {
@@ -167,7 +168,7 @@ namespace Lumina
         }
     }
 
-    public class LuminaLogic : MonoBehaviour
+    public class LuminaLogic : UIPanel
     {
         // SIMON PART (UI + SAVING)
 
@@ -187,8 +188,27 @@ namespace Lumina
 
         public string CachePath = DataLocation.localApplicationData + "\\LuminaCache.light";
 
-        void Start()
+       protected void Start()
         {
+            base.Start();
+            backgroundSprite = "MenuPanel2";
+            canFocus = true;
+            isInteractive = true;
+            autoLayout = true;
+            autoLayoutDirection = LayoutDirection.Vertical;
+            autoLayoutPadding = new RectOffset(10, 10, 10, 10);
+
+            GameObject lightGameObject = new GameObject("Light");
+
+            // Add the light component to the new game object
+            Light lightComp = lightGameObject.AddComponent<Light>();
+
+            // Set the light type to directional
+            lightComp.type = LightType.Directional;
+
+            // Set the directional light reference to the newly created light
+            directionalLight = lightComp;
+
             instanceID = this.GetInstanceID();
             LightPreset.LoadLightPresets();
 
@@ -225,6 +245,9 @@ namespace Lumina
 
                             Process.Start(startInfo);
                         }
+
+                        UpdateShadowSettings();
+            
                     }
 
                 }
@@ -252,13 +275,34 @@ namespace Lumina
         }
 
 
-        void OnGUI()
+
+
+       
+        protected override void OnMouseDown(UIMouseEventParameter p)
         {
-            if (ShowUI)
-                windowRect = GUI.Window(instanceID, windowRect, DrawWindow, "Lumina");
+            base.OnMouseDown(p);
+            BringToFront();
         }
 
-        void DrawWindow(int id)
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            if (p.buttons.IsFlagSet(UIMouseButton.Left))
+            {
+                windowRect.x += p.moveDelta.x;
+                windowRect.y += p.moveDelta.y;
+            }
+        }
+
+        protected void OnGUI()
+        {
+            if (ShowUI)
+            {
+                windowRect = GUI.Window(GetHashCode(), windowRect, DrawWindow, "Lumina");
+            }
+        }
+
+        private void DrawWindow(int id)
         {
             GUI.DragWindow(new Rect(0, 0, 420, 20));
             if (GUI.Button(new Rect(422, 4, 25, 20), "x"))
@@ -273,69 +317,69 @@ namespace Lumina
                 GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Exposure Control</size>");
                 // Luminosity
                 GUI.Label(new Rect(5, 80, 115, 30), "Luminosity");
-                lightingValues[10] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 85, 270, 25), lightingValues[10], -1f, 1f) * 20) / 20);
+                lightingValues[10] = GUI.HorizontalSlider(new Rect(120, 85, 270, 25), lightingValues[10], -1f, 1f);
                 if (GUI.Button(new Rect(395, 80, 50, 30), lightingValues[10].ToString(), GUI.skin.label))
                     lightingValues[10] = 0;
                 // gamma
                 GUI.Label(new Rect(5, 110, 115, 30), "Gamma");
-                lightingValues[11] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 115, 270, 25), lightingValues[11], -1f, 1f) * 20) / 20);
+                lightingValues[11] = GUI.HorizontalSlider(new Rect(120, 115, 270, 25), lightingValues[11], -1f, 1f);
                 if (GUI.Button(new Rect(395, 110, 50, 30), lightingValues[11].ToString(), GUI.skin.label))
                     lightingValues[11] = 0;
                 // contrast
                 GUI.Label(new Rect(5, 140, 115, 30), "Radiance");
-                lightingValues[12] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 145, 270, 25), lightingValues[12], -1f, 1f) * 20) / 20);
+                lightingValues[12] = GUI.HorizontalSlider(new Rect(120, 145, 270, 25), lightingValues[12], -1f, 1f);
                 if (GUI.Button(new Rect(395, 140, 50, 30), lightingValues[12].ToString(), GUI.skin.label))
                     lightingValues[12] = 0;
 
                 GUI.Label(new Rect(200, 160, 150, 26), "<size=14>Lighting</size>");
                 // temperature
                 GUI.Label(new Rect(5, 190, 115, 30), "Hue");
-                lightingValues[0] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 195, 270, 25), lightingValues[0], -1f, 1f) * 20) / 20);
+                lightingValues[0] = GUI.HorizontalSlider(new Rect(120, 195, 270, 25), lightingValues[0], -1f, 1f);
                 if (GUI.Button(new Rect(395, 190, 50, 30), lightingValues[0].ToString(), GUI.skin.label))
                     lightingValues[0] = 0;
                 // tint
                 GUI.Label(new Rect(5, 220, 115, 30), "Tint");
-                lightingValues[1] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 225, 270, 25), lightingValues[1], -1f, 1f) * 20) / 20);
+                lightingValues[1] = GUI.HorizontalSlider(new Rect(120, 225, 270, 25), lightingValues[1], -1f, 1f);
                 if (GUI.Button(new Rect(395, 220, 50, 30), lightingValues[1].ToString(), GUI.skin.label))
                     lightingValues[1] = 0;
                 // sun temperature
                 GUI.Label(new Rect(5, 250, 115, 30), "Sun Temperature");
-                lightingValues[2] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 255, 270, 25), lightingValues[2], -1f, 1f) * 20) / 20);
+                lightingValues[2] = GUI.HorizontalSlider(new Rect(120, 255, 270, 25), lightingValues[2], -1f, 1f);
                 if (GUI.Button(new Rect(395, 250, 50, 30), lightingValues[2].ToString(), GUI.skin.label))
                     lightingValues[2] = 0;
                 // sun tint
                 GUI.Label(new Rect(5, 280, 115, 30), "Sun Tint");
-                lightingValues[3] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 285, 270, 25), lightingValues[3], -1f, 1f) * 20) / 20);
+                lightingValues[3] = GUI.HorizontalSlider(new Rect(120, 285, 270, 25), lightingValues[3], -1f, 1f);
                 if (GUI.Button(new Rect(395, 280, 50, 30), lightingValues[3].ToString(), GUI.skin.label))
                     lightingValues[3] = 0;
                 // sky temperature
                 GUI.Label(new Rect(5, 310, 115, 30), "Sky Temperature");
-                lightingValues[4] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 315, 270, 25), lightingValues[4], -1f, 1f) * 20) / 20);
+                lightingValues[4] = GUI.HorizontalSlider(new Rect(120, 315, 270, 25), lightingValues[4], -1f, 1f);
                 if (GUI.Button(new Rect(395, 310, 50, 30), lightingValues[4].ToString(), GUI.skin.label))
                     lightingValues[4] = 0;
                 // sky tint
                 GUI.Label(new Rect(5, 340, 115, 30), "Sky Tint");
-                lightingValues[5] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 345, 270, 25), lightingValues[5], -1f, 1f) * 20) / 20);
+                lightingValues[5] = GUI.HorizontalSlider(new Rect(120, 345, 270, 25), lightingValues[5], -1f, 1f);
                 if (GUI.Button(new Rect(395, 340, 50, 30), lightingValues[5].ToString(), GUI.skin.label))
                     lightingValues[5] = 0;
                 // moon temperature
                 GUI.Label(new Rect(5, 370, 115, 30), "Moon Temperature");
-                lightingValues[6] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 375, 270, 25), lightingValues[6], -1f, 1f) * 20) / 20);
+                lightingValues[6] = GUI.HorizontalSlider(new Rect(120, 375, 270, 25), lightingValues[6], -1f, 1f);
                 if (GUI.Button(new Rect(395, 370, 50, 30), lightingValues[6].ToString(), GUI.skin.label))
                     lightingValues[6] = 0;
                 // moon tint
                 GUI.Label(new Rect(5, 400, 115, 30), "Moon Tint");
-                lightingValues[7] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 405, 270, 25), lightingValues[7], -1f, 1f) * 20) / 20);
+                lightingValues[7] = GUI.HorizontalSlider(new Rect(120, 405, 270, 25), lightingValues[7], -1f, 1f);
                 if (GUI.Button(new Rect(395, 400, 50, 30), lightingValues[7].ToString(), GUI.skin.label))
                     lightingValues[7] = 0;
                 // moonlight
                 GUI.Label(new Rect(5, 430, 115, 30), "Moon Light");
-                lightingValues[8] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 435, 270, 25), lightingValues[8], -1f, 1f) * 20) / 20);
+                lightingValues[8] = GUI.HorizontalSlider(new Rect(120, 435, 270, 25), lightingValues[8], -1f, 1f);
                 if (GUI.Button(new Rect(395, 430, 50, 30), lightingValues[8].ToString(), GUI.skin.label))
                     lightingValues[8] = 0;
                 // Twilight tint
                 GUI.Label(new Rect(5, 460, 115, 30), "Twilight Tint");
-                lightingValues[9] = (float)(Math.Round(GUI.HorizontalSlider(new Rect(120, 465, 270, 25), lightingValues[9], -1f, 1f) * 20) / 20);
+                lightingValues[9] = GUI.HorizontalSlider(new Rect(120, 465, 270, 25), lightingValues[9], -1f, 1f);
                 if (GUI.Button(new Rect(395, 460, 50, 30), lightingValues[9].ToString(), GUI.skin.label))
                     lightingValues[9] = 0;
 
@@ -348,7 +392,7 @@ namespace Lumina
             }
             else if (windowMode == 1)
             {
-                // PRESETS WINDOW MODE 
+                // PRESETS WINDOW MODE
 
                 if (LightPreset.LightPresets.Count > 0)
                 {
@@ -421,20 +465,16 @@ namespace Lumina
 
                 // Adjust game shadows with sliders
                 GUI.Label(new Rect(5, 90, 115, 30), "Shadow Intensity");
-                shadowIntensity = GUI.HorizontalSlider(new Rect(120, 95, 270, 25), shadowIntensity, 0f, 1f);
+                shadowIntensity = GUI.HorizontalSlider(new Rect(120, 95, 270, 25), shadowIntensity, -1f, 3f);
                 GUI.Label(new Rect(395, 90, 50, 30), shadowIntensity.ToString(), GUI.skin.label);
 
-               
-
                 GUI.Label(new Rect(5, 150, 115, 30), "Shadow Bias");
-                shadowBias = GUI.HorizontalSlider(new Rect(120, 155, 270, 25), shadowBias, 0f, 1f);
+                shadowBias = GUI.HorizontalSlider(new Rect(120, 155, 270, 25), shadowBias, -1f, 3f);
                 GUI.Label(new Rect(395, 150, 50, 30), shadowBias.ToString(), GUI.skin.label);
 
-                
-
+                UpdateShadowSettings();
             }
         }
-
 
         private void UpdateShadowSettings()
         {
@@ -442,14 +482,16 @@ namespace Lumina
             {
                 directionalLight.shadowStrength = shadowIntensity;
                 directionalLight.shadowBias = shadowBias;
+
+                UnityEngine.Debug.Log("Updated shadow settings: Intensity = " + shadowIntensity + ", Bias = " + shadowBias);
             }
         }
 
         public Light directionalLight;
-        public float shadowIntensity = 0.5f;
-        public float shadowBias = 0.1f;
-
-
+        [Range(-1f, 3f)]
+        public float shadowIntensity = 1f;
+        [Range(-1f, 3f)]
+        public float shadowBias = 1f;
 
 
 
