@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="en" ReadableName="English" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="Optimized and adaptable illumination and tone adjustment." />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="Close" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="Exposure Control" />
+		<Translation ID="LUMINOSITY_TEXT" String="Luminosity" />
+		<Translation ID="GAMMA_TEXT" String="Gamma" />
+		<Translation ID="RADIANCE_TEXT" String="Radiance" />
+		<Translation ID="LIGHTING_TEXT" String="Lighting" />
+		<Translation ID="HUE_TEXT" String="Hue" />
+		<Translation ID="TINT_TEXT" String="Tint" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="Lightness" />
+		<Translation ID="STYLES_MOD_NAME" String="Styles" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="Color Correction" />
+		<Translation ID="VISUALISM_MOD_NAME" String="Visualism" />
+		<Translation ID="SUNTEMP_TEXT" String="Sun Temperature" />
+		<Translation ID="SUNTINT_TEXT" String="Sun Tint" />
+		<Translation ID="SKYTEMP_TEXT" String="Sky Temp" />
+		<Translation ID="SKYTINT_TEXT" String="Sky Tint" />
+		<Translation ID="MOONTEMP_TEXT" String="Moon Temperature" />
+		<Translation ID="MOONTINT_TEXT" String="Moon Tint" />
+		<Translation ID="MOONLIGHT_TEXT" String="Moon Light" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="Twilight Tint" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="Enable Sky Tonemapping" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="Disable Shadow Smoothing" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="Enforce Minimal Shadow Offset" />
+		<Translation ID="RESET_TEXT" String="Reset All" />
+		<Translation ID="LOAD_TEXT" String="Load" />
+		<Translation ID="DELETE_TEXT" String="Delete" />
+		<Translation ID="WORKSHOP_TEXT" String="Workshop" />
+		<Translation ID="NOstyle_TEXT" String="Lumina Style not found!" />
+		<Translation ID="RELOADstyle_TEXT" String="Reload style List" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="Open Local Styles Folder" />
+		<Translation ID="LAUNCHLUT_TEXT" String="Launch LUT Editor" />
+		<Translation ID="SHADOWINT_TEXT" String="Shadow Intensity" />
+		<Translation ID="SHADOWBIAS_TEXT" String="Shadow Bias" />
+	</Translations>
+</Language>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="pl" ReadableName="Polski" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="Optymalne i dostosowalne oświetlenie oraz regulacja tonów." />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="Zamknij" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="Kontrola ekspozycji" />
+		<Translation ID="LUMINOSITY_TEXT" String="Jasność" />
+		<Translation ID="GAMMA_TEXT" String="Gamma" />
+		<Translation ID="RADIANCE_TEXT" String="Promienność" />
+		<Translation ID="LIGHTING_TEXT" String="Oświetlenie" />
+		<Translation ID="HUE_TEXT" String="Barwa" />
+		<Translation ID="TINT_TEXT" String="Odcień" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="Jasność" />
+		<Translation ID="STYLES_MOD_NAME" String="style" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="Korekcja kolorów" />
+		<Translation ID="VISUALISM_MOD_NAME" String="Wizualizm" />
+		<Translation ID="SUNTEMP_TEXT" String="Temperatura Słońca" />
+		<Translation ID="SUNTINT_TEXT" String="Odcień Słońca" />
+		<Translation ID="SKYTEMP_TEXT" String="Temperatura nieba" />
+		<Translation ID="SKYTINT_TEXT" String="Odcień nieba" />
+		<Translation ID="MOONTEMP_TEXT" String="Temperatura Księżyca" />
+		<Translation ID="MOONTINT_TEXT" String="Odcień Księżyca" />
+		<Translation ID="MOONLIGHT_TEXT" String="Światło Księżyca" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="Odcień zmierzchu" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="Włącz mapowanie tonów nieba" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="Wyłącz wygładzanie cieni" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="Wymuś minimalne przesunięcie cieni" />
+		<Translation ID="RESET_TEXT" String="Zresetuj wszystko" />
+		<Translation ID="LOAD_TEXT" String="Wczytaj" />
+		<Translation ID="DELETE_TEXT" String="Usuń" />
+		<Translation ID="WORKSHOP_TEXT" String="Warsztat" />
+		<Translation ID="NOstyle_TEXT" String="Nie znaleziono stylu Lumina!" />
+		<Translation ID="RELOADstyle_TEXT" String="Przeładuj listę stylów" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="Otwórz lokalny folder ze stylami" />
+		<Translation ID="LAUNCHLUT_TEXT" String="Uruchom edytor LUT" />
+		<Translation ID="SHADOWINT_TEXT" String="Intensywność cieni" />
+		<Translation ID="SHADOWBIAS_TEXT" String="Przesunięcie cieni" />
+	</Translations>
+</Language>

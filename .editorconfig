@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# CS0642: Possible mistaken empty statement
+dotnet_diagnostic.CS0642.severity = none

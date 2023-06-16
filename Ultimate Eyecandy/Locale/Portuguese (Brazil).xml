@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="pt-BR" ReadableName="Português (Brasil)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="Iluminação otimizada e ajuste de tons adaptável." />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="Fechar" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="Controle de Exposição" />
+		<Translation ID="LUMINOSITY_TEXT" String="Luminosidade" />
+		<Translation ID="GAMMA_TEXT" String="Gama" />
+		<Translation ID="RADIANCE_TEXT" String="Radiância" />
+		<Translation ID="LIGHTING_TEXT" String="Iluminação" />
+		<Translation ID="HUE_TEXT" String="Matiz" />
+		<Translation ID="TINT_TEXT" String="Tonalidade" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="Luminosidade" />
+		<Translation ID="STYLES_MOD_NAME" String="Estilos" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="Correção de Cor" />
+		<Translation ID="VISUALISM_MOD_NAME" String="Visualismo" />
+		<Translation ID="SUNTEMP_TEXT" String="Temperatura do Sol" />
+		<Translation ID="SUNTINT_TEXT" String="Matiz do Sol" />
+		<Translation ID="SKYTEMP_TEXT" String="Temperatura do Céu" />
+		<Translation ID="SKYTINT_TEXT" String="Matiz do Céu" />
+		<Translation ID="MOONTEMP_TEXT" String="Temperatura da Lua" />
+		<Translation ID="MOONTINT_TEXT" String="Matiz da Lua" />
+		<Translation ID="MOONLIGHT_TEXT" String="Luz da Lua" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="Matiz do Crepúsculo" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="Habilitar Mapeamento de Tonalidade do Céu" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="Desativar Suavização de Sombras" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="Forçar Deslocamento Mínimo das Sombras" />
+		<Translation ID="RESET_TEXT" String="Redefinir Tudo" />
+		<Translation ID="LOAD_TEXT" String="Carregar" />
+		<Translation ID="DELETE_TEXT" String="Excluir" />
+		<Translation ID="WORKSHOP_TEXT" String="Oficina" />
+		<Translation ID="NOstyle_TEXT" String="Estilo Lumina não encontrado!" />
+		<Translation ID="RELOADstyle_TEXT" String="Recarregar Lista de Estilos" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="Abrir Pasta Local de Estilos" />
+		<Translation ID="LAUNCHLUT_TEXT" String="Iniciar Editor de LUT" />
+		<Translation ID="SHADOWINT_TEXT" String="Intensidade das Sombras" />
+		<Translation ID="SHADOWBIAS_TEXT" String="Viés das Sombras" />
+	</Translations>
+</Language>

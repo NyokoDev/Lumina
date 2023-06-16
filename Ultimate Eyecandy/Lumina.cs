@@ -14,6 +14,10 @@ using ColossalFramework.IO;
 using HarmonyLib;
 using System.Diagnostics;
 using ColossalFramework.UI;
+using LuminaTR.TranslationFramework;
+using System.Xml.Linq;
+using ColossalFramework.Plugins;
+using Lumina;
 
 namespace Lumina
 {
@@ -24,7 +28,7 @@ namespace Lumina
 
         public string Name { get { return "Lumina"; } }
 
-        public string Description { get { return "Optimized and adaptable illumination and tone adjustment."; } }
+        public string Description { get { return Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOD_DESCRIPTION); } }
 
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -45,13 +49,6 @@ namespace Lumina
         }
 
         private Harmony harmony;
-
-        public void OnSettingsUI(UIHelperBase helper)
-        {
-            UIHelper group = (UIHelper)helper.AddGroup("Lumina (Beta)");
-            group.AddButton("Launch LUT Editor", OpenLUTEditor);
-        }
-
 
         private void OpenLUTEditor()
         {
@@ -168,6 +165,12 @@ namespace Lumina
         }
     }
 
+    public class GlobalVariables
+    {
+        public string nameTextfield = "Lumina Style";
+    }
+
+
     public class LuminaLogic : UIPanel
     {
         // SIMON PART (UI + SAVING)
@@ -175,8 +178,8 @@ namespace Lumina
         public bool ShowUI = false;
         private Rect windowRect = new Rect(200, 200, 450, 581);
         private int instanceID, windowMode = 0;
-        private Vector2 scrollPresets = Vector2.zero;
-        private string nameTextfield = "Preset Name";
+        private Vector2 scrollstyles = Vector2.zero;
+        
 
         // lighting values
         public float[] lightingValues, oldLightingValues;
@@ -188,29 +191,19 @@ namespace Lumina
 
         public string CachePath = DataLocation.localApplicationData + "\\LuminaCache.light";
 
-       protected void Start()
+        public override void Start()
         {
             base.Start();
-            backgroundSprite = "MenuPanel2";
+            backgroundSprite = "MenuPanelInfo";
             canFocus = true;
             isInteractive = true;
             autoLayout = true;
             autoLayoutDirection = LayoutDirection.Vertical;
             autoLayoutPadding = new RectOffset(10, 10, 10, 10);
 
-            GameObject lightGameObject = new GameObject("Light");
-
-            // Add the light component to the new game object
-            Light lightComp = lightGameObject.AddComponent<Light>();
-
-            // Set the light type to directional
-            lightComp.type = LightType.Directional;
-
-            // Set the directional light reference to the newly created light
-            directionalLight = lightComp;
 
             instanceID = this.GetInstanceID();
-            LightPreset.LoadLightPresets();
+            Lightstyle.LoadLightstyles();
 
             if (File.Exists(CachePath))
             {
@@ -222,7 +215,7 @@ namespace Lumina
                 AllToZero();
         }
 
-        void Update()
+        public override void Update()
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -232,52 +225,26 @@ namespace Lumina
                     {
                         ShowUI = !ShowUI;
                     }
-
-                    if (Input.GetKey(KeyCode.LeftShift))
+                    if (ShowUI)
                     {
-                        if (Input.GetKeyDown(KeyCode.F7))
+                        if (IsAnyDifference())
                         {
-                            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\lut.exe";
-
-                            ProcessStartInfo startInfo = new ProcessStartInfo();
-                            startInfo.FileName = lutEditorPath;
-                            startInfo.UseShellExecute = true;
-
-                            Process.Start(startInfo);
+                            CalculateAll(lightingValues, skyTonemappingUi);
+                            ApplyShadowValues();
+                            SaveCache();
                         }
-
-                        UpdateShadowSettings();
-            
-                    }
-
-                }
-            }
-
-
-
-
-            if (ShowUI)
-            {
-                if (IsAnyDifference())
-                {
-                    CalculateAll(lightingValues, skyTonemappingUi);
-                    ApplyShadowValues();
-                    SaveCache();
-                }
-                oldLightingValues = new float[]
-                {
+                        oldLightingValues = new float[]
+                        {
                     lightingValues[0], lightingValues[1], lightingValues[2], lightingValues[3], lightingValues[4], lightingValues[5], lightingValues[6], lightingValues[7], lightingValues[8], lightingValues[9], lightingValues[10], lightingValues[11], lightingValues[12]
-                };
-                oldSkyTonemappingUi = skyTonemappingUi;
-                oldDisableSmoothing = disableSmoothing;
-                oldForceLowBias = forceLowBias;
+                        };
+                        oldSkyTonemappingUi = skyTonemappingUi;
+                        oldDisableSmoothing = disableSmoothing;
+                        oldForceLowBias = forceLowBias;
+                    }
+                }
             }
         }
 
-
-
-
-       
         protected override void OnMouseDown(UIMouseEventParameter p)
         {
             base.OnMouseDown(p);
@@ -305,140 +272,196 @@ namespace Lumina
         private void DrawWindow(int id)
         {
             GUI.DragWindow(new Rect(0, 0, 420, 20));
-            if (GUI.Button(new Rect(422, 4, 25, 20), "x"))
+            string buttonText = Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.CLOSE_TEXT);
+            float buttonWidth = GUI.skin.label.CalcSize(new GUIContent(buttonText)).x + 10f;
+            if (GUI.Button(new Rect(422, 4, buttonWidth, 20), buttonText))
+            {
                 ShowUI = false;
+            }
 
-            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] { "Lightness", "Presets", "Color Correction", "Shadows & Effects" });
+            windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] {
+        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LIGHTNESS_MOD_NAME),
+        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.STYLES_MOD_NAME),
+        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.COLOR_CORRECTION_MOD_NAME),
+        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.VISUALISM_MOD_NAME)
+    });
 
             if (windowMode == 0)
             {
                 // CUSTOMIZATION WINDOW MODE
 
-                GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Exposure Control</size>");
+                GUI.skin.label.fontSize = 14;
+                GUI.Label(new Rect(180, 60, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.EXPOSURECONTROL_TEXT));
                 // Luminosity
-                GUI.Label(new Rect(5, 80, 115, 30), "Luminosity");
+                GUI.Label(new Rect(5, 80, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LUMINOSITY_TEXT));
                 lightingValues[10] = GUI.HorizontalSlider(new Rect(120, 85, 270, 25), lightingValues[10], -1f, 1f);
                 if (GUI.Button(new Rect(395, 80, 50, 30), lightingValues[10].ToString(), GUI.skin.label))
+                {
                     lightingValues[10] = 0;
+                }
                 // gamma
-                GUI.Label(new Rect(5, 110, 115, 30), "Gamma");
+                GUI.Label(new Rect(5, 110, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.GAMMA_TEXT));
                 lightingValues[11] = GUI.HorizontalSlider(new Rect(120, 115, 270, 25), lightingValues[11], -1f, 1f);
                 if (GUI.Button(new Rect(395, 110, 50, 30), lightingValues[11].ToString(), GUI.skin.label))
+                {
                     lightingValues[11] = 0;
+                }
                 // contrast
-                GUI.Label(new Rect(5, 140, 115, 30), "Radiance");
+                GUI.Label(new Rect(5, 140, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.RADIANCE_TEXT));
                 lightingValues[12] = GUI.HorizontalSlider(new Rect(120, 145, 270, 25), lightingValues[12], -1f, 1f);
                 if (GUI.Button(new Rect(395, 140, 50, 30), lightingValues[12].ToString(), GUI.skin.label))
+                {
                     lightingValues[12] = 0;
+                }
 
-                GUI.Label(new Rect(200, 160, 150, 26), "<size=14>Lighting</size>");
+                GUI.Label(new Rect(200, 160, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LIGHTING_TEXT));
                 // temperature
-                GUI.Label(new Rect(5, 190, 115, 30), "Hue");
+                GUI.Label(new Rect(5, 190, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.HUE_TEXT));
                 lightingValues[0] = GUI.HorizontalSlider(new Rect(120, 195, 270, 25), lightingValues[0], -1f, 1f);
                 if (GUI.Button(new Rect(395, 190, 50, 30), lightingValues[0].ToString(), GUI.skin.label))
+                {
                     lightingValues[0] = 0;
+                }
                 // tint
-                GUI.Label(new Rect(5, 220, 115, 30), "Tint");
+                GUI.Label(new Rect(5, 220, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.TINT_TEXT));
                 lightingValues[1] = GUI.HorizontalSlider(new Rect(120, 225, 270, 25), lightingValues[1], -1f, 1f);
                 if (GUI.Button(new Rect(395, 220, 50, 30), lightingValues[1].ToString(), GUI.skin.label))
+                {
                     lightingValues[1] = 0;
+                }
                 // sun temperature
-                GUI.Label(new Rect(5, 250, 115, 30), "Sun Temperature");
+                GUI.Label(new Rect(5, 250, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SUNTEMP_TEXT));
                 lightingValues[2] = GUI.HorizontalSlider(new Rect(120, 255, 270, 25), lightingValues[2], -1f, 1f);
                 if (GUI.Button(new Rect(395, 250, 50, 30), lightingValues[2].ToString(), GUI.skin.label))
+                {
                     lightingValues[2] = 0;
+                }
                 // sun tint
-                GUI.Label(new Rect(5, 280, 115, 30), "Sun Tint");
+                GUI.Label(new Rect(5, 280, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SUNTINT_TEXT));
                 lightingValues[3] = GUI.HorizontalSlider(new Rect(120, 285, 270, 25), lightingValues[3], -1f, 1f);
                 if (GUI.Button(new Rect(395, 280, 50, 30), lightingValues[3].ToString(), GUI.skin.label))
+                {
                     lightingValues[3] = 0;
+                }
                 // sky temperature
-                GUI.Label(new Rect(5, 310, 115, 30), "Sky Temperature");
+                GUI.Label(new Rect(5, 310, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SKYTEMP_TEXT));
                 lightingValues[4] = GUI.HorizontalSlider(new Rect(120, 315, 270, 25), lightingValues[4], -1f, 1f);
                 if (GUI.Button(new Rect(395, 310, 50, 30), lightingValues[4].ToString(), GUI.skin.label))
+                {
                     lightingValues[4] = 0;
+                }
                 // sky tint
-                GUI.Label(new Rect(5, 340, 115, 30), "Sky Tint");
+                GUI.Label(new Rect(5, 340, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SKYTINT_TEXT));
                 lightingValues[5] = GUI.HorizontalSlider(new Rect(120, 345, 270, 25), lightingValues[5], -1f, 1f);
                 if (GUI.Button(new Rect(395, 340, 50, 30), lightingValues[5].ToString(), GUI.skin.label))
+                {
                     lightingValues[5] = 0;
+                }
                 // moon temperature
-                GUI.Label(new Rect(5, 370, 115, 30), "Moon Temperature");
+                GUI.Label(new Rect(5, 370, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONTEMP_TEXT));
                 lightingValues[6] = GUI.HorizontalSlider(new Rect(120, 375, 270, 25), lightingValues[6], -1f, 1f);
                 if (GUI.Button(new Rect(395, 370, 50, 30), lightingValues[6].ToString(), GUI.skin.label))
+                {
                     lightingValues[6] = 0;
+                }
                 // moon tint
-                GUI.Label(new Rect(5, 400, 115, 30), "Moon Tint");
+                GUI.Label(new Rect(5, 400, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONTINT_TEXT));
                 lightingValues[7] = GUI.HorizontalSlider(new Rect(120, 405, 270, 25), lightingValues[7], -1f, 1f);
                 if (GUI.Button(new Rect(395, 400, 50, 30), lightingValues[7].ToString(), GUI.skin.label))
+                {
                     lightingValues[7] = 0;
+                }
                 // moonlight
-                GUI.Label(new Rect(5, 430, 115, 30), "Moon Light");
+                GUI.Label(new Rect(5, 430, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONLIGHT_TEXT));
                 lightingValues[8] = GUI.HorizontalSlider(new Rect(120, 435, 270, 25), lightingValues[8], -1f, 1f);
                 if (GUI.Button(new Rect(395, 430, 50, 30), lightingValues[8].ToString(), GUI.skin.label))
+                {
                     lightingValues[8] = 0;
+                }
                 // Twilight tint
-                GUI.Label(new Rect(5, 460, 115, 30), "Twilight Tint");
+                GUI.Label(new Rect(5, 460, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.TWILIGHTTINT_TEXT));
                 lightingValues[9] = GUI.HorizontalSlider(new Rect(120, 465, 270, 25), lightingValues[9], -1f, 1f);
                 if (GUI.Button(new Rect(395, 460, 50, 30), lightingValues[9].ToString(), GUI.skin.label))
+                {
                     lightingValues[9] = 0;
+                }
 
-                skyTonemappingUi = GUI.Toggle(new Rect(5, 495, 348, 28), skyTonemappingUi, " Enable Sky Tonemapping");
-                disableSmoothing = GUI.Toggle(new Rect(5, 523, 348, 28), disableSmoothing, " Disable Shadow Smoothing");
-                forceLowBias = GUI.Toggle(new Rect(5, 551, 348, 28), forceLowBias, " Enforce Minimal Shadow Offset");
+                skyTonemappingUi = GUI.Toggle(new Rect(5, 495, 348, 28), skyTonemappingUi, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.ENABLE_SKYTONE_TEXT));
+                disableSmoothing = GUI.Toggle(new Rect(5, 523, 348, 28), disableSmoothing, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
+                forceLowBias = GUI.Toggle(new Rect(5, 551, 348, 28), forceLowBias, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.FORCELOWBIAS_TEXT));
 
-                if (GUI.Button(new Rect(355, 516, 88, 28), "Reset All"))
+                if (GUI.Button(new Rect(355, 516, 88, 28), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.RESET_TEXT)))
+                {
                     AllToZero();
+                }
             }
             else if (windowMode == 1)
             {
                 // PRESETS WINDOW MODE
 
-                if (LightPreset.LightPresets.Count > 0)
+                if (Lightstyle.Lightstyles.Count > 0)
                 {
-                    scrollPresets = GUI.BeginScrollView(new Rect(5, 55, 440, 200), scrollPresets, new Rect(0, 0, 415, LightPreset.LightPresets.Count * 30));
-                    for (int i = 0; i < LightPreset.LightPresets.Count; i++)
+                    scrollstyles = GUI.BeginScrollView(new Rect(5, 55, 440, 200), scrollstyles, new Rect(0, 0, 415, Lightstyle.Lightstyles.Count * 30));
+                    for (int i = 0; i < Lightstyle.Lightstyles.Count; i++)
                     {
-                        var preset = LightPreset.LightPresets[i];
-                        GUI.Label(new Rect(5, i * 30 + 3, 240, 25), preset.m_presetName);
+                        var preset = Lightstyle.Lightstyles[i];
+                        GUI.Label(new Rect(5, i * 30 + 3, 240, 25), preset.m_styleName);
                         if (GUI.Button(new Rect(245, i * 30, 70, 28), "Load"))
-                            LoadPreset(preset);
+                        {
+                            Loadstyle(preset);
+                        }
                         if (preset.m_canBeDeleted)
                         {
                             if (GUI.Button(new Rect(320, i * 30, 70, 28), "Delete"))
-                                LightPreset.DeletePreset(preset);
+                            {
+                                Lightstyle.Deletestyle(preset);
+                            }
                         }
                         else
+                        {
                             GUI.Label(new Rect(320, i * 30 + 2, 70, 28), "[ <i>Workshop</i> ]");
+                        }
                     }
                     GUI.EndScrollView();
                 }
                 else
                 {
                     GUI.Box(new Rect(5, 55, 440, 200), string.Empty);
-                    GUI.Label(new Rect(28, 60, 410, 30), "No preset found !");
+                    GUI.Label(new Rect(28, 60, 410, 30), "No style found !");
                 }
-                if (GUI.Button(new Rect(5, 260, 440, 27), "Reload Presets List"))
-                    LightPreset.LoadLightPresets();
+                if (GUI.Button(new Rect(5, 260, 440, 27), "Reload Styles List"))
+                {
+                    Lightstyle.LoadLightstyles();
+                }
 
-                if (File.Exists(DataLocation.localApplicationData + @"\ModConfig\LuminaPresets\" + LightPreset.ToFileName(nameTextfield) + ".light"))
+                GlobalVariables input = new GlobalVariables();
+                string nameTextfield = input.nameTextfield;
+
+                if (File.Exists(DataLocation.localApplicationData + @"\Lumina\Styles\" + Lightstyle.ToFileName(nameTextfield) + ".light"))
                 {
                     GUI.color = Color.red;
+
                     nameTextfield = GUI.TextField(new Rect(5, 290, 440, 27), nameTextfield);
-                    GUI.Label(new Rect(5, 320, 440, 27), "<b>A preset with this name already exists !</b>", GUI.skin.button);
+                    GUI.Label(new Rect(5, 320, 440, 27), "<b>A style with this name already exists !</b>", GUI.skin.button);
                     GUI.color = Color.white;
                 }
                 else
                 {
                     nameTextfield = GUI.TextField(new Rect(5, 290, 440, 27), nameTextfield);
-                    if (GUI.Button(new Rect(5, 320, 440, 27), "<b>+</b> Save Preset Locally"))
-                        CreatePreset();
+                    if (GUI.Button(new Rect(5, 320, 440, 27), "<b>+</b> Save Style"))
+                    {
+                        string path = DataLocation.localApplicationData + @"\Addons\Mods\"+nameTextfield+"\\Source";
+                        Createstyle();
+                        CreateSourceCode(path, "LuminaX1", nameTextfield);
+                        
+
+                    }
                 }
-                if (GUI.Button(new Rect(5, 350, 440, 27), "Open Local Presets Folder"))
+                if (GUI.Button(new Rect(5, 350, 440, 27), "Open Local Styles Folder"))
                 {
-                    string path = DataLocation.localApplicationData + @"\ModConfig\LuminaPresets\";
-                    if (!Directory.Exists(DataLocation.localApplicationData + @"\ModConfig\"))
-                        Directory.CreateDirectory(DataLocation.localApplicationData + @"\ModConfig\");
+                    string path = DataLocation.localApplicationData + @"\Lumina\Styles\";
+                    if (!Directory.Exists(DataLocation.localApplicationData + @"\Lumina\"))
+                        Directory.CreateDirectory(DataLocation.localApplicationData + @"\Lumina\");
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
                     Application.OpenURL("file://" + path);
@@ -451,7 +474,7 @@ namespace Lumina
                 GUI.Label(new Rect(180, 60, 150, 26), "<size=14>LUT Creator</size>");
 
                 // Add the button below the label
-                if (GUI.Button(new Rect(5, 80, 115, 30), "Launch LUT Editor"))
+                if (GUI.Button(new Rect(5, 80, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LAUNCHLUT_TEXT)))
                 {
                     string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
                     Process.Start(lutEditorPath);
@@ -459,16 +482,16 @@ namespace Lumina
             }
             else if (windowMode == 3)
             {
-                // SHADOWS & EFFECTS WINDOW MODE
-
-                GUI.Label(new Rect(180, 60, 150, 26), "<size=14>Shadow and Effects</size>");
+                // VISUALISM WINDOW MODE
+                GUI.skin.label.fontSize = 14;
+                GUI.Label(new Rect(180, 60, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.VISUALISM_MOD_NAME));
 
                 // Adjust game shadows with sliders
-                GUI.Label(new Rect(5, 90, 115, 30), "Shadow Intensity");
+                GUI.Label(new Rect(5, 90, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SHADOWINT_TEXT));
                 shadowIntensity = GUI.HorizontalSlider(new Rect(120, 95, 270, 25), shadowIntensity, -1f, 3f);
                 GUI.Label(new Rect(395, 90, 50, 30), shadowIntensity.ToString(), GUI.skin.label);
 
-                GUI.Label(new Rect(5, 150, 115, 30), "Shadow Bias");
+                GUI.Label(new Rect(5, 150, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SHADOWBIAS_TEXT));
                 shadowBias = GUI.HorizontalSlider(new Rect(120, 155, 270, 25), shadowBias, -1f, 3f);
                 GUI.Label(new Rect(395, 150, 50, 30), shadowBias.ToString(), GUI.skin.label);
 
@@ -476,7 +499,7 @@ namespace Lumina
             }
         }
 
-        private void UpdateShadowSettings()
+        void UpdateShadowSettings()
         {
             if (directionalLight != null)
             {
@@ -486,6 +509,58 @@ namespace Lumina
                 UnityEngine.Debug.Log("Updated shadow settings: Intensity = " + shadowIntensity + ", Bias = " + shadowBias);
             }
         }
+
+        private void CreateSourceCode(string mixModSourceDir, string mixNameTypeSafe, string mixName)
+        {
+            var sb = new StringBuilder();
+            if (!Directory.Exists(mixModSourceDir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(mixModSourceDir);
+                }
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.Log(string.Concat("Failed Creating Lumina Style source code directory: ", e.Message));
+                    throw;
+                }
+            }
+            sb.AppendLine("using ICities;");
+            sb.AppendLine($"namespace {mixNameTypeSafe}");
+            sb.AppendLine("{");
+            sb.AppendLine($"    public class {mixNameTypeSafe}Mod : IUserMod");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public string Name {");
+            sb.AppendLine("            get {");
+            sb.AppendLine($"                return \"{mixName}\";");
+            sb.AppendLine("            }");
+            sb.AppendLine("        }");
+            sb.AppendLine("        public string Description {");
+            sb.AppendLine("            get {");
+            sb.AppendLine("                return \"Lumina Style for use with Lumina\";");
+            sb.AppendLine("            }");
+            sb.AppendLine("        }");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            string code = sb.ToString();
+            sb = new StringBuilder();
+            try
+            {
+                File.WriteAllText(Path.Combine(mixModSourceDir, mixNameTypeSafe + ".cs"), code);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.Log(string.Concat("Failed Creating Lumina Style source code: ", e.Message));
+                throw;
+            }
+            GlobalVariables input = new GlobalVariables();
+            string nameTextfield = input.nameTextfield;
+          
+            string mixdir = DataLocation.localApplicationData + @"\Addons\Mods\" + nameTextfield;
+            PluginManager.CompileSourceInFolder(mixModSourceDir, mixdir, new string[] { typeof(ICities.IUserMod).Assembly.Location });
+        }
+
+
 
         public Light directionalLight;
         [Range(-1f, 3f)]
@@ -589,32 +664,34 @@ namespace Lumina
                 dict[0], dict[1], dict[2], dict[3], dict[4], dict[5], dict[6], dict[7], dict[8], dict[9], dict[10], dict[11], dict[12]
             };
         }
-        public void LoadPreset(LightPreset preset)
+        public void Loadstyle(Lightstyle style)
         {
             lightingValues = new float[]
             {
-                preset.m_values[0], preset.m_values[1], preset.m_values[2], preset.m_values[3], preset.m_values[4], preset.m_values[5], preset.m_values[6], preset.m_values[7], preset.m_values[8], preset.m_values[9], preset.m_values[10], preset.m_values[11], preset.m_values[12]
+                style.m_values[0], style.m_values[1], style.m_values[2], style.m_values[3], style.m_values[4], style.m_values[5], style.m_values[6], style.m_values[7], style.m_values[8], style.m_values[9], style.m_values[10], style.m_values[11], style.m_values[12]
             };
             oldLightingValues = new float[]
             {
-                preset.m_values[0], preset.m_values[1], preset.m_values[2], preset.m_values[3], preset.m_values[4], preset.m_values[5], preset.m_values[6], preset.m_values[7], preset.m_values[8], preset.m_values[9], preset.m_values[10], preset.m_values[11], preset.m_values[12]
+                style.m_values[0], style.m_values[1], style.m_values[2], style.m_values[3], style.m_values[4], style.m_values[5], style.m_values[6], style.m_values[7], style.m_values[8], style.m_values[9], style.m_values[10], style.m_values[11], style.m_values[12]
             };
-            skyTonemappingUi = preset.m_skyTonemapping;
-            oldSkyTonemappingUi = preset.m_skyTonemapping;
-            CalculateAll(preset.m_values, preset.m_skyTonemapping);
+            skyTonemappingUi = style.m_skyTonemapping;
+            oldSkyTonemappingUi = style.m_skyTonemapping;
+            CalculateAll(style.m_values, style.m_skyTonemapping);
             SaveCache();
         }
-        public void CreatePreset()
+        public void Createstyle()
         {
-            LightPreset preset = new LightPreset();
-            preset.m_presetName = nameTextfield;
-            preset.m_values = new float[]
+            Lightstyle style = new Lightstyle();
+            GlobalVariables input = new GlobalVariables();
+            string nameTextfield = input.nameTextfield;
+            style.m_styleName = nameTextfield;
+            style.m_values = new float[]
             {
                 lightingValues[0], lightingValues[1], lightingValues[2], lightingValues[3], lightingValues[4], lightingValues[5], lightingValues[6], lightingValues[7], lightingValues[8], lightingValues[9], lightingValues[10], lightingValues[11], lightingValues[12]
             };
-            preset.m_canBeDeleted = true;
-            preset.m_skyTonemapping = skyTonemappingUi;
-            preset.SavePreset(true);
+            style.m_canBeDeleted = true;
+            style.m_skyTonemapping = skyTonemappingUi;
+            style.Savestyle(true);
         }
 
         private void AllToZero()
@@ -633,7 +710,7 @@ namespace Lumina
             CalculateAll(lightingValues, skyTonemappingUi);
         }
 
-        #region nyoko PART (LOGIC)
+        #region ronyx PART (LOGIC)
         
 
         // Intensity Tweak
@@ -930,60 +1007,66 @@ namespace Lumina
         }
     }
 }
-public class LightPreset
+public class Lightstyle
 {
-    public LightPreset() { }
+    public Lightstyle() { }
 
     public float[] m_values;
     public bool m_skyTonemapping, m_canBeDeleted;
-    public string m_presetName, m_filePath;
+    public string m_styleName, m_filePath;
 
-    public void SavePreset(bool addToPresetsList)
+    public void Savestyle(bool addTostylesList)
     {
-        string path = DataLocation.localApplicationData + @"\ModConfig\LuminaPresets\";
-        if (!Directory.Exists(DataLocation.localApplicationData + @"\ModConfig\"))
-            Directory.CreateDirectory(DataLocation.localApplicationData + @"\ModConfig\");
+        GlobalVariables input = new GlobalVariables();
+        string nameTextfield = input.nameTextfield;
+        string path = DataLocation.localApplicationData + @"\Addons\Mods\" + nameTextfield;
+        if (!Directory.Exists(DataLocation.localApplicationData + @"\Lumina\"))
+            Directory.CreateDirectory(DataLocation.localApplicationData + @"\Lumina\");
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         this.m_canBeDeleted = true;
-        this.m_filePath = path + ToFileName(this.m_presetName) + ".light";
+        this.m_filePath = $"{path}\\{ToFileName(this.m_styleName)}.light";
 
-        TextWriter tw = new StreamWriter(this.m_filePath);
-        tw.WriteLine("name = " + ((this.m_presetName == "") ? "[none]" : this.m_presetName));
-        tw.WriteLine("0 = " + this.m_values[0]);
-        tw.WriteLine("1 = " + this.m_values[1]);
-        tw.WriteLine("2 = " + this.m_values[2]);
-        tw.WriteLine("3 = " + this.m_values[3]);
-        tw.WriteLine("4 = " + this.m_values[4]);
-        tw.WriteLine("5 = " + this.m_values[5]);
-        tw.WriteLine("6 = " + this.m_values[6]);
-        tw.WriteLine("7 = " + this.m_values[7]);
-        tw.WriteLine("8 = " + this.m_values[8]);
-        tw.WriteLine("9 = " + this.m_values[9]);
-        tw.WriteLine("10 = " + this.m_values[10]);
-        tw.WriteLine("11 = " + this.m_values[11]);
-        tw.WriteLine("12 = " + this.m_values[12]);
-        tw.WriteLine("skyTmpg = " + this.m_skyTonemapping);
-        tw.Close();
-        if (addToPresetsList)
-            LightPresets.Add(this);
+        using (TextWriter tw = new StreamWriter(this.m_filePath))
+        {
+            tw.WriteLine("name = " + ((this.m_styleName == "") ? "[none]" : this.m_styleName));
+            tw.WriteLine("0 = " + this.m_values[0]);
+            tw.WriteLine("1 = " + this.m_values[1]);
+            tw.WriteLine("2 = " + this.m_values[2]);
+            tw.WriteLine("3 = " + this.m_values[3]);
+            tw.WriteLine("4 = " + this.m_values[4]);
+            tw.WriteLine("5 = " + this.m_values[5]);
+            tw.WriteLine("6 = " + this.m_values[6]);
+            tw.WriteLine("7 = " + this.m_values[7]);
+            tw.WriteLine("8 = " + this.m_values[8]);
+            tw.WriteLine("9 = " + this.m_values[9]);
+            tw.WriteLine("10 = " + this.m_values[10]);
+            tw.WriteLine("11 = " + this.m_values[11]);
+            tw.WriteLine("12 = " + this.m_values[12]);
+            tw.WriteLine("skyTmpg = " + this.m_skyTonemapping);
+        }
+
+        if (addTostylesList)
+            Lightstyles.Add(this);
     }
 
-    public static void LoadLightPresets()
+
+
+    public static void LoadLightstyles()
     {
-        LightPresets = new List<LightPreset>();
-        string path = DataLocation.localApplicationData + @"\ModConfig\LuminaPresets\";
-        if (!Directory.Exists(DataLocation.localApplicationData + @"\ModConfig\"))
-            Directory.CreateDirectory(DataLocation.localApplicationData + @"\ModConfig\");
+        Lightstyles = new List<Lightstyle>();
+        string path = DataLocation.localApplicationData + @"\Addons\Mods\";
+        if (!Directory.Exists(DataLocation.localApplicationData + @"\Addons\Mods\"));
+        Directory.CreateDirectory(DataLocation.localApplicationData + @"\Addons\Mods\");
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
 
         foreach (string file in Directory.GetFiles(path, "*.light", SearchOption.AllDirectories))
         {
-            var preset = new LightPreset();
-            preset.m_presetName = "[none]";
-            preset.m_canBeDeleted = true;
-            preset.m_filePath = file;
+            var style = new Lightstyle();
+            style.m_styleName = "[none]";
+            style.m_canBeDeleted = true;
+            style.m_filePath = file;
             var dict = new Dictionary<int, float>();
 
             foreach (string line in File.ReadAllLines(file).Where(s => s.Contains(" = ")))
@@ -991,11 +1074,11 @@ public class LightPreset
                 string[] data = line.Split(new string[] { " = " }, StringSplitOptions.RemoveEmptyEntries);
                 if (data[0] == "skyTmpg")
                 {
-                    preset.m_skyTonemapping = bool.Parse(data[1]);
+                    style.m_skyTonemapping = bool.Parse(data[1]);
                 }
                 else if (data[0] == "name")
                 {
-                    preset.m_presetName = data[1];
+                    style.m_styleName = data[1];
                 }
                 else
                 {
@@ -1004,11 +1087,11 @@ public class LightPreset
                     dict[id] = float.Parse(data[1]);
                 }
             }
-            preset.m_values = new float[]
+            style.m_values = new float[]
             {
                 dict[0], dict[1], dict[2], dict[3], dict[4], dict[5], dict[6], dict[7], dict[8], dict[9], dict[10], dict[11], dict[12]
             };
-            LightPresets.Add(preset);
+            Lightstyles.Add(style);
         }
 
         foreach (PublishedFileId fileId in PlatformService.workshop.GetSubscribedItems())
@@ -1025,9 +1108,9 @@ public class LightPreset
             {
                 foreach (string file in files)
                 {
-                    var preset = new LightPreset();
-                    preset.m_presetName = "[none]";
-                    preset.m_canBeDeleted = false;
+                    var style = new Lightstyle();
+                    style.m_styleName = "[none]";
+                    style.m_canBeDeleted = false;
                     var dict = new Dictionary<int, float>();
 
                     foreach (string line in File.ReadAllLines(file).Where(s => s.Contains(" = ")))
@@ -1035,11 +1118,11 @@ public class LightPreset
                         string[] data = line.Split(new string[] { " = " }, StringSplitOptions.RemoveEmptyEntries);
                         if (data[0] == "skyTmpg")
                         {
-                            preset.m_skyTonemapping = bool.Parse(data[1]);
+                            style.m_skyTonemapping = bool.Parse(data[1]);
                         }
                         else if (data[0] == "name")
                         {
-                            preset.m_presetName = data[1];
+                            style.m_styleName = data[1];
                         }
                         else
                         {
@@ -1048,27 +1131,27 @@ public class LightPreset
                             dict[id] = float.Parse(data[1]);
                         }
                     }
-                    preset.m_values = new float[]
+                    style.m_values = new float[]
                     {
                         dict[0], dict[1], dict[2], dict[3], dict[4], dict[5], dict[6], dict[7], dict[8], dict[9], dict[10], dict[11], dict[12]
                     };
-                    LightPresets.Add(preset);
+                    Lightstyles.Add(style);
                 }
             }
         }
 
     }
-    public static void DeletePreset(LightPreset preset)
+    public static void Deletestyle(Lightstyle style)
     {
-        if (preset.m_canBeDeleted)
+        if (style.m_canBeDeleted)
         {
-            if (File.Exists(preset.m_filePath))
-                File.Delete(preset.m_filePath);
-            if (LightPresets.Contains(preset))
-                LightPresets.Remove(preset);
+            if (File.Exists(style.m_filePath))
+                File.Delete(style.m_filePath);
+            if (Lightstyles.Contains(style))
+                Lightstyles.Remove(style);
         }
     }
-    public static List<LightPreset> LightPresets;
+    public static List<Lightstyle> Lightstyles;
     public static string ToFileName(string s)
     {
         return s.Replace(" ", "_").Replace(@"\", "").Replace("/", "").Replace("|", "").Replace("<", "").Replace(">", "").Replace("*", "").Replace(":", "").Replace("?", "").Replace("\"", "");

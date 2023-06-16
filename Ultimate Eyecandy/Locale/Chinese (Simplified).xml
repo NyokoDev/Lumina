@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="zh-CN" ReadableName="简体中文" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="优化和适应性照明和色调调整。" />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="关" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="曝光控制" />
+		<Translation ID="LUMINOSITY_TEXT" String="亮度" />
+		<Translation ID="GAMMA_TEXT" String="伽马" />
+		<Translation ID="RADIANCE_TEXT" String="辐射" />
+		<Translation ID="LIGHTING_TEXT" String="照明" />
+		<Translation ID="HUE_TEXT" String="色调" />
+		<Translation ID="TINT_TEXT" String="色彩调整" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="明亮度" />
+		<Translation ID="STYLES_MOD_NAME" String="样式" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="色彩校正" />
+		<Translation ID="VISUALISM_MOD_NAME" String="视觉效果" />
+		<Translation ID="SUNTEMP_TEXT" String="太阳温度" />
+		<Translation ID="SUNTINT_TEXT" String="太阳色调" />
+		<Translation ID="SKYTEMP_TEXT" String="天空温度" />
+		<Translation ID="SKYTINT_TEXT" String="天空色调" />
+		<Translation ID="MOONTEMP_TEXT" String="月亮温度" />
+		<Translation ID="MOONTINT_TEXT" String="月亮色调" />
+		<Translation ID="MOONLIGHT_TEXT" String="月光" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="黄昏色调" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="启用天空色调映射" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="禁用阴影平滑" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="强制最小阴影偏移" />
+		<Translation ID="RESET_TEXT" String="重置所有" />
+		<Translation ID="LOAD_TEXT" String="加载" />
+		<Translation ID="DELETE_TEXT" String="删除" />
+		<Translation ID="WORKSHOP_TEXT" String="创意工坊" />
+		<Translation ID="NOstyle_TEXT" String="未找到Lumina样式！" />
+		<Translation ID="RELOADstyle_TEXT" String="重新加载样式列表" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="打开本地样式文件夹" />
+		<Translation ID="LAUNCHLUT_TEXT" String="启动LUT编辑器" />
+		<Translation ID="SHADOWINT_TEXT" String="阴影强度" />
+		<Translation ID="SHADOWBIAS_TEXT" String="阴影偏移" />
+	</Translations>
+</Language>

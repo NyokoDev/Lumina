@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="ru" ReadableName="Русский" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="Оптимизированное и настраиваемое освещение и коррекция тона." />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="Закрыть" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="Контроль экспозиции" />
+		<Translation ID="LUMINOSITY_TEXT" String="Яркость" />
+		<Translation ID="GAMMA_TEXT" String="Гамма" />
+		<Translation ID="RADIANCE_TEXT" String="Сияние" />
+		<Translation ID="LIGHTING_TEXT" String="Освещение" />
+		<Translation ID="HUE_TEXT" String="Оттенок" />
+		<Translation ID="TINT_TEXT" String="Тон" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="Яркость" />
+		<Translation ID="STYLES_MOD_NAME" String="Стили" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="Цветокоррекция" />
+		<Translation ID="VISUALISM_MOD_NAME" String="Визуализм" />
+		<Translation ID="SUNTEMP_TEXT" String="Температура солнца" />
+		<Translation ID="SUNTINT_TEXT" String="Оттенок солнца" />
+		<Translation ID="SKYTEMP_TEXT" String="Температура неба" />
+		<Translation ID="SKYTINT_TEXT" String="Оттенок неба" />
+		<Translation ID="MOONTEMP_TEXT" String="Температура луны" />
+		<Translation ID="MOONTINT_TEXT" String="Оттенок луны" />
+		<Translation ID="MOONLIGHT_TEXT" String="Лунный свет" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="Оттенок сумерек" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="Включить тональное отображение неба" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="Отключить сглаживание теней" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="Принудительное минимальное смещение теней" />
+		<Translation ID="RESET_TEXT" String="Сбросить все" />
+		<Translation ID="LOAD_TEXT" String="Загрузить" />
+		<Translation ID="DELETE_TEXT" String="Удалить" />
+		<Translation ID="WORKSHOP_TEXT" String="Мастерская" />
+		<Translation ID="NOstyle_TEXT" String="Стиль Lumina не найден!" />
+		<Translation ID="RELOADstyle_TEXT" String="Перезагрузить список стилей" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="Открыть локальную папку со стилями" />
+		<Translation ID="LAUNCHLUT_TEXT" String="Запустить редактор LUT" />
+		<Translation ID="SHADOWINT_TEXT" String="Интенсивность теней" />
+		<Translation ID="SHADOWBIAS_TEXT" String="Смещение теней" />
+	</Translations>
+</Language>
