@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="ja" ReadableName="Japanese" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="最適化された照明操作と適応性の高いトーン調整が可能" />
+		<Translation ID="MOD_NAME" String="Lumina" />
+		<Translation ID="CLOSE_TEXT" String="閉じる" />
+		<Translation ID="EXPOSURECONTROL_TEXT" String="露出制御" />
+		<Translation ID="LUMINOSITY_TEXT" String="輝度" />
+		<Translation ID="GAMMA_TEXT" String="ガンマ" />
+		<Translation ID="RADIANCE_TEXT" String="輝き" />
+		<Translation ID="LIGHTING_TEXT" String="明るさ" />
+		<Translation ID="HUE_TEXT" String="色相" />
+		<Translation ID="TINT_TEXT" String="色合い" />
+		<Translation ID="LIGHTNESS_MOD_NAME" String="明度" />
+		<Translation ID="STYLES_MOD_NAME" String="スタイル" />
+		<Translation ID="COLOR_CORRECTION_MOD_NAME" String="カラーコレクション" />
+		<Translation ID="VISUALISM_MOD_NAME" String="視覚制御" />
+		<Translation ID="SUNTEMP_TEXT" String="太陽の温度" />
+		<Translation ID="SUNTINT_TEXT" String="太陽の色合い" />
+		<Translation ID="SKYTEMP_TEXT" String="上空の温度" />
+		<Translation ID="SKYTINT_TEXT" String="上空の色合い" />
+		<Translation ID="MOONTEMP_TEXT" String="月の温度" />
+		<Translation ID="MOONTINT_TEXT" String="月の色合い" />
+		<Translation ID="MOONLIGHT_TEXT" String="月の明るさ" />
+		<Translation ID="TWILIGHTTINT_TEXT" String="夕方の色合い" />
+		<Translation ID="ENABLE_SKYTONE_TEXT" String="上空のトーンマッピングを有効化" />
+		<Translation ID="DISABLE_SHADOWSMOOTH_TEXT" String="影のスムージングを無効化" />
+		<Translation ID="FORCELOWBIAS_TEXT" String="影のオフセットを最小限で強制" />
+		<Translation ID="RESET_TEXT" String="全てリセット" />
+		<Translation ID="LOAD_TEXT" String="ロード" />
+		<Translation ID="DELETE_TEXT" String="削除" />
+		<Translation ID="WORKSHOP_TEXT" String="ワークショップ" />
+		<Translation ID="NOstyle_TEXT" String="Luminaのスタイルが見つかりません！" />
+		<Translation ID="RELOADstyle_TEXT" String="スタイルのリストをリロード" />
+		<Translation ID="OPENLOCALFOLDER_TEXT" String="スタイルがあるフォルダを開く" />
+		<Translation ID="LAUNCHLUT_TEXT" String="LUTエディタを起動" />
+		<Translation ID="SHADOWINT_TEXT" String="影の強度" />
+		<Translation ID="SHADOWBIAS_TEXT" String="影のバイアス" />
+	</Translations>
+</Language>
