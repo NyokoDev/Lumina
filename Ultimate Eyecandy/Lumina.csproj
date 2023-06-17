@@ -35,4 +35,5 @@
 		<Copy SourceFiles="@(_Locales)" DestinationFolder="$(DeployDir)/Locale" />
 		<Copy SourceFiles="@(_Editor)" DestinationFolder="$(DeployDir)/LUT Editor" />
 	</Target>
+	<Import Project="..\..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
 </Project>

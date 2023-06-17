@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lumina", "Ultimate Eyecandy\Lumina.csproj", "{5331212A-01C2-400F-92A7-C60E29FAC8A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lumina", "Ultimate Eyecandy\Lumina.csproj", "{5331212A-01C2-400F-92A7-C60E29FAC8A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{77053926-C30A-49C6-9311-BB3B96651FA1}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AlgernonCommonsPatchingShared", "..\AlgernonCommons\AlgernonCommonsPatchingShared.shproj", "{25AEF446-6F0D-43A8-BB84-D1306789B68C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,5 +28,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E73CA0F8-83DC-4F13-8F62-1DE3078AFB54}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems*{25aef446-6f0d-43a8-bb84-d1306789b68c}*SharedItemsImports = 13
+		..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems*{5331212a-01c2-400f-92a7-c60e29fac8a2}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
