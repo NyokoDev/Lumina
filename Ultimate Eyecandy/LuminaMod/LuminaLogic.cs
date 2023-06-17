@@ -10,6 +10,7 @@ using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using LuminaTR.TranslationFramework;
+using UnifiedUI.Helpers;
 using UnityEngine;
 
 namespace Lumina
@@ -18,7 +19,6 @@ namespace Lumina
     {
         // SIMON PART (UI + SAVING)
 
-        public bool ShowUI = false;
         private Rect windowRect = new Rect(200, 200, 450, 581);
         private int instanceID, windowMode = 0;
         private Vector2 scrollstyles = Vector2.zero;
@@ -34,41 +34,27 @@ namespace Lumina
 
         public string CachePath = DataLocation.localApplicationData + "\\LuminaCache.light";
 
-        public override void Start()
+
+        private bool _showUI = false;
+        private UUICustomButton _uuiButton;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the UI should be shown.  Invoked only from main thread.
+        /// </summary>
+        private bool ShowUI
+
         {
-            base.Start();
-            backgroundSprite = "MenuPanelInfo";
-            canFocus = true;
-            isInteractive = true;
-            autoLayout = true;
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding = new RectOffset(10, 10, 10, 10);
+            get => _showUI;
 
-
-            instanceID = this.GetInstanceID();
-            Lightstyle.LoadLightstyles();
-
-            if (File.Exists(CachePath))
+            set
             {
-                LoadCache();
-                CalculateAll(lightingValues, skyTonemappingUi);
-                ApplyShadowValues();
-            }
-            else
-                AllToZero();
-        }
-
-        public override void Update()
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                if (Input.GetKey(KeyCode.LeftAlt))
+                // Don't do anything if no change.
+                if (value != _showUI)
                 {
-                    if (Input.GetKeyDown(KeyCode.L))
-                    {
-                        ShowUI = !ShowUI;
-                    }
-                    if (ShowUI)
+                    _showUI = value;
+
+                    /// Update values if hiding.
+                    if (!value)
                     {
                         if (IsAnyDifference())
                         {
@@ -86,6 +72,40 @@ namespace Lumina
                     }
                 }
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            backgroundSprite = "MenuPanelInfo";
+            canFocus = true;
+            isInteractive = true;
+            autoLayout = true;
+            autoLayoutDirection = LayoutDirection.Vertical;
+            autoLayoutPadding = new RectOffset(10, 10, 10, 10);
+
+
+            // Add UUI button.
+            _uuiButton = UUIHelpers.RegisterCustomButton(
+                name: LuminaMod.Instance.Name,
+                groupName: null, // default group
+                tooltip: "Lumina", //Translations.Translate("MOD_NAME"),
+                icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<LuminaMod>("Resources", "UUI.png")),
+                onToggle: (value) => ShowUI = value,
+                hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleKey }) ;
+
+
+            instanceID = this.GetInstanceID();
+            Lightstyle.LoadLightstyles();
+
+            if (File.Exists(CachePath))
+            {
+                LoadCache();
+                CalculateAll(lightingValues, skyTonemappingUi);
+                ApplyShadowValues();
+            }
+            else
+                AllToZero();
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
@@ -120,6 +140,7 @@ namespace Lumina
             if (GUI.Button(new Rect(422, 4, buttonWidth, 20), buttonText))
             {
                 ShowUI = false;
+                _uuiButton.IsPressed = false;
             }
 
             windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] {

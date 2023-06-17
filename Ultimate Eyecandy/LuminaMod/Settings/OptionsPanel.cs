@@ -1,5 +1,6 @@
 ﻿namespace Lumina
 {
+    using AlgernonCommons.Keybinding;
     using AlgernonCommons.UI;
     using System.Diagnostics;
 
@@ -8,11 +9,22 @@
     /// </summary>
     public sealed class OptionsPanel : OptionsPanelBase
     {
+        // Layout constants.
+        private const float Margin = 5f;
+        private const float LeftMargin = 24f;
+        private const float GroupMargin = 40f;
+
         /// <summary>
         /// Performs on-demand panel setup.
         /// </summary>
         protected override void Setup()
         {
+            autoLayout = false;
+            float currentY = Margin;
+
+            // Hotkey control.
+            OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, "Set hotkey", ModSettings.ToggleKey.Keybinding);
+            currentY += uuiKeymapping.Panel.height + GroupMargin;
         }
 
         /// <summary>

@@ -27,15 +27,15 @@ namespace Lumina
         /// <summary>
         /// Saves settings file.
         /// </summary>
-        public override void SaveSettings()
-        {
-        }
+        public override void SaveSettings() => ModSettings.Save();
 
         /// <summary>
         /// Loads settings file.
         /// </summary>
         public override void LoadSettings()
         {
+            ModSettings.Load();
+
             // Enable detailed logging.
             Logging.DetailLogging = true;
         }
