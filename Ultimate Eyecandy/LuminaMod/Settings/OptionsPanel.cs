@@ -1,7 +1,9 @@
 ﻿namespace Lumina
 {
     using AlgernonCommons.Keybinding;
+    using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using ColossalFramework.UI;
     using System.Diagnostics;
 
     /// <summary>
@@ -22,8 +24,17 @@
             autoLayout = false;
             float currentY = Margin;
 
+            // Language choice.
+            UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(this, LeftMargin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
+            languageDropDown.eventSelectedIndexChanged += (c, index) =>
+            {
+                Translations.Index = index;
+                OptionsPanelManager<OptionsPanel>.LocaleChanged();
+            };
+            currentY += languageDropDown.parent.height + GroupMargin;
+
             // Hotkey control.
-            OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, "Set hotkey", ModSettings.ToggleKey.Keybinding);
+            OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
         }
 

@@ -2,6 +2,7 @@ namespace Lumina
 {
     using AlgernonCommons;
     using AlgernonCommons.Patching;
+    using AlgernonCommons.Translation;
     using ICities;
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace Lumina
         /// <summary>
         /// Gets the mod's description for display in the content manager.
         /// </summary>
-        public string Description => LuminaTR.TranslationFramework.Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOD_DESCRIPTION);
+        public string Description => Translations.Translate(LuminaTR.TranslationID.MOD_DESCRIPTION);
 
         /// <summary>
         /// Saves settings file.

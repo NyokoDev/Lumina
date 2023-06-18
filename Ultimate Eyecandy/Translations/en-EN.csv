@@ -1,0 +1,37 @@
+LANGUAGE,English
+MOD_DESCRIPTION,Optimized and adaptable illumination and tone adjustment.
+MOD_NAME,Lumina
+HOTKEY,"Set hotkey"
+CLOSE_TEXT,Close
+EXPOSURECONTROL_TEXT,Exposure Control
+LUMINOSITY_TEXT,Luminosity
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Radiance
+LIGHTING_TEXT,Lighting
+HUE_TEXT,Hue
+TINT_TEXT,Tint
+LIGHTNESS_MOD_NAME,Lightness
+STYLES_MOD_NAME,Styles
+COLOR_CORRECTION_MOD_NAME,Color Correction
+VISUALISM_MOD_NAME,Visualism
+SUNTEMP_TEXT,Sun Temperature
+SUNTINT_TEXT,Sun Tint
+SKYTEMP_TEXT,Sky Temp
+SKYTINT_TEXT,Sky Tint
+MOONTEMP_TEXT,Moon Temperature
+MOONTINT_TEXT,Moon Tint
+MOONLIGHT_TEXT,Moon Light
+TWILIGHTTINT_TEXT,Twilight Tint
+ENABLE_SKYTONE_TEXT,Enable Sky Tonemapping
+DISABLE_SHADOWSMOOTH_TEXT,Disable Shadow Smoothing
+FORCELOWBIAS_TEXT,Enforce Minimal Shadow Offset
+RESET_TEXT,Reset All
+LOAD_TEXT,Load
+DELETE_TEXT,Delete
+WORKSHOP_TEXT,Workshop
+NOstyle_TEXT,Lumina Style not found!
+RELOADstyle_TEXT,Reload style List
+OPENLOCALFOLDER_TEXT,Open Local Styles Folder
+LAUNCHLUT_TEXT,Launch LUT Editor
+SHADOWINT_TEXT,Shadow Intensity
+SHADOWBIAS_TEXT,Shadow Bias

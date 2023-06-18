@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AlgernonCommons.Translation;
 using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using LuminaTR.TranslationFramework;
 using UnifiedUI.Helpers;
 using UnityEngine;
 
@@ -89,7 +89,7 @@ namespace Lumina
             _uuiButton = UUIHelpers.RegisterCustomButton(
                 name: LuminaMod.Instance.Name,
                 groupName: null, // default group
-                tooltip: "Lumina", //Translations.Translate("MOD_NAME"),
+                tooltip: Translations.Translate("MOD_NAME"),
                 icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<LuminaMod>("Resources", "UUI.png")),
                 onToggle: (value) => ShowUI = value,
                 hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleKey }) ;
@@ -135,7 +135,7 @@ namespace Lumina
         private void DrawWindow(int id)
         {
             GUI.DragWindow(new Rect(0, 0, 420, 20));
-            string buttonText = Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.CLOSE_TEXT);
+            string buttonText = Translations.Translate(LuminaTR.TranslationID.CLOSE_TEXT);
             float buttonWidth = GUI.skin.label.CalcSize(new GUIContent(buttonText)).x + 10f;
             if (GUI.Button(new Rect(422, 4, buttonWidth, 20), buttonText))
             {
@@ -144,10 +144,10 @@ namespace Lumina
             }
 
             windowMode = GUI.Toolbar(new Rect(5, 26, 440, 25), windowMode, new string[] {
-        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LIGHTNESS_MOD_NAME),
-        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.STYLES_MOD_NAME),
-        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.COLOR_CORRECTION_MOD_NAME),
-        Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.VISUALISM_MOD_NAME)
+        Translations.Translate(LuminaTR.TranslationID.LIGHTNESS_MOD_NAME),
+        Translations.Translate(LuminaTR.TranslationID.STYLES_MOD_NAME),
+        Translations.Translate(LuminaTR.TranslationID.COLOR_CORRECTION_MOD_NAME),
+        Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME)
     });
 
             if (windowMode == 0)
@@ -155,106 +155,106 @@ namespace Lumina
                 // CUSTOMIZATION WINDOW MODE
 
                 GUI.skin.label.fontSize = 14;
-                GUI.Label(new Rect(180, 60, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.EXPOSURECONTROL_TEXT));
+                GUI.Label(new Rect(180, 60, 150, 26), Translations.Translate(LuminaTR.TranslationID.EXPOSURECONTROL_TEXT));
                 // Luminosity
-                GUI.Label(new Rect(5, 80, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LUMINOSITY_TEXT));
+                GUI.Label(new Rect(5, 80, 115, 30), Translations.Translate(LuminaTR.TranslationID.LUMINOSITY_TEXT));
                 lightingValues[10] = GUI.HorizontalSlider(new Rect(120, 85, 270, 25), lightingValues[10], -1f, 1f);
                 if (GUI.Button(new Rect(395, 80, 50, 30), lightingValues[10].ToString(), GUI.skin.label))
                 {
                     lightingValues[10] = 0;
                 }
                 // gamma
-                GUI.Label(new Rect(5, 110, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.GAMMA_TEXT));
+                GUI.Label(new Rect(5, 110, 115, 30), Translations.Translate(LuminaTR.TranslationID.GAMMA_TEXT));
                 lightingValues[11] = GUI.HorizontalSlider(new Rect(120, 115, 270, 25), lightingValues[11], -1f, 1f);
                 if (GUI.Button(new Rect(395, 110, 50, 30), lightingValues[11].ToString(), GUI.skin.label))
                 {
                     lightingValues[11] = 0;
                 }
                 // contrast
-                GUI.Label(new Rect(5, 140, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.RADIANCE_TEXT));
+                GUI.Label(new Rect(5, 140, 115, 30), Translations.Translate(LuminaTR.TranslationID.RADIANCE_TEXT));
                 lightingValues[12] = GUI.HorizontalSlider(new Rect(120, 145, 270, 25), lightingValues[12], -1f, 1f);
                 if (GUI.Button(new Rect(395, 140, 50, 30), lightingValues[12].ToString(), GUI.skin.label))
                 {
                     lightingValues[12] = 0;
                 }
 
-                GUI.Label(new Rect(200, 160, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LIGHTING_TEXT));
+                GUI.Label(new Rect(200, 160, 150, 26), Translations.Translate(LuminaTR.TranslationID.LIGHTING_TEXT));
                 // temperature
-                GUI.Label(new Rect(5, 190, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.HUE_TEXT));
+                GUI.Label(new Rect(5, 190, 115, 30), Translations.Translate(LuminaTR.TranslationID.HUE_TEXT));
                 lightingValues[0] = GUI.HorizontalSlider(new Rect(120, 195, 270, 25), lightingValues[0], -1f, 1f);
                 if (GUI.Button(new Rect(395, 190, 50, 30), lightingValues[0].ToString(), GUI.skin.label))
                 {
                     lightingValues[0] = 0;
                 }
                 // tint
-                GUI.Label(new Rect(5, 220, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.TINT_TEXT));
+                GUI.Label(new Rect(5, 220, 115, 30), Translations.Translate(LuminaTR.TranslationID.TINT_TEXT));
                 lightingValues[1] = GUI.HorizontalSlider(new Rect(120, 225, 270, 25), lightingValues[1], -1f, 1f);
                 if (GUI.Button(new Rect(395, 220, 50, 30), lightingValues[1].ToString(), GUI.skin.label))
                 {
                     lightingValues[1] = 0;
                 }
                 // sun temperature
-                GUI.Label(new Rect(5, 250, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SUNTEMP_TEXT));
+                GUI.Label(new Rect(5, 250, 115, 30), Translations.Translate(LuminaTR.TranslationID.SUNTEMP_TEXT));
                 lightingValues[2] = GUI.HorizontalSlider(new Rect(120, 255, 270, 25), lightingValues[2], -1f, 1f);
                 if (GUI.Button(new Rect(395, 250, 50, 30), lightingValues[2].ToString(), GUI.skin.label))
                 {
                     lightingValues[2] = 0;
                 }
                 // sun tint
-                GUI.Label(new Rect(5, 280, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SUNTINT_TEXT));
+                GUI.Label(new Rect(5, 280, 115, 30), Translations.Translate(LuminaTR.TranslationID.SUNTINT_TEXT));
                 lightingValues[3] = GUI.HorizontalSlider(new Rect(120, 285, 270, 25), lightingValues[3], -1f, 1f);
                 if (GUI.Button(new Rect(395, 280, 50, 30), lightingValues[3].ToString(), GUI.skin.label))
                 {
                     lightingValues[3] = 0;
                 }
                 // sky temperature
-                GUI.Label(new Rect(5, 310, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SKYTEMP_TEXT));
+                GUI.Label(new Rect(5, 310, 115, 30), Translations.Translate(LuminaTR.TranslationID.SKYTEMP_TEXT));
                 lightingValues[4] = GUI.HorizontalSlider(new Rect(120, 315, 270, 25), lightingValues[4], -1f, 1f);
                 if (GUI.Button(new Rect(395, 310, 50, 30), lightingValues[4].ToString(), GUI.skin.label))
                 {
                     lightingValues[4] = 0;
                 }
                 // sky tint
-                GUI.Label(new Rect(5, 340, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SKYTINT_TEXT));
+                GUI.Label(new Rect(5, 340, 115, 30), Translations.Translate(LuminaTR.TranslationID.SKYTINT_TEXT));
                 lightingValues[5] = GUI.HorizontalSlider(new Rect(120, 345, 270, 25), lightingValues[5], -1f, 1f);
                 if (GUI.Button(new Rect(395, 340, 50, 30), lightingValues[5].ToString(), GUI.skin.label))
                 {
                     lightingValues[5] = 0;
                 }
                 // moon temperature
-                GUI.Label(new Rect(5, 370, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONTEMP_TEXT));
+                GUI.Label(new Rect(5, 370, 115, 30), Translations.Translate(LuminaTR.TranslationID.MOONTEMP_TEXT));
                 lightingValues[6] = GUI.HorizontalSlider(new Rect(120, 375, 270, 25), lightingValues[6], -1f, 1f);
                 if (GUI.Button(new Rect(395, 370, 50, 30), lightingValues[6].ToString(), GUI.skin.label))
                 {
                     lightingValues[6] = 0;
                 }
                 // moon tint
-                GUI.Label(new Rect(5, 400, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONTINT_TEXT));
+                GUI.Label(new Rect(5, 400, 115, 30), Translations.Translate(LuminaTR.TranslationID.MOONTINT_TEXT));
                 lightingValues[7] = GUI.HorizontalSlider(new Rect(120, 405, 270, 25), lightingValues[7], -1f, 1f);
                 if (GUI.Button(new Rect(395, 400, 50, 30), lightingValues[7].ToString(), GUI.skin.label))
                 {
                     lightingValues[7] = 0;
                 }
                 // moonlight
-                GUI.Label(new Rect(5, 430, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.MOONLIGHT_TEXT));
+                GUI.Label(new Rect(5, 430, 115, 30), Translations.Translate(LuminaTR.TranslationID.MOONLIGHT_TEXT));
                 lightingValues[8] = GUI.HorizontalSlider(new Rect(120, 435, 270, 25), lightingValues[8], -1f, 1f);
                 if (GUI.Button(new Rect(395, 430, 50, 30), lightingValues[8].ToString(), GUI.skin.label))
                 {
                     lightingValues[8] = 0;
                 }
                 // Twilight tint
-                GUI.Label(new Rect(5, 460, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.TWILIGHTTINT_TEXT));
+                GUI.Label(new Rect(5, 460, 115, 30), Translations.Translate(LuminaTR.TranslationID.TWILIGHTTINT_TEXT));
                 lightingValues[9] = GUI.HorizontalSlider(new Rect(120, 465, 270, 25), lightingValues[9], -1f, 1f);
                 if (GUI.Button(new Rect(395, 460, 50, 30), lightingValues[9].ToString(), GUI.skin.label))
                 {
                     lightingValues[9] = 0;
                 }
 
-                skyTonemappingUi = GUI.Toggle(new Rect(5, 495, 348, 28), skyTonemappingUi, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.ENABLE_SKYTONE_TEXT));
-                disableSmoothing = GUI.Toggle(new Rect(5, 523, 348, 28), disableSmoothing, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
-                forceLowBias = GUI.Toggle(new Rect(5, 551, 348, 28), forceLowBias, Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.FORCELOWBIAS_TEXT));
+                skyTonemappingUi = GUI.Toggle(new Rect(5, 495, 348, 28), skyTonemappingUi, Translations.Translate(LuminaTR.TranslationID.ENABLE_SKYTONE_TEXT));
+                disableSmoothing = GUI.Toggle(new Rect(5, 523, 348, 28), disableSmoothing, Translations.Translate(LuminaTR.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
+                forceLowBias = GUI.Toggle(new Rect(5, 551, 348, 28), forceLowBias, Translations.Translate(LuminaTR.TranslationID.FORCELOWBIAS_TEXT));
 
-                if (GUI.Button(new Rect(355, 516, 88, 28), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.RESET_TEXT)))
+                if (GUI.Button(new Rect(355, 516, 88, 28), Translations.Translate(LuminaTR.TranslationID.RESET_TEXT)))
                 {
                     AllToZero();
                 }
@@ -338,7 +338,7 @@ namespace Lumina
                 GUI.Label(new Rect(180, 60, 150, 26), "<size=14>LUT Creator</size>");
 
                 // Add the button below the label
-                if (GUI.Button(new Rect(5, 80, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.LAUNCHLUT_TEXT)))
+                if (GUI.Button(new Rect(5, 80, 115, 30), Translations.Translate(LuminaTR.TranslationID.LAUNCHLUT_TEXT)))
                 {
                     string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
                     Process.Start(lutEditorPath);
@@ -348,14 +348,14 @@ namespace Lumina
             {
                 // VISUALISM WINDOW MODE
                 GUI.skin.label.fontSize = 14;
-                GUI.Label(new Rect(180, 60, 150, 26), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.VISUALISM_MOD_NAME));
+                GUI.Label(new Rect(180, 60, 150, 26), Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME));
 
                 // Adjust game shadows with sliders
-                GUI.Label(new Rect(5, 90, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SHADOWINT_TEXT));
+                GUI.Label(new Rect(5, 90, 115, 30), Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT));
                 shadowIntensity = GUI.HorizontalSlider(new Rect(120, 95, 270, 25), shadowIntensity, -1f, 3f);
                 GUI.Label(new Rect(395, 90, 50, 30), shadowIntensity.ToString(), GUI.skin.label);
 
-                GUI.Label(new Rect(5, 150, 115, 30), Translation.Instance.GetTranslation(LuminaTR.Locale.TranslationID.SHADOWBIAS_TEXT));
+                GUI.Label(new Rect(5, 150, 115, 30), Translations.Translate(LuminaTR.TranslationID.SHADOWBIAS_TEXT));
                 shadowBias = GUI.HorizontalSlider(new Rect(120, 155, 270, 25), shadowBias, -1f, 3f);
                 GUI.Label(new Rect(395, 150, 50, 30), shadowBias.ToString(), GUI.skin.label);
 

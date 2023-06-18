@@ -1,0 +1,36 @@
+LANGUAGE,Español
+MOD_DESCRIPTION,Iluminación optimizada y ajuste adaptable de tonos.
+MOD_NAME,Lumina
+CLOSE_TEXT,Cerrar
+EXPOSURECONTROL_TEXT,Control de exposición
+LUMINOSITY_TEXT,Luminosidad
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Radiación
+LIGHTING_TEXT,Iluminación
+HUE_TEXT,Matiz
+TINT_TEXT,Tono
+LIGHTNESS_MOD_NAME,Luminosidad
+STYLES_MOD_NAME,Estilos
+COLOR_CORRECTION_MOD_NAME,Corrección de color
+VISUALISM_MOD_NAME,Visualismo
+SUNTEMP_TEXT,Temperatura del sol
+SUNTINT_TEXT,Tono del sol
+SKYTEMP_TEXT,Temperatura del cielo
+SKYTINT_TEXT,Tono del cielo
+MOONTEMP_TEXT,Temperatura de la luna
+MOONTINT_TEXT,Tono de la luna
+MOONLIGHT_TEXT,Luz de la luna
+TWILIGHTTINT_TEXT,Tono del crepúsculo
+ENABLE_SKYTONE_TEXT,Activar mapeo de tonos del cielo
+DISABLE_SHADOWSMOOTH_TEXT,Desactivar suavizado de sombras
+FORCELOWBIAS_TEXT,Forzar desplazamiento mínimo de sombras
+RESET_TEXT,Restablecer todo
+LOAD_TEXT,Cargar
+DELETE_TEXT,Eliminar
+WORKSHOP_TEXT,Workshop
+NOstyle_TEXT,¡No se encontró el estilo Lumina!
+RELOADstyle_TEXT,Recargar lista de estilos
+OPENLOCALFOLDER_TEXT,Abrir carpeta local de estilos
+LAUNCHLUT_TEXT,Abrir editor LUT
+SHADOWINT_TEXT,Intensidad de sombras
+SHADOWBIAS_TEXT,Desplazamiento de sombras

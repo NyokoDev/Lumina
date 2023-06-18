@@ -1,0 +1,36 @@
+LANGUAGE,Deutsch
+MOD_DESCRIPTION,Optimiertes und anpassbares Beleuchtungs- und Tonanpassungssystem.
+MOD_NAME,Lumina
+CLOSE_TEXT,Schließen
+EXPOSURECONTROL_TEXT,Belichtungssteuerung
+LUMINOSITY_TEXT,Helligkeit
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Strahlung
+LIGHTING_TEXT,Beleuchtung
+HUE_TEXT,Farbton
+TINT_TEXT,Tönung
+LIGHTNESS_MOD_NAME,Helligkeit
+STYLES_MOD_NAME,Stile
+COLOR_CORRECTION_MOD_NAME,Farbkorrektur
+VISUALISM_MOD_NAME,Visualismus
+SUNTEMP_TEXT,Sonnenfarbtemperatur
+SUNTINT_TEXT,Sonnen-Tönung
+SKYTEMP_TEXT,Himmelsfarbtemperatur
+SKYTINT_TEXT,Himmelstönung
+MOONTEMP_TEXT,Mondfarbtemperatur
+MOONTINT_TEXT,Mondtönung
+MOONLIGHT_TEXT,Mondlicht
+TWILIGHTTINT_TEXT,Dämmerungstönung
+ENABLE_SKYTONE_TEXT,Himmels-Tonemapping aktivieren
+DISABLE_SHADOWSMOOTH_TEXT,Schattenweichzeichnung deaktivieren
+FORCELOWBIAS_TEXT,Minimale Schattenverschiebung erzwingen
+RESET_TEXT,Alles zurücksetzen
+LOAD_TEXT,Laden
+DELETE_TEXT,Löschen
+WORKSHOP_TEXT,Workshop
+NOstyle_TEXT,Lumina-Stil nicht gefunden!
+RELOADstyle_TEXT,Stilliste neu laden
+OPENLOCALFOLDER_TEXT,Lokalen Stilordner öffnen
+LAUNCHLUT_TEXT,LUT-Editor starten
+SHADOWINT_TEXT,Schattenintensität
+SHADOWBIAS_TEXT,Schattenverschiebung

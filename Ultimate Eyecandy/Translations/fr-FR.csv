@@ -1,0 +1,36 @@
+LANGUAGE,Français
+MOD_DESCRIPTION,Éclairage optimisé et ajustement de tonalité adaptable.
+MOD_NAME,Lumina
+CLOSE_TEXT,Fermer
+EXPOSURECONTROL_TEXT,Contrôle d'exposition
+LUMINOSITY_TEXT,Luminosité
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Radiance
+LIGHTING_TEXT,Éclairage
+HUE_TEXT,Teinte
+TINT_TEXT,Tonalité
+LIGHTNESS_MOD_NAME,Luminosité
+STYLES_MOD_NAME,styles
+COLOR_CORRECTION_MOD_NAME,Correction des couleurs
+VISUALISM_MOD_NAME,Visualisme
+SUNTEMP_TEXT,Température du soleil
+SUNTINT_TEXT,Teinte du soleil
+SKYTEMP_TEXT,Température du ciel
+SKYTINT_TEXT,Teinte du ciel
+MOONTEMP_TEXT,Température de la lune
+MOONTINT_TEXT,Teinte de la lune
+MOONLIGHT_TEXT,Lumière de la lune
+TWILIGHTTINT_TEXT,Teinte du crépuscule
+ENABLE_SKYTONE_TEXT,Activer la tonalité du ciel
+DISABLE_SHADOWSMOOTH_TEXT,Désactiver le lissage des ombres
+FORCELOWBIAS_TEXT,Forcer un décalage minimal des ombres
+RESET_TEXT,Réinitialiser tout
+LOAD_TEXT,Charger
+DELETE_TEXT,Supprimer
+WORKSHOP_TEXT,Atelier
+NOstyle_TEXT,style Lumina introuvable !
+RELOADstyle_TEXT,Recharger la liste des styles
+OPENLOCALFOLDER_TEXT,Ouvrir le dossier local des styles
+LAUNCHLUT_TEXT,Lancer l'éditeur LUT
+SHADOWINT_TEXT,Intensité des ombres
+SHADOWBIAS_TEXT,Décalage des ombres

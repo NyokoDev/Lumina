@@ -1,0 +1,36 @@
+LANGUAGE,Polski
+MOD_DESCRIPTION,Optymalne i dostosowalne oświetlenie oraz regulacja tonów.
+MOD_NAME,Lumina
+CLOSE_TEXT,Zamknij
+EXPOSURECONTROL_TEXT,Kontrola ekspozycji
+LUMINOSITY_TEXT,Jasność
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Promienność
+LIGHTING_TEXT,Oświetlenie
+HUE_TEXT,Barwa
+TINT_TEXT,Odcień
+LIGHTNESS_MOD_NAME,Jasność
+STYLES_MOD_NAME,style
+COLOR_CORRECTION_MOD_NAME,Korekcja kolorów
+VISUALISM_MOD_NAME,Wizualizm
+SUNTEMP_TEXT,Temperatura Słońca
+SUNTINT_TEXT,Odcień Słońca
+SKYTEMP_TEXT,Temperatura nieba
+SKYTINT_TEXT,Odcień nieba
+MOONTEMP_TEXT,Temperatura Księżyca
+MOONTINT_TEXT,Odcień Księżyca
+MOONLIGHT_TEXT,Światło Księżyca
+TWILIGHTTINT_TEXT,Odcień zmierzchu
+ENABLE_SKYTONE_TEXT,Włącz mapowanie tonów nieba
+DISABLE_SHADOWSMOOTH_TEXT,Wyłącz wygładzanie cieni
+FORCELOWBIAS_TEXT,Wymuś minimalne przesunięcie cieni
+RESET_TEXT,Zresetuj wszystko
+LOAD_TEXT,Wczytaj
+DELETE_TEXT,Usuń
+WORKSHOP_TEXT,Warsztat
+NOstyle_TEXT,Nie znaleziono stylu Lumina!
+RELOADstyle_TEXT,Przeładuj listę stylów
+OPENLOCALFOLDER_TEXT,Otwórz lokalny folder ze stylami
+LAUNCHLUT_TEXT,Uruchom edytor LUT
+SHADOWINT_TEXT,Intensywność cieni
+SHADOWBIAS_TEXT,Przesunięcie cieni

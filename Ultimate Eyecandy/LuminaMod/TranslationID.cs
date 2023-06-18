@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace LuminaTR.Locale
+namespace LuminaTR
 {
     public static class TranslationID
     {
