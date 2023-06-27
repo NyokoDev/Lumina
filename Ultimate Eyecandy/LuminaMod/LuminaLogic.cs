@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using AlgernonCommons.Translation;
+using AlgernonCommons.UI;
 using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
@@ -29,14 +30,18 @@ namespace Lumina
         public bool skyTonemappingUi, oldSkyTonemappingUi;
 
         // shadows values
-        public bool disableSmoothing, oldDisableSmoothing;
+        public static bool disableSmoothing, oldDisableSmoothing;
         public static bool forceLowBias, oldForceLowBias;
 
         public string CachePath = DataLocation.localApplicationData + "\\LuminaCache.light";
 
 
         private bool _showUI = false;
-        private UUICustomButton _uuiButton;
+        private static UUICustomButton _uuiButton;
+
+        public static UUICustomButton UUIButton => _uuiButton;
+
+        public static LuminaLogic instance;
 
         /// <summary>
         /// Gets or sets a value indicating whether the UI should be shown.  Invoked only from main thread.
@@ -76,6 +81,8 @@ namespace Lumina
 
         public override void Start()
         {
+            instance = this;
+
             base.Start();
             backgroundSprite = "MenuPanelInfo";
             canFocus = true;
@@ -91,7 +98,18 @@ namespace Lumina
                 groupName: null, // default group
                 tooltip: Translations.Translate("MOD_NAME"),
                 icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<LuminaMod>("Resources", "UUI.png")),
-                onToggle: (value) => ShowUI = value,
+                onToggle: (value) =>
+                {
+                    if (value)
+                    {
+                        StandalonePanelManager<LuminaPanel>.Create();
+                    }
+                    else
+                    {
+                        StandalonePanelManager<LuminaPanel>.Panel?.Close();
+                    }
+                    ShowUI = value;
+                    },
                 hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleKey }) ;
 
 
@@ -126,6 +144,7 @@ namespace Lumina
 
         protected void OnGUI()
         {
+            return;
             if (ShowUI)
             {
                 windowRect = GUI.Window(GetHashCode(), windowRect, DrawWindow, "Lumina");
@@ -363,7 +382,7 @@ namespace Lumina
             }
         }
 
-        void UpdateShadowSettings()
+        public static void UpdateShadowSettings()
         {
             if (directionalLight != null)
             {
@@ -374,7 +393,7 @@ namespace Lumina
             }
         }
 
-        private void CreateSourceCode(string mixModSourceDir, string mixNameTypeSafe, string mixName)
+        public void CreateSourceCode(string mixModSourceDir, string mixNameTypeSafe, string mixName)
         {
             var sb = new StringBuilder();
             if (!Directory.Exists(mixModSourceDir))
@@ -426,11 +445,11 @@ namespace Lumina
 
 
 
-        public Light directionalLight;
+        public static Light directionalLight;
         [Range(-1f, 3f)]
-        public float shadowIntensity = 1f;
+        public static float shadowIntensity = 1f;
         [Range(-1f, 3f)]
-        public float shadowBias = 1f;
+        public static float shadowBias = 1f;
 
 
 
@@ -478,7 +497,7 @@ namespace Lumina
             tw.WriteLine("skyTmpg = " + skyTonemappingUi);
             tw.Close();
         }
-        public void ApplyShadowValues()
+        public static void ApplyShadowValues()
         {
             if (disableSmoothing)
                 QualitySettings.shadows = ShadowQuality.HardOnly;

@@ -18,8 +18,8 @@ namespace Lumina
         public void Savestyle(bool addTostylesList)
         {
             GlobalVariables input = new GlobalVariables();
-            string nameTextfield = input.nameTextfield;
-            string path = DataLocation.localApplicationData + @"\Addons\Mods\" + nameTextfield;
+            //string nameTextfield = input.nameTextfield;
+            string path = DataLocation.localApplicationData + @"\Addons\Mods\" + m_styleName;
             if (!Directory.Exists(DataLocation.localApplicationData + @"\Lumina\"))
                 Directory.CreateDirectory(DataLocation.localApplicationData + @"\Lumina\");
             if (!Directory.Exists(path))

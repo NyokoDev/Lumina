@@ -35,3 +35,5 @@ OPENLOCALFOLDER_TEXT,Open Local Styles Folder
 LAUNCHLUT_TEXT,Launch LUT Editor
 SHADOWINT_TEXT,Shadow Intensity
 SHADOWBIAS_TEXT,Shadow Bias
+STYLENAME_TEXT,Style name
+SAVE_TEXT,Save style
