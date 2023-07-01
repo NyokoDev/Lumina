@@ -34,6 +34,11 @@
         }
 
         /// <summary>
+        /// Gets or sets the current Lumina loaded data reference.
+        /// </summary>
+        internal static LuminaData LoadedData { get; set; } = new LuminaData();
+
+        /// <summary>
         /// Gets or sets a value indicating whether sky tonemapping is enabled.
         /// </summary>
         internal static bool EnableSkyTonemapping { get; set; }
@@ -54,9 +59,9 @@
                 _styleList.Remove(style);
 
                 // Delete directory if it exists.
-                if (!style.FilePath.IsNullOrWhiteSpace() && File.Exists(style.FilePath))
+                if (!style.DirectoryPath.IsNullOrWhiteSpace() && File.Exists(style.DirectoryPath))
                 {
-                    Directory.Delete(Path.GetDirectoryName(style.FilePath), true);
+                    Directory.Delete(Path.GetDirectoryName(style.DirectoryPath), true);
                 }
             }
         }
@@ -66,19 +71,23 @@
         /// </summary>
         internal static void ApplySettings()
         {
-            LuminaLogic.CalculateLighting(
-                _activeSettings[(int)ValueIndex.Temperature],
-                _activeSettings[(int)ValueIndex.Tint],
-                _activeSettings[(int)ValueIndex.SunTemp],
-                _activeSettings[(int)ValueIndex.SunTint],
-                _activeSettings[(int)ValueIndex.SkyTemp],
-                _activeSettings[(int)ValueIndex.SkyTint],
-                _activeSettings[(int)ValueIndex.MoonTemp],
-                _activeSettings[(int)ValueIndex.MoonTint],
-                _activeSettings[(int)ValueIndex.MoonLight],
-                _activeSettings[(int)ValueIndex.TwilightTint]);
+            // Ensure active settings are initialized.
+            float[] activeSettings = ActiveSettings;
 
-            LuminaLogic.CalculateTonemapping(_activeSettings[(int)ValueIndex.Brightness], _activeSettings[(int)ValueIndex.Gamma], _activeSettings[(int)ValueIndex.Contrast]);
+            LuminaLogic.CalculateLighting(
+                activeSettings[(int)ValueIndex.Temperature],
+                activeSettings[(int)ValueIndex.Tint],
+                activeSettings[(int)ValueIndex.SunTemp],
+                activeSettings[(int)ValueIndex.SunTint],
+                activeSettings[(int)ValueIndex.SkyTemp],
+                activeSettings[(int)ValueIndex.SkyTint],
+                activeSettings[(int)ValueIndex.MoonTemp],
+                activeSettings[(int)ValueIndex.MoonTint],
+                activeSettings[(int)ValueIndex.MoonLight],
+                activeSettings[(int)ValueIndex.TwilightTint]);
+
+            LuminaLogic.CalculateTonemapping(activeSettings[(int)ValueIndex.Brightness], activeSettings[(int)ValueIndex.Gamma], activeSettings[(int)ValueIndex.Contrast]);
+            LuminaLogic.SkyTonemapping(EnableSkyTonemapping);
         }
 
         /// <summary>
@@ -167,7 +176,7 @@
                             skyTonemapping,
                             true)
                         {
-                            FilePath = Path.GetDirectoryName(filename),
+                            DirectoryPath = Path.GetDirectoryName(filename),
                         });
                     }
                     else

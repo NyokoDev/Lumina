@@ -5,11 +5,12 @@
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
     using UnityEngine;
+    using static LuminaStyle;
 
     /// <summary>
     /// Global mod settings.
     /// </summary>
-    [XmlRoot("ToggleEdgeScrolling")]
+    [XmlRoot("Lumina")]
     public sealed class ModSettings : SettingsXMLBase
     {
         // Settings file name.
@@ -38,6 +39,12 @@
 
             set => UUIKey.Keybinding = value;
         }
+
+        /// <summary>
+        /// Gets or sets the current Lumina lighting settings.
+        /// </summary>
+        [XmlElement("LightingSettings")]
+        public LuminaData LightingSettings { get => StyleManager.LoadedData; set => StyleManager.LoadedData = value; }
 
         /// <summary>
         /// Gets the current hotkey as a UUI UnsavedInputKey.

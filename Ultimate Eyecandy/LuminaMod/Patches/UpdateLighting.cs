@@ -8,6 +8,13 @@
     [HarmonyPatch("UpdateLighting")]
     class UpdateLighting
     {
+        private static bool s_forceLowBias = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether shadow bias should be forced to a low value.
+        /// </summary>
+        internal static bool ForceLowBias { get => s_forceLowBias; set => s_forceLowBias = value; }
+
         public static void Postfix()
         {
             RenderManager.instance.MainLight.shadowBias = GetShadowBias();
@@ -64,7 +71,7 @@
             // clamps bias to lowest and highest useful values
             var final_bias = Mathf.Clamp(Convert.ToSingle(exp_bias), 0.1f, 1f);
 
-            if (LuminaLogic.forceLowBias) return Mathf.Clamp(final_bias, 0.20f, 1f) - 0.19f;
+            if (s_forceLowBias) return Mathf.Clamp(final_bias, 0.20f, 1f) - 0.19f;
             return final_bias;
         }
     }

@@ -9,8 +9,6 @@
     /// </summary>
     public sealed class Loading : PatcherLoadingBase<OptionsPanel, PatcherBase>
     {
-        private static GameObject s_gameObject;
-
         /// <summary>
         /// Called by the game when exiting a level.
         /// </summary>
@@ -18,12 +16,8 @@
         {
             base.OnLevelUnloading();
 
-            // Destroy any existing GameObject.
-            if (GameObject.Find("Lumina") is GameObject gameObject)
-            {
-                GameObject.Destroy(gameObject);
-                s_gameObject = null;
-            }
+            // Destroy any existing Lumina logic.
+            LuminaLogic.Destroy();
         }
 
         /// <summary>
@@ -34,15 +28,8 @@
         {
             base.LoadedActions(mode);
 
-            // Destroy any existing GameObject.
-            if (GameObject.Find("Lumina") is GameObject gameObject)
-            {
-                GameObject.DestroyImmediate(gameObject);
-            }
-            
-            // Create new GameObject.
-            s_gameObject = new GameObject("Lumina");
-            s_gameObject.AddComponent<LuminaLogic>();
+            // Create logic instance.
+            LuminaLogic.OnLoad();
         }
     }
 }

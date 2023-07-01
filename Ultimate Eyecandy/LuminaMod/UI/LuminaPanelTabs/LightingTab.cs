@@ -9,8 +9,6 @@
     /// </summary>
     internal sealed class LightingTab : PanelTabBase
     {
-        // Layout constants.
-
         // Panel components.
         private UISlider _luminositySlider;
         private UISlider _gammaSlider;
@@ -39,7 +37,7 @@
             // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.LIGHTING_TEXT), tabIndex, out UIButton _);
 
-            float currentY = Margin;
+            float currentY = Margin * 2f;
 
             // Exposure control.
             UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.EXPOSURECONTROL_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
@@ -84,6 +82,7 @@
 
             // Checkboxes.
             _skyTonemappingCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.ENABLE_SKYTONE_TEXT));
+            _skyTonemappingCheck.isChecked = StyleManager.EnableSkyTonemapping;
             _skyTonemappingCheck.eventCheckChanged += (c, isChecked) =>
             {
                 StyleManager.EnableSkyTonemapping = isChecked;
@@ -91,14 +90,15 @@
             };
             currentY += CheckHeight;
             _shadowSmoothCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
+            _shadowSmoothCheck.isChecked = LuminaLogic.DisableSmoothing;
             _shadowSmoothCheck.eventCheckChanged += (c, isChecked) =>
             {
-                LuminaLogic.disableSmoothing = isChecked;
-                LuminaLogic.ApplyShadowValues();
+                LuminaLogic.DisableSmoothing = isChecked;
             };
             currentY += CheckHeight;
             _minShadOffsetCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FORCELOWBIAS_TEXT));
-            _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => LuminaLogic.forceLowBias = isChecked;
+            _minShadOffsetCheck.isChecked = Patches.UpdateLighting.ForceLowBias;
+            _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => Patches.UpdateLighting.ForceLowBias = isChecked;
         }
 
         /// <summary>
@@ -111,7 +111,8 @@
         /// <returns>New UISlider.</returns>
         private UISlider AddExposureSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
-            UISlider newSlider = AddSlider(panel, label, 1f, (int)index, ref currentY);
+            UISlider newSlider = AddSlider(panel, label, 1f, (int)index, ref currentY); ;
+            newSlider.value = StyleManager.ActiveSettings[(int)index];
             newSlider.eventValueChanged += (c, value) =>
             {
                 if (c.objectUserData is LuminaSliderData data)
@@ -136,6 +137,7 @@
         private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
             UISlider newSlider = AddSlider(panel, label, 1f, (int)index, ref currentY);
+            newSlider.value = StyleManager.ActiveSettings[(int)index];
             newSlider.eventValueChanged += (c, value) =>
             {
                 if (c.objectUserData is LuminaSliderData data)

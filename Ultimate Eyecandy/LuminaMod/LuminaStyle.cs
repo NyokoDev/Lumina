@@ -1,12 +1,18 @@
 ﻿namespace Lumina
 {
+    using System;
     using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using AlgernonCommons;
     using ColossalFramework.IO;
+    using ColossalFramework.Plugins;
+    using UnityEngine;
 
     /// <summary>
     /// Handling of styles.
     /// </summary>
-    public class LuminaStyle
+    public sealed class LuminaStyle
     {
         /// <summary>
         /// Gets or sets the style's name.
@@ -24,9 +30,9 @@
         public bool IsLocal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the style's filepath.
+        /// Gets or sets the style's directory filepath.
         /// </summary>
-        public string FilePath { get; set; }
+        public string DirectoryPath { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether sky tonemapping is enabled.
@@ -36,7 +42,7 @@
         /// <summary>
         /// Gets a filesystem-safe representation of the style name.
         /// </summary>
-        public string SanitizedFileName => StyleName.Replace(" ", "_").Replace(@"\", "").Replace("/", "").Replace("|", "").Replace("<", "").Replace(">", "").Replace("*", "").Replace(":", "").Replace("?", "").Replace("\"", "");
+        public string SanitizedFileName => Regex.Replace(StyleName, @"(@|&|'|\(|\)|<|>|#|""|\*|\s|:|\?)", "_");
 
         /// <summary>
         /// Index of values within settings array.
@@ -151,55 +157,153 @@
         /// </summary>
         public void Save()
         {
-            if (FilePath == null)
+            if (DirectoryPath == null)
             {
                 // Determine filepath.
                 string addonsPath = Path.Combine(DataLocation.localApplicationData, "Addons");
                 string localModPath = Path.Combine(addonsPath, "Mods");
 
-                // Ensure local mod directory exists.
-                if (!Directory.Exists(localModPath))
-                {
-                    Directory.CreateDirectory(localModPath);
-                }
+                // Sanitize name.
+                string sanitizedName = SanitizedFileName;
 
-                // TODO: sanitise/esacpe file name.
-                FilePath = Path.Combine(localModPath, "Lumina_ " + SanitizedFileName);
-
-                if (!Directory.Exists(FilePath))
+                try
                 {
-                    Directory.CreateDirectory(FilePath);
-                }
-                else
-                {
-                    // Delete existing light files.
-                    foreach (string file in Directory.GetFiles(FilePath, "*.light"))
+                    // Ensure local mod directory exists.
+                    if (!Directory.Exists(localModPath))
                     {
-                        File.Delete(file);
+                        Directory.CreateDirectory(localModPath);
                     }
+
+                    DirectoryPath = Path.Combine(localModPath, "Lumina_ " + sanitizedName);
+
+                    if (!Directory.Exists(DirectoryPath))
+                    {
+                        Directory.CreateDirectory(DirectoryPath);
+                    }
+                    else
+                    {
+                        // Delete existing light files.
+                        foreach (string file in Directory.GetFiles(DirectoryPath, "*.light"))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                }
+                catch (Exception e)
+                { 
+                    Logging.LogException(e, "exception with directory handling when saving Lumina style ", StyleName);
+                    return;
                 }
 
                 // Enforce local setting.
                 IsLocal = true;
 
                 // Write settings file.
-                using (TextWriter writer = new StreamWriter(Path.Combine(FilePath, SanitizedFileName + ".light")))
+                try
                 {
-                    writer.Write("name = ");
-                    writer.WriteLine(StyleName);
-
-                    // Serialize array values.
-                    for (int i = 0; i < LightValues.Length; ++i)
+                    using (TextWriter writer = new StreamWriter(Path.Combine(DirectoryPath, SanitizedFileName + ".light")))
                     {
-                        writer.Write(i);
-                        writer.Write(" = ");
-                        writer.WriteLine(LightValues[i]);
-                    }
+                        writer.Write("name = ");
+                        writer.WriteLine(StyleName);
 
-                    writer.Write("skyTmpg = ");
-                    writer.WriteLine(EnableSkyTonemapping);
+                        // Serialize array values.
+                        for (int i = 0; i < LightValues.Length; ++i)
+                        {
+                            writer.Write(i);
+                            writer.Write(" = ");
+                            writer.WriteLine(LightValues[i]);
+                        }
+
+                        writer.Write("skyTmpg = ");
+                        writer.WriteLine(EnableSkyTonemapping);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logging.LogException(e, "exception saving lumina style", StyleName);
+                    return;
+                }
+
+                // Create dummy mod if not on mac
+
+                CreateSourceCode(sanitizedName);
+            }
+        }
+
+        /// <summary>
+        /// Creates dummy mod sourcecode for the style.
+        /// </summary>
+        /// <param name="sanitizedName">Sanitized style name.</param>
+        public void CreateSourceCode(string sanitizedName)
+        {
+            StringBuilder sourceText = new StringBuilder();
+            if (!Directory.Exists(DirectoryPath))
+            {
+                Logging.Error("attempting to create Lumina style mod whith invalid directory");
+                return;
+            }
+
+            // Create source directory.
+            string sourceDirectory = Path.Combine(DirectoryPath, "Source");
+            if (!Directory.Exists(sourceDirectory))
+            {
+                try
+                {
+                    Directory.CreateDirectory(sourceDirectory);
+                }
+                catch (Exception e)
+                {
+                    Logging.LogException(e, "exception creating source directory ", sourceDirectory, " for Lumina style ", StyleName);
+                    return;
                 }
             }
+
+            // Build source.
+            sourceText.AppendLine("using ICities;");
+            sourceText.AppendLine($"namespace {SanitizedFileName}");
+            sourceText.AppendLine("{");
+            sourceText.AppendLine($"    public class {SanitizedFileName}Mod : IUserMod");
+            sourceText.AppendLine("    {");
+            sourceText.AppendLine("        public string Name {");
+            sourceText.AppendLine("            get {");
+            sourceText.AppendLine($"                return \"{StyleName}\";");
+            sourceText.AppendLine("            }");
+            sourceText.AppendLine("        }");
+            sourceText.AppendLine("        public string Description {");
+            sourceText.AppendLine("            get {");
+            sourceText.AppendLine("                return \"Lumina Style for use with Lumina\";");
+            sourceText.AppendLine("            }");
+            sourceText.AppendLine("        }");
+            sourceText.AppendLine("    }");
+            sourceText.AppendLine("}");
+            string code = sourceText.ToString();
+
+            try
+            {
+                File.WriteAllText(Path.Combine(sourceDirectory, sanitizedName + ".cs"), code);
+            }
+            catch (Exception e)
+            {
+                Logging.LogException(e, "exception writing Lumina style source code for Lumina style ", StyleName);
+            }
+
+            // Force manual compilation of source at controlled time.
+            // Only specify ICities.dll as additional assembly to avoid 'file not found' errors with m_additionalAssembly empty strings.
+            if (Application.platform != RuntimePlatform.OSXPlayer)
+            {
+                PluginManager.CompileSourceInFolder(sourceDirectory, DirectoryPath, new string[] { typeof(ICities.IUserMod).Assembly.Location });
+            }
+
+            // Delete source once we've compiled; this prevents redundant (and error-prone) re-compiliation attempts on future game loads.
+            try
+            {
+                Directory.Delete(sourceDirectory, true);
+            }
+            catch (Exception e)
+            {
+                Logging.LogException(e, "exception deleting source code for Lumina style ", StyleName);
+            }
+
         }
     }
 }

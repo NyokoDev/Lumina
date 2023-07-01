@@ -27,18 +27,12 @@
 
             // Sliders.
             _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), ref currentY);
-            _intensitySlider.eventValueChanged += (c, value) =>
-            {
-                LuminaLogic.shadowIntensity = value;
-                LuminaLogic.UpdateShadowSettings();
-            };
+            _intensitySlider.value = LuminaLogic.ShadowIntensity;
+            _intensitySlider.eventValueChanged += (c, value) => LuminaLogic.ShadowIntensity = value;
 
             _biasSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWBIAS_TEXT), ref currentY);
-            _biasSlider.eventValueChanged += (c, value) =>
-            {
-                LuminaLogic.shadowBias = value;
-                LuminaLogic.UpdateShadowSettings();
-            };
+            _biasSlider.value = LuminaLogic.ShadowBias;
+            _biasSlider.eventValueChanged += (c, value) => LuminaLogic.ShadowBias = value;
         }
 
         /// <summary>

@@ -15,7 +15,7 @@
 
         // Layout constants - private.
         private const float TitleHeight = 40f;
-        private const float ContainerHeight = 675f;
+        private const float ContainerHeight = 680f;
 
         /// <summary>
         /// Gets the panel width.
@@ -66,7 +66,11 @@
         protected override bool PreClose()
         {
             // Deselect UUI button.
-            LuminaLogic.UUIButton.IsPressed = false;
+            LuminaLogic.Instance?.ResetButton();
+            LuminaLogic.Instance.UUIButton.IsPressed = false;
+
+            // Save settings.
+            ModSettings.Save();
 
             // Always okay to close.
             return true;
