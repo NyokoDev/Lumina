@@ -59,9 +59,9 @@
                 _styleList.Remove(style);
 
                 // Delete directory if it exists.
-                if (!style.DirectoryPath.IsNullOrWhiteSpace() && File.Exists(style.DirectoryPath))
+                if (!style.DirectoryPath.IsNullOrWhiteSpace() && Directory.Exists(style.DirectoryPath))
                 {
-                    Directory.Delete(Path.GetDirectoryName(style.DirectoryPath), true);
+                    Directory.Delete(style.DirectoryPath, true);
                 }
             }
         }

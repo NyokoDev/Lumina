@@ -42,7 +42,7 @@
         /// <summary>
         /// Gets a filesystem-safe representation of the style name.
         /// </summary>
-        public string SanitizedFileName => Regex.Replace(StyleName, @"(@|&|'|\(|\)|<|>|#|""|\*|\s|:|\?|\|)", "_");
+        public string SanitizedFileName => Regex.Replace(StyleName, @"(@|&|'|\(|\)|<|>|#|""|\*|\s|:|\?|\||\$|%)", "_");
 
         /// <summary>
         /// Index of values within settings array.
