@@ -7,6 +7,7 @@
     using AlgernonCommons;
     using ColossalFramework;
     using ColossalFramework.IO;
+    using ColossalFramework.PlatformServices;
     using static LuminaStyle;
 
     /// <summary>
@@ -109,14 +110,36 @@
             }
 
             // Dictionary for parsed values.
-            Dictionary<int, float> fileData = new Dictionary<int, float>();
+            Dictionary<int, float> fileDict = new Dictionary<int, float>();
 
+            // Local styles.
+            ReadStyles(localModPath, true, fileDict);
+
+            // Workshop styles.
+            foreach (PublishedFileId fileId in PlatformService.workshop.GetSubscribedItems())
+            {
+                string itemPath = PlatformService.workshop.GetSubscribedItemPath(fileId);
+                if (!itemPath.IsNullOrWhiteSpace() && Directory.Exists(itemPath))
+                {
+                    ReadStyles(itemPath, false, fileDict);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads Lumina styles from the given location.
+        /// </summary>
+        /// <param name="filePath">Location to search.</param>
+        /// <param name="isLocal">A value indicating whether the location is local (permitting style updates or deletions).</param>
+        /// <param name="fileDict">Dictionary to use for file contents.</param>
+        private static void ReadStyles(string filePath, bool isLocal, Dictionary<int, float> fileDict)
+        {
             // Iterate through each directory.
-            foreach (string filename in Directory.GetFiles(localModPath, "*.light", SearchOption.AllDirectories))
+            foreach (string filename in Directory.GetFiles(filePath, "*.light", SearchOption.AllDirectories))
             {
                 Logging.Message("parsing lighting file ", filename);
 
-                fileData.Clear();
+                fileDict.Clear();
                 bool skyTonemapping = true;
                 string styleName = null;
 
@@ -142,7 +165,7 @@
                             {
                                 if (float.TryParse(lineSplit[1], out float value))
                                 {
-                                    fileData[index] = value;
+                                    fileDict[index] = value;
                                 }
                             }
                         }
@@ -160,19 +183,19 @@
                         Logging.Message("adding style ", styleName);
                         _styleList.Add(new LuminaStyle(
                             styleName,
-                            fileData[(int)ValueIndex.Temperature],
-                            fileData[(int)ValueIndex.Tint],
-                            fileData[(int)ValueIndex.SunTemp],
-                            fileData[(int)ValueIndex.SunTint],
-                            fileData[(int)ValueIndex.SkyTemp],
-                            fileData[(int)ValueIndex.SkyTint],
-                            fileData[(int)ValueIndex.MoonTemp],
-                            fileData[(int)ValueIndex.MoonTint],
-                            fileData[(int)ValueIndex.MoonLight],
-                            fileData[(int)ValueIndex.TwilightTint],
-                            fileData[(int)ValueIndex.Brightness],
-                            fileData[(int)ValueIndex.Gamma],
-                            fileData[(int)ValueIndex.Contrast],
+                            fileDict[(int)ValueIndex.Temperature],
+                            fileDict[(int)ValueIndex.Tint],
+                            fileDict[(int)ValueIndex.SunTemp],
+                            fileDict[(int)ValueIndex.SunTint],
+                            fileDict[(int)ValueIndex.SkyTemp],
+                            fileDict[(int)ValueIndex.SkyTint],
+                            fileDict[(int)ValueIndex.MoonTemp],
+                            fileDict[(int)ValueIndex.MoonTint],
+                            fileDict[(int)ValueIndex.MoonLight],
+                            fileDict[(int)ValueIndex.TwilightTint],
+                            fileDict[(int)ValueIndex.Brightness],
+                            fileDict[(int)ValueIndex.Gamma],
+                            fileDict[(int)ValueIndex.Contrast],
                             skyTonemapping,
                             true)
                         {
