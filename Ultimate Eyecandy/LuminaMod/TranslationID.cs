@@ -43,10 +43,15 @@ namespace LuminaTR
 
         public const string SHADOWINT_TEXT = "SHADOWINT_TEXT"; // Shadow Intensity
         public const string SHADOWBIAS_TEXT = "SHADOWBIAS_TEXT"; // Shadow Bias
-        public const string CLASSICFOG_TEXT = "CLASSICFOG_TEXT"; // Shadow Bias
-        public const string FOGINTENSITY_TEXT = "FOGINTENSITY_TEXT"; // Shadow Bias
+        public const string CLASSICFOG_TEXT = "CLASSICFOG_TEXT"; // Classic Fog
+        public const string FOGINTENSITY_TEXT = "FOGINTENSITY_TEXT"; // Fog Intensity
+        public const string NOTIFICATION = "NOTIFICATION"; // Test
+        public const string LIGHTCOMP_TEXT = "LIGHTCOMP_TEXT";
+        public const string STYLENAME_TEXT = "STYLENAME_TEXT";
+        public const string SAVE_TEXT = "SAVE_TEXT";
+        public const string MOD_CAUSE_TEXT = "MOD_CAUSE_TEXT";
 
-
-
+        public const string VISUALISMCOMP_TEXT = "VISUALISMCOMP_TEXT";
+        public const string VISUALISM_CAUSE_TEXT = "VISUALISM_CAUSE_TEXT";
     }
 }

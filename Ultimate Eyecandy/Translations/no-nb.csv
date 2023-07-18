@@ -1,0 +1,40 @@
+LANGUAGE,Forenklet kinesisk
+MOD_DESCRIPTION,Optimalisert belysning og justering av tone.
+MOD_NAME,Lumina
+HOTKEY,"Sett hurtigtast"
+CLOSE_TEXT,Lukk
+EXPOSURECONTROL_TEXT,Eksponeringskontroll
+LUMINOSITY_TEXT,Lysstyrke
+GAMMA_TEXT,Gamma
+RADIANCE_TEXT,Kontrast
+LIGHTING_TEXT,Belysning
+HUE_TEXT,Fargetone
+TINT_TEXT,Fargetone
+STYLES_MOD_NAME,Stiler
+COLOR_CORRECTION_MOD_NAME,Fargekorreksjon
+VISUALISM_MOD_NAME,Visuell effekt
+SUNTEMP_TEXT,Soltemperatur
+SUNTINT_TEXT,Solfargetone
+SKYTEMP_TEXT,Himmeltemperatur
+SKYTINT_TEXT,Himmelfargetone
+MOONTEMP_TEXT,Månetemperatur
+MOONTINT_TEXT,Månefargetone
+MOONLIGHT_TEXT,Måneskinn
+TWILIGHTTINT_TEXT,Twilight-fargetone
+ENABLE_SKYTONE_TEXT,Aktiver himmeltonemapping
+DISABLE_SHADOWSMOOTH_TEXT,Deaktiver skyggeutjevning
+FORCELOWBIAS_TEXT,Tving minimal skyggeforskyvning
+RESET_TEXT,Tilbakestill alt
+LOAD_TEXT,Last inn
+DELETE_TEXT,Slett
+WORKSHOP_TEXT,Verksted
+NOstyle_TEXT,Fant ikke Lumina-stilen!
+RELOADstyle_TEXT,Last inn stilleliste på nytt
+OPENLOCALFOLDER_TEXT,Åpne lokal stilmappe
+LAUNCHLUT_TEXT,Start LUT-redigerer
+SHADOWINT_TEXT,Skyggeintensitet
+SHADOWBIAS_TEXT,Skyggeforskyvningsmultiplikator
+CLASSICFOG_TEXT,Klassisk tåke
+FOGINTENSITY_TEXT,Tåkeintensitet
+LIGHTCOMP_TEXT,Funksjoner er deaktivert fordi Render It!, Relight, Softer Shadows eller Daylight Classic er oppdaget.
+SAVE_TEXT,Lagre

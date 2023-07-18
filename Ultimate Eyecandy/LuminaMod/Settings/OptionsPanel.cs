@@ -36,6 +36,8 @@
             // Hotkey control.
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
+
+         
         }
 
         /// <summary>

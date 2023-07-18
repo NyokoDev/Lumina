@@ -1,36 +1,40 @@
 LANGUAGE,Français
-MOD_DESCRIPTION,Éclairage optimisé et ajustement de tonalité adaptable.
+MOD_DESCRIPTION,Éclairage optimisé et ajustement adaptable des tons.
 MOD_NAME,Lumina
+HOTKEY,"Définir une touche de raccourci"
 CLOSE_TEXT,Fermer
 EXPOSURECONTROL_TEXT,Contrôle d'exposition
 LUMINOSITY_TEXT,Luminosité
 GAMMA_TEXT,Gamma
-RADIANCE_TEXT,Radiance
+RADIANCE_TEXT,Contraste
 LIGHTING_TEXT,Éclairage
-HUE_TEXT,Teinte
-TINT_TEXT,Tonalité
-LIGHTNESS_MOD_NAME,Luminosité
-STYLES_MOD_NAME,styles
+HUE_TEXT,Tonalité
+TINT_TEXT,Teinte
+STYLES_MOD_NAME,Styles
 COLOR_CORRECTION_MOD_NAME,Correction des couleurs
 VISUALISM_MOD_NAME,Visualisme
-SUNTEMP_TEXT,Température du soleil
+SUNTEMP_TEXT,Temperature du soleil
 SUNTINT_TEXT,Teinte du soleil
-SKYTEMP_TEXT,Température du ciel
+SKYTEMP_TEXT,Temperature du ciel
 SKYTINT_TEXT,Teinte du ciel
-MOONTEMP_TEXT,Température de la lune
+MOONTEMP_TEXT,Temperature de la lune
 MOONTINT_TEXT,Teinte de la lune
 MOONLIGHT_TEXT,Lumière de la lune
 TWILIGHTTINT_TEXT,Teinte du crépuscule
-ENABLE_SKYTONE_TEXT,Activer la tonalité du ciel
-DISABLE_SHADOWSMOOTH_TEXT,Désactiver le lissage des ombres
-FORCELOWBIAS_TEXT,Forcer un décalage minimal des ombres
+ENABLE_SKYTONE_TEXT,Activer le mappage tonal du ciel
+DISABLE_SHADOWSMOOTH_TEXT,Désactiver l'adoucissement des ombres
+FORCELOWBIAS_TEXT,Forcer le décalage minimal des ombres
 RESET_TEXT,Réinitialiser tout
 LOAD_TEXT,Charger
 DELETE_TEXT,Supprimer
 WORKSHOP_TEXT,Atelier
-NOstyle_TEXT,style Lumina introuvable !
+NOstyle_TEXT,Style Lumina introuvable !
 RELOADstyle_TEXT,Recharger la liste des styles
-OPENLOCALFOLDER_TEXT,Ouvrir le dossier local des styles
-LAUNCHLUT_TEXT,Lancer l'éditeur LUT
+OPENLOCALFOLDER_TEXT,Ouvrir le dossier des styles locaux
+LAUNCHLUT_TEXT,Ouvrir l'éditeur LUT
 SHADOWINT_TEXT,Intensité des ombres
-SHADOWBIAS_TEXT,Décalage des ombres
+SHADOWBIAS_TEXT,Multiplicateur de décalage des ombres
+CLASSICFOG_TEXT,Brouillard classique
+FOGINTENSITY_TEXT,Intensité du brouillard
+LIGHTCOMP_TEXT,Les fonctions ont été désactivées car Render It!, Relight, Softer Shadows ou Daylight Classic ont été détectés.
+SAVE_TEXT,Enregistrer

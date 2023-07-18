@@ -1,36 +1,40 @@
-LANGUAGE,Português (Brasil)
-MOD_DESCRIPTION,Iluminação otimizada e ajuste de tons adaptável.
+LANGUAGE,Português
+MOD_DESCRIPTION,Iluminação otimizada e ajuste adaptável de tonalidade.
 MOD_NAME,Lumina
+HOTKEY,"Definir tecla de atalho"
 CLOSE_TEXT,Fechar
-EXPOSURECONTROL_TEXT,Controle de Exposição
+EXPOSURECONTROL_TEXT,Controle de exposição
 LUMINOSITY_TEXT,Luminosidade
 GAMMA_TEXT,Gama
-RADIANCE_TEXT,Radiância
+RADIANCE_TEXT,Contraste
 LIGHTING_TEXT,Iluminação
-HUE_TEXT,Matiz
+HUE_TEXT,Tonalidade
 TINT_TEXT,Tonalidade
-LIGHTNESS_MOD_NAME,Luminosidade
 STYLES_MOD_NAME,Estilos
-COLOR_CORRECTION_MOD_NAME,Correção de Cor
+COLOR_CORRECTION_MOD_NAME,Correção de cor
 VISUALISM_MOD_NAME,Visualismo
-SUNTEMP_TEXT,Temperatura do Sol
-SUNTINT_TEXT,Matiz do Sol
-SKYTEMP_TEXT,Temperatura do Céu
-SKYTINT_TEXT,Matiz do Céu
-MOONTEMP_TEXT,Temperatura da Lua
-MOONTINT_TEXT,Matiz da Lua
-MOONLIGHT_TEXT,Luz da Lua
-TWILIGHTTINT_TEXT,Matiz do Crepúsculo
-ENABLE_SKYTONE_TEXT,Habilitar Mapeamento de Tonalidade do Céu
-DISABLE_SHADOWSMOOTH_TEXT,Desativar Suavização de Sombras
-FORCELOWBIAS_TEXT,Forçar Deslocamento Mínimo das Sombras
-RESET_TEXT,Redefinir Tudo
+SUNTEMP_TEXT,Temperatura do sol
+SUNTINT_TEXT,Tonalidade do sol
+SKYTEMP_TEXT,Temperatura do céu
+SKYTINT_TEXT,Tonalidade do céu
+MOONTEMP_TEXT,Temperatura da lua
+MOONTINT_TEXT,Tonalidade da lua
+MOONLIGHT_TEXT,Luz da lua
+TWILIGHTTINT_TEXT,Tonalidade do crepúsculo
+ENABLE_SKYTONE_TEXT,Habilitar mapeamento de tom do céu
+DISABLE_SHADOWSMOOTH_TEXT,Desativar suavização de sombras
+FORCELOWBIAS_TEXT,Forçar deslocamento mínimo de sombras
+RESET_TEXT,Resetar tudo
 LOAD_TEXT,Carregar
 DELETE_TEXT,Excluir
 WORKSHOP_TEXT,Oficina
 NOstyle_TEXT,Estilo Lumina não encontrado!
-RELOADstyle_TEXT,Recarregar Lista de Estilos
-OPENLOCALFOLDER_TEXT,Abrir Pasta Local de Estilos
-LAUNCHLUT_TEXT,Iniciar Editor de LUT
-SHADOWINT_TEXT,Intensidade das Sombras
-SHADOWBIAS_TEXT,Viés das Sombras
+RELOADstyle_TEXT,Recarregar lista de estilos
+OPENLOCALFOLDER_TEXT,Abrir pasta local de estilos
+LAUNCHLUT_TEXT,Abrir editor LUT
+SHADOWINT_TEXT,Intensidade das sombras
+SHADOWBIAS_TEXT,Multiplicador de deslocamento das sombras
+CLASSICFOG_TEXT,Névoa clássica
+FOGINTENSITY_TEXT,Intensidade da névoa
+LIGHTCOMP_TEXT,As funções foram desativadas porque Render It!, Relight, Softer Shadows ou Daylight Classic foram detectados.
+SAVE_TEXT,Salvar

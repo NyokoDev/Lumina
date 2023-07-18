@@ -36,3 +36,9 @@ SHADOWINT_TEXT,Shadow intensity
 SHADOWBIAS_TEXT,Shadow bias multiplier
 CLASSICFOG_TEXT,Classic fog
 FOGINTENSITY_TEXT,Fog intensity
+LIGHTCOMP_TEXT,Disabled functions due to overlapping mods.
+MOD_CAUSE_TEXT,Render It/Daylight Classic/Relight were detected.
+SAVE_TEXT,Save
+STYLENAME_TEXT,Style Name
+VISUALISMCOMP_TEXT,Shadow and Fog Settings have been disabled.
+VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller have been detected.

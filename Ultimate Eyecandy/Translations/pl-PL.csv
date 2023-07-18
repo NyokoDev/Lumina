@@ -1,36 +1,40 @@
 LANGUAGE,Polski
-MOD_DESCRIPTION,Optymalne i dostosowalne oświetlenie oraz regulacja tonów.
+MOD_DESCRIPTION,Optymalne oświetlenie i dostosowywanie tonacji.
 MOD_NAME,Lumina
+HOTKEY,"Ustaw skrót klawiszowy"
 CLOSE_TEXT,Zamknij
 EXPOSURECONTROL_TEXT,Kontrola ekspozycji
 LUMINOSITY_TEXT,Jasność
 GAMMA_TEXT,Gamma
-RADIANCE_TEXT,Promienność
+RADIANCE_TEXT,Kontrast
 LIGHTING_TEXT,Oświetlenie
-HUE_TEXT,Barwa
+HUE_TEXT,Odcień
 TINT_TEXT,Odcień
-LIGHTNESS_MOD_NAME,Jasność
-STYLES_MOD_NAME,style
+STYLES_MOD_NAME,Style
 COLOR_CORRECTION_MOD_NAME,Korekcja kolorów
 VISUALISM_MOD_NAME,Wizualizm
-SUNTEMP_TEXT,Temperatura Słońca
-SUNTINT_TEXT,Odcień Słońca
+SUNTEMP_TEXT,Temperatura słońca
+SUNTINT_TEXT,Odcień słońca
 SKYTEMP_TEXT,Temperatura nieba
 SKYTINT_TEXT,Odcień nieba
-MOONTEMP_TEXT,Temperatura Księżyca
-MOONTINT_TEXT,Odcień Księżyca
-MOONLIGHT_TEXT,Światło Księżyca
+MOONTEMP_TEXT,Temperatura księżyca
+MOONTINT_TEXT,Odcień księżyca
+MOONLIGHT_TEXT,Światło księżyca
 TWILIGHTTINT_TEXT,Odcień zmierzchu
-ENABLE_SKYTONE_TEXT,Włącz mapowanie tonów nieba
+ENABLE_SKYTONE_TEXT,Włącz tonowanie nieba
 DISABLE_SHADOWSMOOTH_TEXT,Wyłącz wygładzanie cieni
 FORCELOWBIAS_TEXT,Wymuś minimalne przesunięcie cieni
-RESET_TEXT,Zresetuj wszystko
+RESET_TEXT,Resetuj wszystko
 LOAD_TEXT,Wczytaj
 DELETE_TEXT,Usuń
 WORKSHOP_TEXT,Warsztat
 NOstyle_TEXT,Nie znaleziono stylu Lumina!
 RELOADstyle_TEXT,Przeładuj listę stylów
-OPENLOCALFOLDER_TEXT,Otwórz lokalny folder ze stylami
-LAUNCHLUT_TEXT,Uruchom edytor LUT
+OPENLOCALFOLDER_TEXT,Otwórz lokalny folder stylów
+LAUNCHLUT_TEXT,Otwórz edytor LUT
 SHADOWINT_TEXT,Intensywność cieni
-SHADOWBIAS_TEXT,Przesunięcie cieni
+SHADOWBIAS_TEXT,Mnożnik przesunięcia cieni
+CLASSICFOG_TEXT,Klasyczna mgła
+FOGINTENSITY_TEXT,Intensywność mgły
+LIGHTCOMP_TEXT,Funkcje zostały wyłączone, ponieważ wykryto Render It!, Relight, Softer Shadows lub Daylight Classic.
+SAVE_TEXT,Zapisz

@@ -96,13 +96,13 @@
             currentY += _deleteButton.height + Margin;
 
             // Theme name textfield and label.
-            UILabel nameLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("STYLENAME_TEXT"));
+            UILabel nameLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.STYLENAME_TEXT));
             currentY += nameLabel.height;
             _nameField = UITextFields.AddTextField(panel, Margin, currentY, ControlWidth);
 
             // Save theme button.
             currentY += _nameField.height + Margin;
-            _saveButton = UIButtons.AddButton(panel, Margin, currentY, Translations.Translate("SAVE_TEXT"));
+            _saveButton = UIButtons.AddButton(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.SAVE_TEXT));
             _saveButton.eventClicked += (c, p) =>
             {
                 if (!_nameField.text.IsNullOrWhiteSpace())

@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.2.2</Version>
+		<Version>1.2.3</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -30,7 +30,11 @@
 		<_Editor Include="$(ProjectDir)/LUT Editor/*.*" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Translations\" />
+	  <_Resources Remove="Resources\CompatibilityHelper.cs" />
+	  <_Resources Remove="Resources\ModUtils.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <_Translations Remove="Translations\no-nb.csv" />
 	</ItemGroup>
 	<Target Name="DeployToModDirectory" AfterTargets="Build">
 		<PropertyGroup>
