@@ -43,11 +43,12 @@
         /// </summary>
         /// <param name="panel">Parent component.</param>
         /// <param name="label">Slider text label.</param>
+        /// <param name="minValue">Slider minimum value.</param>
         /// <param name="maxValue">Slider maximum value.</param>
         /// <param name="index">Slider setting index.</param>
         /// <param name="currentY">Relative Y position reference.</param>
         /// <returns>New UISlider.</returns>
-        protected UISlider AddSlider(UIComponent panel, string label, float maxValue, int index, ref float currentY)
+        protected UISlider AddSlider(UIComponent panel, string label, float minValue, float maxValue, int index, ref float currentY)
         {
             // Title label.
             UILabel titleLabel = UILabels.AddLabel(panel, Margin, currentY, label, textScale: SliderTextScale);
@@ -57,7 +58,7 @@
 
             // Add slider.
             UISlider newSlider = UISliders.AddBudgetSlider(panel, Margin, currentY + SliderTextHeight, ControlWidth, maxValue);
-            newSlider.minValue = -1f;
+            newSlider.minValue = minValue;
             newSlider.stepSize = 0.0001f;
             newSlider.objectUserData = new LuminaSliderData
             {

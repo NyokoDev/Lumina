@@ -24,8 +24,6 @@
         private UISlider _moonLightSlider;
         private UISlider _twilightTintSlider;
         private UICheckBox _skyTonemappingCheck;
-        private UICheckBox _shadowSmoothCheck;
-        private UICheckBox _minShadOffsetCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LightingTab"/> class.
@@ -88,17 +86,6 @@
                 StyleManager.EnableSkyTonemapping = isChecked;
                 LuminaLogic.SkyTonemapping(isChecked);
             };
-            currentY += CheckHeight;
-            _shadowSmoothCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
-            _shadowSmoothCheck.isChecked = LuminaLogic.DisableSmoothing;
-            _shadowSmoothCheck.eventCheckChanged += (c, isChecked) =>
-            {
-                LuminaLogic.DisableSmoothing = isChecked;
-            };
-            currentY += CheckHeight;
-            _minShadOffsetCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FORCELOWBIAS_TEXT));
-            _minShadOffsetCheck.isChecked = Patches.UpdateLighting.ForceLowBias;
-            _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => Patches.UpdateLighting.ForceLowBias = isChecked;
         }
 
         /// <summary>
@@ -111,7 +98,7 @@
         /// <returns>New UISlider.</returns>
         private UISlider AddExposureSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
-            UISlider newSlider = AddSlider(panel, label, 1f, (int)index, ref currentY); ;
+            UISlider newSlider = AddSlider(panel, label, -1f, 1f, (int)index, ref currentY); ;
             newSlider.value = StyleManager.ActiveSettings[(int)index];
             newSlider.eventValueChanged += (c, value) =>
             {
@@ -136,7 +123,7 @@
         /// <returns>New UISlider.</returns>
         private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
-            UISlider newSlider = AddSlider(panel, label, 1f, (int)index, ref currentY);
+            UISlider newSlider = AddSlider(panel, label, -1f, 1f, (int)index, ref currentY);
             newSlider.value = StyleManager.ActiveSettings[(int)index];
             newSlider.eventValueChanged += (c, value) =>
             {

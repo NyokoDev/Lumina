@@ -9,11 +9,17 @@
     class UpdateLighting
     {
         private static bool s_forceLowBias = false;
+        private static float s_biasMult = 1.0f;
 
         /// <summary>
         /// Gets or sets a value indicating whether shadow bias should be forced to a low value.
         /// </summary>
         internal static bool ForceLowBias { get => s_forceLowBias; set => s_forceLowBias = value; }
+
+        /// <summary>
+        /// Gets or sets the shadow bias multiplier.
+        /// </summary>
+        internal static float BiasMultiplier{ get => s_biasMult; set => s_biasMult = Mathf.Clamp(value, 0f, 2f); }
 
         public static void Postfix()
         {
@@ -69,7 +75,7 @@
             var exp_bias = Math.Pow((calc_bias + 0.8f), 1.5f) - 0.8f;
 
             // clamps bias to lowest and highest useful values
-            var final_bias = Mathf.Clamp(Convert.ToSingle(exp_bias), 0.1f, 1f);
+            var final_bias = Mathf.Clamp(Convert.ToSingle(exp_bias), 0.1f, 1f) * s_biasMult;
 
             if (s_forceLowBias) return Mathf.Clamp(final_bias, 0.20f, 1f) - 0.19f;
             return final_bias;

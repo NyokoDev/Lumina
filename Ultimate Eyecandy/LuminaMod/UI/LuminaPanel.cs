@@ -15,7 +15,7 @@
 
         // Layout constants - private.
         private const float TitleHeight = 40f;
-        private const float ContainerHeight = 680f;
+        private const float ContainerHeight = 650f;
 
         /// <summary>
         /// Gets the panel width.

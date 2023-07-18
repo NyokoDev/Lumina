@@ -114,6 +114,6 @@
         /// Gets or sets shadow bias.
         /// </summary>
         [XmlElement("ShadowBias")]
-        public float ShadowBias { get => LuminaLogic.ShadowBias; set => LuminaLogic.ShadowBias = value; }
+        public float ShadowBias { get => Patches.UpdateLighting.BiasMultiplier; set => Patches.UpdateLighting.BiasMultiplier = value; }
     }
 }

@@ -12,6 +12,8 @@
         // Panel components.
         private UISlider _intensitySlider;
         private UISlider _biasSlider;
+        private UICheckBox _shadowSmoothCheck;
+        private UICheckBox _minShadOffsetCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShadowTab"/> class.
@@ -26,22 +28,27 @@
             float currentY = Margin;
 
             // Sliders.
-            _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), ref currentY);
+            _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
             _intensitySlider.value = LuminaLogic.ShadowIntensity;
             _intensitySlider.eventValueChanged += (c, value) => LuminaLogic.ShadowIntensity = value;
 
-            _biasSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWBIAS_TEXT), ref currentY);
-            _biasSlider.value = LuminaLogic.ShadowBias;
-            _biasSlider.eventValueChanged += (c, value) => LuminaLogic.ShadowBias = value;
-        }
+            _biasSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWBIAS_TEXT), 0f, 2f, -1, ref currentY);
+            _biasSlider.value = Patches.UpdateLighting.BiasMultiplier;
+            _biasSlider.eventValueChanged += (c, value) => Patches.UpdateLighting.BiasMultiplier = value;
 
-        /// <summary>
-        /// Adds a Lumina slider to the given UIComponent.
-        /// </summary>
-        /// <param name="panel">Parent component.</param>
-        /// <param name="label">Slider text label.</param>
-        /// <param name="currentY">Relative Y position reference.</param>
-        /// <returns>New UISlider.</returns>
-        private UISlider AddSlider(UIComponent panel, string label, ref float currentY) =>  AddSlider(panel, label, 3f, -1, ref currentY);
+            // Shadow checks.
+            currentY += CheckHeight;
+            _shadowSmoothCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
+            _shadowSmoothCheck.isChecked = LuminaLogic.DisableSmoothing;
+            _shadowSmoothCheck.eventCheckChanged += (c, isChecked) =>
+            {
+                LuminaLogic.DisableSmoothing = isChecked;
+            };
+
+            currentY += CheckHeight;
+            _minShadOffsetCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FORCELOWBIAS_TEXT));
+            _minShadOffsetCheck.isChecked = Patches.UpdateLighting.ForceLowBias;
+            _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => Patches.UpdateLighting.ForceLowBias = isChecked;
+        }
     }
 }

@@ -16,12 +16,9 @@ namespace Lumina
         // Shadows values.
         private static bool s_disableSmoothing;
         private static float s_shadowIntensity = 1f;
-        private static float s_shadowBias = 1f;
 
         // UUI button.
         internal UUICustomButton _uuiButton;
-
-        public static Light directionalLight;
 
         // Instance reference.
         private static LuminaLogic s_instance;
@@ -61,23 +58,7 @@ namespace Lumina
 
             set
             {
-                s_shadowIntensity = Mathf.Clamp(value, -1f, 3f);
-
-                // Update value if live.
-                s_instance?.UpdateShadowSettings();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets shadow bias.
-        /// </summary>
-        internal static float ShadowBias
-        {
-            get => s_shadowBias;
-
-            set
-            {
-                s_shadowBias = Mathf.Clamp(value, -1f, 3f);
+                s_shadowIntensity = Mathf.Clamp(value, 0f, 1f);
 
                 // Update value if live.
                 s_instance?.UpdateShadowSettings();
@@ -136,12 +117,13 @@ namespace Lumina
         /// </summary>
         private void UpdateShadowSettings()
         {
-            if (directionalLight != null)
+            if (GameObject.Find("Directional Light")?.GetComponent<Light>() is Light directionalLight)
             {
                 directionalLight.shadowStrength = s_shadowIntensity;
-                directionalLight.shadowBias = s_shadowBias;
-
-                Logging.Message("Updated shadow settings: Intensity = ", s_shadowIntensity, ", Bias = ", s_shadowBias);
+            }
+            else
+            {
+                Logging.Error("couldn't find directional light");
             }
         }
 
