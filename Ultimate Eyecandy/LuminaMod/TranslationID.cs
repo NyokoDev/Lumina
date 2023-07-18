@@ -43,6 +43,8 @@ namespace LuminaTR
 
         public const string SHADOWINT_TEXT = "SHADOWINT_TEXT"; // Shadow Intensity
         public const string SHADOWBIAS_TEXT = "SHADOWBIAS_TEXT"; // Shadow Bias
+        public const string CLASSICFOG_TEXT = "CLASSICFOG_TEXT"; // Shadow Bias
+        public const string FOGINTENSITY_TEXT = "FOGINTENSITY_TEXT"; // Shadow Bias
 
 
 

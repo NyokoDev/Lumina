@@ -65,6 +65,42 @@ namespace Lumina
             }
         }
 
+        public static float FogIntensity
+        {
+            get
+            {
+                var fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return fogProperties != null ? fogProperties.m_FogDensity : 0f;
+            }
+            internal set
+            {
+                var fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogDensity = value;
+                }
+            }
+        }
+
+
+        public static bool ClassicFogEnabled
+        {
+            get
+            {
+                var cfog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return cfog != null && cfog.enabled;
+            }
+            internal set
+            {
+                var cfog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (cfog != null)
+                {
+                    cfog.enabled = value;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Loads current settings and ensure an active instance.
         /// Must be called prior to use.
