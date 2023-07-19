@@ -6,31 +6,25 @@ using Lumina.CompChecker;
 
 namespace Lumina
 {
-    /// <summary>
-    /// Lumina panel tab for setting shadow options.
-    /// </summary>
     internal sealed class ShadowTab : PanelTabBase
     {
-        // Panel components.
         private UISlider _intensitySlider;
         private UISlider _biasSlider;
         private UICheckBox _shadowSmoothCheck;
         private UICheckBox _minShadOffsetCheck;
         private UICheckBox _fogCheckBox;
+        private UICheckBox _edgefogCheckbox;
         private UISlider _fogIntensitySlider;
         private UILabel _modlabel;
         private UILabel _modlabel2;
+        private UILabel _foglabel3;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ShadowTab"/> class.
-        /// </summary>
-        /// <param name="tabStrip">Tab strip to add to.</param>
-        /// <param name="tabIndex">Index number of tab.</param>
+        public FXAAController FXAAController;
+        public UISlider focusPlaneSlider;
+
         internal ShadowTab(UITabstrip tabStrip, int tabIndex)
         {
-            // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
-
             float currentY = Margin;
 
             if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
@@ -43,50 +37,69 @@ namespace Lumina
                 _modlabel.textAlignment = UIHorizontalAlignment.Center;
                 currentY += HeaderHeight + _modlabel.height + Margin;
             }
-
             else
             {
-                // Sliders.
+                // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
                 _intensitySlider.eventValueChanged += (c, value) => LuminaLogic.ShadowIntensity = value;
+                currentY += SliderHeight + Margin;
 
-                currentY += SliderHeight;
-
+                // Slider 2: Bias Slider
                 _biasSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWBIAS_TEXT), 0f, 2f, -1, ref currentY);
                 _biasSlider.value = Patches.UpdateLighting.BiasMultiplier;
                 _biasSlider.eventValueChanged += (c, value) => Patches.UpdateLighting.BiasMultiplier = value;
+                currentY += SliderHeight + Margin;
 
-                // Shadow checks.
-                currentY += SliderHeight;
+                // Checkbox 1: Shadow Smooth Check
                 _shadowSmoothCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DISABLE_SHADOWSMOOTH_TEXT));
                 _shadowSmoothCheck.isChecked = LuminaLogic.DisableSmoothing;
-                _shadowSmoothCheck.eventCheckChanged += (c, isChecked) =>
-                {
-                    LuminaLogic.DisableSmoothing = isChecked;
-                };
+                _shadowSmoothCheck.eventCheckChanged += (c, isChecked) => { LuminaLogic.DisableSmoothing = isChecked; };
+                currentY += CheckHeight + Margin;
 
-                currentY += CheckHeight;
+                // Checkbox 2: Min Shadow Offset Check
                 _minShadOffsetCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FORCELOWBIAS_TEXT));
                 _minShadOffsetCheck.isChecked = Patches.UpdateLighting.ForceLowBias;
-                _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => Patches.UpdateLighting.ForceLowBias = isChecked;
+                _minShadOffsetCheck.eventCheckChanged += (c, isChecked) => { Patches.UpdateLighting.ForceLowBias = isChecked; };
+                currentY += CheckHeight + Margin;
 
-                // Classic fog checkbox.
-                currentY += CheckHeight;
+                // Label: Fog Label
+                _foglabel3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FOGSETTINGS_TEXT));
+                currentY += CheckHeight + Margin;
+
+                // Checkbox 3: Classic Fog Checkbox
                 _fogCheckBox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CLASSICFOG_TEXT));
                 _fogCheckBox.isChecked = LuminaLogic.ClassicFogEnabled;
-                _fogCheckBox.eventCheckChanged += (c, isChecked) => LuminaLogic.ClassicFogEnabled = isChecked;
+                _fogCheckBox.eventCheckChanged += (c, isChecked) => { LuminaLogic.ClassicFogEnabled = isChecked; };
+                currentY += CheckHeight + Margin;
 
-                // Slider for fog intensity.
-                currentY += CheckHeight;
+                // Checkbox 4: Edge Fog Checkbox
+                _edgefogCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.EDGEFOG_TEXT));
+                _edgefogCheckbox.isChecked = LuminaLogic.EdgeFogEnabled;
+                _edgefogCheckbox.eventCheckChanged += (c, isChecked) => { LuminaLogic.EdgeFogEnabled = isChecked; };
+                currentY += CheckHeight + Margin;
+
+                // Slider 3: Fog Intensity Slider
                 _fogIntensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT), 0f, 1f, -1, ref currentY);
                 _fogIntensitySlider.value = LuminaLogic.FogIntensity;
-                _fogIntensitySlider.eventValueChanged += (c, value) => LuminaLogic.FogIntensity = value;
+                _fogIntensitySlider.eventValueChanged += (c, value) => { LuminaLogic.FogIntensity = value; };
+                _fogIntensitySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT);
+                currentY += SliderHeight + Margin;
+
+                // Reset Button
+                UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
+                resetButton.eventClicked += (c, p) =>
+                {
+                    _intensitySlider.value = 0f;
+                    _biasSlider.value = 0f;
+                    _fogIntensitySlider.value = 0f;
+
+                    _shadowSmoothCheck.isChecked = false;
+                    _minShadOffsetCheck.isChecked = false;
+                    _fogCheckBox.isChecked = false;
+                    _edgefogCheckbox.isChecked = false;
+                };
             }
         }
     }
 }
-        
-    
-
-

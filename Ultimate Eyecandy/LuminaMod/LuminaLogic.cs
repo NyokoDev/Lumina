@@ -82,6 +82,22 @@ namespace Lumina
             }
         }
 
+        public static bool EdgeFogEnabled
+        {
+            get
+            {
+                var cedge = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return cedge != null && cedge.m_edgeFog;
+            }
+            internal set
+            {
+                var cedge = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (cedge != null)
+                {
+                    cedge.m_edgeFog = value;
+                }
+            }
+        }
 
         public static bool ClassicFogEnabled
         {
@@ -96,6 +112,8 @@ namespace Lumina
                 if (cfog != null)
                 {
                     cfog.enabled = value;
+                    // Optionally, synchronize EdgeFogEnabled with ClassicFogEnabled when setting ClassicFogEnabled.
+                    EdgeFogEnabled = value;
                 }
             }
         }

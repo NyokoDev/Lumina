@@ -16,6 +16,7 @@ namespace Lumina
         /// <summary>
         /// Gets the mod's base display name (name only).
         /// </summary>
+        private FXAAController FXAAController;
         public override string BaseName => "Lumina";
 
         /// <summary>
@@ -46,8 +47,10 @@ namespace Lumina
         /// </summary>
         public override void LoadSettings()
         {
-            
+            FXAAController = new FXAAController();
 
+            // Call the Start() method on the created instance
+            FXAAController.Start();
             ModSettings.Load();
 
             // Enable detailed logging.
