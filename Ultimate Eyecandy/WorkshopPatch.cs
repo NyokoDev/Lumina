@@ -13,7 +13,7 @@ namespace Lumina.Patching
 
             if (files.Length > 0)
             {
-                tags = new[] { SteamHelper.kSteamTagColorCorrectionLUT, "Lumina Style" };
+                tags = new[] { SteamHelper.kSteamTagMod, "Lumina Style" };
             }
         }
     }

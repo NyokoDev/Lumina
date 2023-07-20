@@ -55,5 +55,7 @@ namespace LuminaTR
         public const string VISUALISM_CAUSE_TEXT = "VISUALISM_CAUSE_TEXT";
         public const string EDGEFOG_TEXT = "EDGEFOG_TEXT";
         public const string FOGSETTINGS_TEXT = "FOGSETTINGS_TEXT";
+        public const string FOGVISIBILITY_TEXT = "FOGVISIBILITY_TEXT";
+        public const string NIGHTFOG_TEXT = "NIGHTFOG_TEXT";
     }
 }

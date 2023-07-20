@@ -41,16 +41,18 @@ namespace Lumina
         /// <summary>
         /// Loads settings file.
         /// WhatsNewMessage message = new WhatsNewMessage
-        
+
 
 
         /// </summary>
         public override void LoadSettings()
         {
             FXAAController = new FXAAController();
-
+            SunShaftsCompositeRenderer SunShaftsCompositeRenderer = new SunShaftsCompositeRenderer();
             // Call the Start() method on the created instance
             FXAAController.Start();
+            SunShaftsCompositeRenderer.Start();
+
             ModSettings.Load();
 
             // Enable detailed logging.

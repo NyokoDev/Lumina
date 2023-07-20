@@ -44,3 +44,5 @@ VISUALISMCOMP_TEXT,Shadow and Fog Settings have been disabled.
 VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller have been detected.
 EDGEFOG_TEXT,Edge Fog
 FOGSETTINGS_TEXT,Fog Adjustment
+FOGVISIBILITY_TEXT,Color Decay
+NIGHTFOG_TEXT,Day/Night Fog

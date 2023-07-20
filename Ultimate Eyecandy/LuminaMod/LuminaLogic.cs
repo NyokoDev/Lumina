@@ -3,8 +3,10 @@ using System.Reflection;
 using AlgernonCommons;
 using AlgernonCommons.Translation;
 using AlgernonCommons.UI;
+using ColossalFramework.UI;
 using UnifiedUI.Helpers;
 using UnityEngine;
+using static ItemClass;
 
 namespace Lumina
 {
@@ -82,6 +84,8 @@ namespace Lumina
             }
         }
 
+
+
         public static bool EdgeFogEnabled
         {
             get
@@ -98,6 +102,51 @@ namespace Lumina
                 }
             }
         }
+
+        //Disable at Night
+
+        public static bool FogEffectEnabled
+        {
+            get
+            {
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return fogEffect != null && fogEffect.enabled;
+            }
+            set
+            {
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fogEffect != null)
+                {
+                    fogEffect.enabled = value;
+                }
+            }
+        }
+
+
+
+        //Color Decay
+        public static float ColorDecay
+        {
+            get
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_ColorDecay : 0.0f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0f, 1f);
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_ColorDecay = clampedValue;
+                }
+            }
+        }
+
+
+
+
+
 
         public static bool ClassicFogEnabled
         {

@@ -18,6 +18,12 @@ namespace Lumina
         private UILabel _modlabel;
         private UILabel _modlabel2;
         private UILabel _foglabel3;
+        private UICheckBox _nightfog;
+        private UISlider _colordecaySlider;
+        private UILabel _Effects;
+        private UISlider _sunshaftseffect;
+        public SunShaftsCompositeShaderProperties sunShaftsScript;
+
 
         public FXAAController FXAAController;
         public UISlider focusPlaneSlider;
@@ -27,6 +33,7 @@ namespace Lumina
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
             float currentY = Margin;
 
+            // Check if renderit mod or fog manipulating mods are enabled
             if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
             {
                 _modlabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.VISUALISMCOMP_TEXT));
@@ -64,7 +71,7 @@ namespace Lumina
                 currentY += CheckHeight + Margin;
 
                 // Label: Fog Label
-                _foglabel3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FOGSETTINGS_TEXT));
+                _foglabel3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.FOGSETTINGS_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += CheckHeight + Margin;
 
                 // Checkbox 3: Classic Fog Checkbox
@@ -79,6 +86,12 @@ namespace Lumina
                 _edgefogCheckbox.eventCheckChanged += (c, isChecked) => { LuminaLogic.EdgeFogEnabled = isChecked; };
                 currentY += CheckHeight + Margin;
 
+                // Checkbox 5: Disable at Night fog
+                _nightfog = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.NIGHTFOG_TEXT));
+                _nightfog.isChecked = LuminaLogic.FogEffectEnabled;
+                _nightfog.eventCheckChanged += (c, isChecked) => { LuminaLogic.FogEffectEnabled = isChecked; };
+                currentY += CheckHeight + Margin;
+
                 // Slider 3: Fog Intensity Slider
                 _fogIntensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT), 0f, 1f, -1, ref currentY);
                 _fogIntensitySlider.value = LuminaLogic.FogIntensity;
@@ -86,14 +99,29 @@ namespace Lumina
                 _fogIntensitySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT);
                 currentY += SliderHeight + Margin;
 
+             //   Slider 4 - Color Decay
+              _colordecaySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT), 0.1f, 5f, -1, ref currentY);
+               _colordecaySlider.value = LuminaLogic.ColorDecay;
+               _colordecaySlider.eventValueChanged += (c, value) => { LuminaLogic.ColorDecay = value; };
+               _colordecaySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT);
+               currentY += SliderHeight + Margin;
+
+                //SunShafts Effect
+                _sunshaftseffect = AddSlider(panel, "Sun Shafts", 0f, 1f, -1, ref currentY);
+                _sunshaftseffect.value = sunShaftsScript.blurRadius;
+                _sunshaftseffect.eventValueChanged += (c, value) => { sunShaftsScript.blurRadius = value; };
+                currentY += SliderHeight + Margin;
+
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
                 resetButton.eventClicked += (c, p) =>
                 {
-                    _intensitySlider.value = 0f;
+                    _intensitySlider.value = 1f;
                     _biasSlider.value = 0f;
                     _fogIntensitySlider.value = 0f;
-
+                    _colordecaySlider.value = 1f;
+                    _sunshaftseffect.value = 1f;
+                    _nightfog.isChecked = false;
                     _shadowSmoothCheck.isChecked = false;
                     _minShadOffsetCheck.isChecked = false;
                     _fogCheckBox.isChecked = false;
