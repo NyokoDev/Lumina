@@ -3,7 +3,7 @@
 public class SunShaftsCompositeRenderer : MonoBehaviour
 {
     public SunShaftsCompositeShaderProperties shaderProperties;
-    public string shaderPath = "PPXS/SunShaftsComposite"; // The path to the shader inside the "PPXS" folder
+    public string shaderPath = "PPXS/sunShaftsCompositeShader"; // The path to the shader inside the "PPXS" folder
 
     private Material material;
 

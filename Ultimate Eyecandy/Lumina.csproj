@@ -21,6 +21,9 @@
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
+		<Reference Include="SkyboxReplacer">
+		  <HintPath>LuminaMod\PPXS\SkyboxReplacer.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine" />
 	</ItemGroup>
 	<ItemGroup>

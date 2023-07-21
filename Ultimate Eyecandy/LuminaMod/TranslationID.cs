@@ -57,5 +57,7 @@ namespace LuminaTR
         public const string FOGSETTINGS_TEXT = "FOGSETTINGS_TEXT";
         public const string FOGVISIBILITY_TEXT = "FOGVISIBILITY_TEXT";
         public const string NIGHTFOG_TEXT = "NIGHTFOG_TEXT";
+        public const string CUBEMAP_TEXT = "CUBEMAP_TEXT";
+
     }
 }

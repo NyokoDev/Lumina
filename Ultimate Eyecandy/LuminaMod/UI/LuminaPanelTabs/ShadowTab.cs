@@ -2,7 +2,14 @@
 using AlgernonCommons.UI;
 using ColossalFramework.UI;
 using Lumina.CompatibilityPolice;
+using SkyboxReplacer;
 using Lumina.CompChecker;
+using SkyboxReplacer.OptionsFramework;
+using System.Collections.Generic;
+using UnityEngine;
+using SkyboxReplacer.OptionsFramework.Attibutes;
+using System.Linq;
+using SkyboxReplacer.Configuration;
 
 namespace Lumina
 {
@@ -21,13 +28,80 @@ namespace Lumina
         private UICheckBox _nightfog;
         private UISlider _colordecaySlider;
         private UILabel _Effects;
-        private UISlider _sunshaftseffect;
-        public SunShaftsCompositeShaderProperties sunShaftsScript;
+        private UIDropDown cubemapdropdown;
+        private SunShaftsCompositeShaderProperties sunShaftsScript;
+        private string _currentDayCubemap; // Store the current day cubemap value separately
+        private Options Options;
+        private string _currentNightCubemap; // Store the current night cubemap value separately
+
+        private string _vanillaDayCubemap;
+        private string _vanillaNightCubemap;
+        private string _vanillaOuterSpaceCubemap;
+
+        private List<string> GetCubemapItems()
+        {
+            List<string> items = new List<string>
+            {
+                "Vanilla", // Add the vanilla option to the dropdown
+            };
+
+            // Get the day cubemap options from CubemapManager
+            DropDownEntry<string>[] dayCubemaps = CubemapManager.GetDayCubemaps();
+            items.AddRange(dayCubemaps.Select(entry => entry.Code)); // Use entry.Description instead of entry.Value
+
+            return items;
+        }
+
+        // Function to handle changes in the cubemap dropdown selection
+        private void OnCubemapDropdownValueChanged(UIComponent component, int value)
+        {
+            string selectedCubemap = cubemapdropdown.items[value];
+
+            // Get the day and night cubemap dictionaries from CubemapManager (No need for ImportCubemapDictionaries)
+            CubemapManager.ImportFromMods();
+
+            List<string> cubemaps = GetCubemapItems();
+
+            // Handle day and night cubemap selection
+            if (cubemaps.Contains(selectedCubemap))
+            {
+                if (CubemapManager.GetDayReplacement(selectedCubemap) != null)
+                {
+                    SetCubemapValue(selectedCubemap, isDayCubemap: true);
+                    Debug.Log($"Setting day cubemap to: {selectedCubemap}");
+                }
+                else if (CubemapManager.GetNightReplacement(selectedCubemap) != null)
+                {
+                    SetCubemapValue(selectedCubemap, isDayCubemap: false);
+                    Debug.Log($"Setting night cubemap to: {selectedCubemap}");
+                }
+            }
+            else
+            {
+                // Handle the case where the selected cubemap is not found in the dictionary
+                Debug.LogError($"Cubemap with code '{selectedCubemap}' not found in the dictionary.");
+            }
+        }
 
 
-        public FXAAController FXAAController;
-        public UISlider focusPlaneSlider;
-
+        // Function to set the selected cubemap value in the SkyboxReplacer.Options class
+        private void SetCubemapValue(string cubemap, bool isDayCubemap)
+        {
+            if (isDayCubemap)
+            {
+                // Set the day cubemap in SkyboxReplacer
+                SkyboxReplacer.SkyboxReplacer.SetDayCubemap(cubemap);
+                _currentDayCubemap = cubemap;
+                Debug.Log($"Setting day cubemap to: {cubemap}");
+            }
+            else
+            {
+                // Set the night cubemap in SkyboxReplacer
+                SkyboxReplacer.SkyboxReplacer.SetNightCubemap(cubemap);
+                _currentNightCubemap = cubemap;
+                Debug.Log($"Setting night cubemap to: {cubemap}");
+            }
+        }
         internal ShadowTab(UITabstrip tabStrip, int tabIndex)
         {
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
@@ -46,6 +120,14 @@ namespace Lumina
             }
             else
             {
+                _currentDayCubemap = "Vanilla";
+                _currentNightCubemap = "Vanilla";
+                // Set the vanilla cubemap values
+                _vanillaDayCubemap = Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
+                _vanillaNightCubemap = Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
+                _vanillaOuterSpaceCubemap = Object.FindObjectOfType<DayNightProperties>()?.m_OuterSpaceCubemap?.name;
+                
+
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
@@ -99,18 +181,18 @@ namespace Lumina
                 _fogIntensitySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT);
                 currentY += SliderHeight + Margin;
 
-             //   Slider 4 - Color Decay
-              _colordecaySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT), 0.1f, 5f, -1, ref currentY);
-               _colordecaySlider.value = LuminaLogic.ColorDecay;
-               _colordecaySlider.eventValueChanged += (c, value) => { LuminaLogic.ColorDecay = value; };
-               _colordecaySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT);
-               currentY += SliderHeight + Margin;
-
-                //SunShafts Effect
-                _sunshaftseffect = AddSlider(panel, "Sun Shafts", 0f, 1f, -1, ref currentY);
-                _sunshaftseffect.value = sunShaftsScript.blurRadius;
-                _sunshaftseffect.eventValueChanged += (c, value) => { sunShaftsScript.blurRadius = value; };
+                // Slider 4 - Color Decay
+                _colordecaySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT), 0.1f, 5f, -1, ref currentY);
+                _colordecaySlider.value = LuminaLogic.ColorDecay;
+                _colordecaySlider.eventValueChanged += (c, value) => { LuminaLogic.ColorDecay = value; };
+                _colordecaySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT);
                 currentY += SliderHeight + Margin;
+
+                // Dropdown Cubemap
+                cubemapdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                cubemapdropdown.items = GetCubemapItems().ToArray();
+                cubemapdropdown.eventSelectedIndexChanged += OnCubemapDropdownValueChanged;
+                currentY += 30f;
 
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
@@ -120,7 +202,6 @@ namespace Lumina
                     _biasSlider.value = 0f;
                     _fogIntensitySlider.value = 0f;
                     _colordecaySlider.value = 1f;
-                    _sunshaftseffect.value = 1f;
                     _nightfog.isChecked = false;
                     _shadowSmoothCheck.isChecked = false;
                     _minShadOffsetCheck.isChecked = false;
