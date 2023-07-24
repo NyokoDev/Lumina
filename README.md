@@ -2,4 +2,6 @@
 Switch cubemaps, tone adjustment and more
 
 Find Lumina for Epic Games
-[url=https://github.com/NyokoDev/Lumina/releases/tag/1.2.7] Lumina 1.2.7 [/url]
+
+# Lumina 1.2.7
+https://github.com/NyokoDev/Lumina/releases/tag/1.2.7]
