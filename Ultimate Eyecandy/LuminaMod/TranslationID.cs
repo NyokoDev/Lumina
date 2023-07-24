@@ -58,6 +58,15 @@ namespace LuminaTR
         public const string FOGVISIBILITY_TEXT = "FOGVISIBILITY_TEXT";
         public const string NIGHTFOG_TEXT = "NIGHTFOG_TEXT";
         public const string CUBEMAP_TEXT = "CUBEMAP_TEXT";
+        public const string CUBEMAP_TEXT_DISABLED = "CUBEMAP_TEXT_DISABLED";
+        public const string CUBEMAP_TEXT_DISABLED_CAUSE = "CUBEMAP_TEXT_DISABLED_CAUSE";
 
+        public const string LUT_SLIDER_OPACITY_TEXT = "LUT_SLIDER_OPACITY_TEXT";
+
+        public const string LUT_MOD_NAME = "LUT_MOD_NAME";
+
+        public const string SAVE_LUT_TEXT = "SAVE_LUT_TEXT";
+
+        public const string LUT_SLIDER_HUE_TEXT = "LUT_SLIDER_HUE_TEXT";
     }
 }

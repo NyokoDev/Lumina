@@ -51,6 +51,7 @@
             new LightingTab(tabStrip, 0);
             new StylesTab(tabStrip, 1);
             new ShadowTab(tabStrip, 2);
+            new LookUpTableTab(tabStrip, 3);
 
             // Force initial tab selection.
             tabStrip.selectedIndex = -1;

@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.2.5</Version>
+		<Version>1.2.7</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -21,8 +21,8 @@
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
-		<Reference Include="SkyboxReplacer">
-		  <HintPath>LuminaMod\PPXS\SkyboxReplacer.dll</HintPath>
+		<Reference Include="Skybox">
+		  <HintPath>LuminaMod\PPXS\Skybox.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine" />
 	</ItemGroup>

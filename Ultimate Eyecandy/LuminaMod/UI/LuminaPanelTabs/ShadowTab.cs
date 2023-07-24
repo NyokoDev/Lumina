@@ -24,6 +24,8 @@ namespace Lumina
         private UISlider _fogIntensitySlider;
         private UILabel _modlabel;
         private UILabel _modlabel2;
+        private UILabel _cubemaplabel;
+        private UILabel _cubemaplabel2;
         private UILabel _foglabel3;
         private UICheckBox _nightfog;
         private UISlider _colordecaySlider;
@@ -107,7 +109,24 @@ namespace Lumina
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
             float currentY = Margin;
 
-            // Check if renderit mod or fog manipulating mods are enabled
+            if (ModUtils.IsModEnabled("skyboxreplacer"))
+            {
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                currentY += CheckHeight + Margin;
+
+                _cubemaplabel2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED_CAUSE), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                _cubemaplabel2.textScale = 0.7f;
+            }
+            else
+            {
+                // Dropdown Cubemap
+                cubemapdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                cubemapdropdown.items = GetCubemapItems().ToArray();
+                cubemapdropdown.eventSelectedIndexChanged += OnCubemapDropdownValueChanged;
+                currentY += 30f;
+            }
+
+            // Check if Renderit mod or fog manipulating mods are enabled
             if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
             {
                 _modlabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.VISUALISMCOMP_TEXT));
@@ -126,7 +145,7 @@ namespace Lumina
                 _vanillaDayCubemap = Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
                 _vanillaNightCubemap = Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
                 _vanillaOuterSpaceCubemap = Object.FindObjectOfType<DayNightProperties>()?.m_OuterSpaceCubemap?.name;
-                
+
 
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
@@ -188,11 +207,8 @@ namespace Lumina
                 _colordecaySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT);
                 currentY += SliderHeight + Margin;
 
-                // Dropdown Cubemap
-                cubemapdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
-                cubemapdropdown.items = GetCubemapItems().ToArray();
-                cubemapdropdown.eventSelectedIndexChanged += OnCubemapDropdownValueChanged;
-                currentY += 30f;
+       
+
 
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
