@@ -2,6 +2,10 @@
 {
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using Lumina.CompatibilityPolice;
+    using Lumina.CompChecker;
+    using System.IO;
+    using UnityEngine;
 
     /// <summary>
     /// The Lumina UI panel.
@@ -51,7 +55,13 @@
             new LightingTab(tabStrip, 0);
             new StylesTab(tabStrip, 1);
             new ShadowTab(tabStrip, 2);
-            new LookUpTableTab(tabStrip, 3);
+
+            if (ModUtils.IsModEnabled("lutcreator"))
+            {
+                Debug.Log("[LUMINA] LUT Creator plugin enabled.");
+                new LookUpTableTab(tabStrip, 3);
+            }
+
 
             // Force initial tab selection.
             tabStrip.selectedIndex = -1;
