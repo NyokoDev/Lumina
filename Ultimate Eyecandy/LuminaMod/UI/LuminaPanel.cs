@@ -16,7 +16,8 @@
         /// Width of panel content.
         /// </summary>
         internal const float ContentWidth = 500f;
-
+        ShadowTab shadowtab;
+            
         // Layout constants - private.
         private const float TitleHeight = 40f;
         private const float ContainerHeight = 650f;
@@ -79,6 +80,8 @@
             // Deselect UUI button.
             LuminaLogic.Instance?.ResetButton();
             LuminaLogic.Instance.UUIButton.IsPressed = false;
+
+         
 
             // Save settings.
             ModSettings.Save();

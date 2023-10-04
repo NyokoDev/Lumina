@@ -66,7 +66,6 @@ namespace Lumina
                 s_instance?.UpdateShadowSettings();
             }
         }
-
         public static float FogIntensity
         {
             get
@@ -80,6 +79,98 @@ namespace Lumina
                 if (fogProperties != null)
                 {
                     fogProperties.m_FogDensity = value;
+                }
+            }
+        }
+
+        public static float FogHeight
+        {
+            get
+            {
+                RenderProperties fogProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_fogHeight : 5000f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0f, 5000f); // Clamp the value between -10 and 10
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogHeight = clampedValue;
+                }
+            }
+        }
+
+        public static float VolumeFogDistance
+        {
+            get
+            {
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                return (renderProperties != null && renderProperties.enabled) ? renderProperties.m_volumeFogDistance : 10f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, -10f, 4800f); // Clamp the value between -10 and 20000
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                if (renderProperties != null)
+                {
+                    renderProperties.m_volumeFogDistance = clampedValue;
+                }
+            }
+        }
+
+        public static float FogDistance
+        {
+            get
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_FogDistance : 10f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, -10f, 20000f); // Clamp the value between -10 and 10
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogDistance = clampedValue;
+                }
+            }
+        }
+
+        public static float ThirdFogDistance
+        {
+            get
+            {
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return (fogEffect != null && fogEffect.enabled) ? fogEffect.m_3DFogDistance : 8f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, -10f, 10f); // Clamp the value between -10 and 10
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fogEffect != null)
+                {
+                    fogEffect.m_3DFogDistance = clampedValue;
+                }
+            }
+        }
+
+
+
+        public static float HorizonHeight
+        {
+            get
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_HorizonHeight : 800f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0f, 5000f);
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_HorizonHeight = clampedValue;
                 }
             }
         }
@@ -123,8 +214,6 @@ namespace Lumina
         }
 
 
-
-        //Color Decay
         public static float ColorDecay
         {
             get
@@ -139,6 +228,27 @@ namespace Lumina
                 if (fogProperties != null)
                 {
                     fogProperties.m_ColorDecay = clampedValue;
+                }
+            }
+        }
+
+
+
+        //Color Decay
+        public static float EdgeFogDistance
+        {
+            get
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_EdgeFogDistance : 0.0f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0f, 3800f); // Assuming the range is from 0f to 3800f.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_EdgeFogDistance = clampedValue;
                 }
             }
         }

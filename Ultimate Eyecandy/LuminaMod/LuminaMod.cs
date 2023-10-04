@@ -16,6 +16,8 @@ namespace Lumina
         /// <summary>
         /// Gets the mod's base display name (name only).
         /// </summary>
+        ShadowTab shadowtab;    /// 
+
         private FXAAController FXAAController;
         public override string BaseName => "Lumina";
 
@@ -48,6 +50,9 @@ namespace Lumina
         public override void LoadSettings()
         {
             ModSettings.Load();
+            shadowtab.EnsureSettingsFileExists();
+            shadowtab.SaveSettings();
+            shadowtab.LoadSettings();
             FXAAController = new FXAAController();
             SunShaftsCompositeRenderer SunShaftsCompositeRenderer = new SunShaftsCompositeRenderer();
             // Call the Start() method on the created instance

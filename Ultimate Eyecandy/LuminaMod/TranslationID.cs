@@ -68,5 +68,17 @@ namespace LuminaTR
         public const string SAVE_LUT_TEXT = "SAVE_LUT_TEXT";
 
         public const string LUT_SLIDER_HUE_TEXT = "LUT_SLIDER_HUE_TEXT";
+
+        public const string EDGEDISTANCE_TEXT = "EDGEDISTANCE_TEXT";
+
+        public const string HORIZONHEIGHT_TEXT = "HORIZONHEIGHT_TEXT";
+
+        public const string FOGDISTANCE_TEXT = "FOGDISTANCE_TEXT";
+
+        public const string FOGHEIGHT_TEXT = "FOGHEIGHT_TEXT";
+        public const string SSAA_MOD_NAME = "SSAA_MOD_NAME";
+        public const string SSAA_SLIDER_TEXT = "SSAA_SLIDER_TEXT";
+        public const string SSAA_BUTTON = "SSAA_BUTTON";
+
     }
 }

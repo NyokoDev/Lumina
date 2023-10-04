@@ -1,0 +1,60 @@
+LANGUAGE,ไทย
+MOD_DESCRIPTION,การปรับแต่งแสงและการปรับแต่งโทนที่ถูกปรับให้เหมาะสมและสามารถปรับแต่งได้
+MOD_NAME,Lumina
+HOTKEY,"กำหนดคีย์ลัด"
+CLOSE_TEXT,ปิด
+EXPOSURECONTROL_TEXT,ควบคุมแสง
+LUMINOSITY_TEXT,ความสว่าง
+GAMMA_TEXT,แกมมา
+RADIANCE_TEXT,ความคมชัด
+LIGHTING_TEXT,การให้แสง
+HUE_TEXT,ความสี
+TINT_TEXT,ความเข้มสี
+STYLES_MOD_NAME,สไตล์
+COLOR_CORRECTION_MOD_NAME,การปรับสี
+VISUALISM_MOD_NAME,ภาพ
+SUNTEMP_TEXT,อุณหภูมิของดวงอาทิตย์
+SUNTINT_TEXT,เทนอาทิตย์
+SKYTEMP_TEXT,อุณหภูมิของท้องฟ้า
+SKYTINT_TEXT,สีของท้องฟ้า
+MOONTEMP_TEXT,อุณหภูมิของจันทร์
+MOONTINT_TEXT,สีของจันทร์
+MOONLIGHT_TEXT,แสงของจันทร์
+TWILIGHTTINT_TEXT,สีของค่ำคืน
+ENABLE_SKYTONE_TEXT,เปิดใช้งานการทำสีของท้องฟ้า
+DISABLE_SHADOWSMOOTH_TEXT,ปิดใช้งานการทำให้เงาเรียบ
+FORCELOWBIAS_TEXT,บังคับให้เงาเล็กน้อยที่สุด
+RESET_TEXT,รีเซ็ตทั้งหมด
+LOAD_TEXT,โหลด
+DELETE_TEXT,ลบ
+WORKSHOP_TEXT,สโตร์
+NOstyle_TEXT,ไม่พบสไตล์ Lumina!
+RELOADstyle_TEXT,โหลดรายชื่อสไตล์ใหม่
+OPENLOCALFOLDER_TEXT,เปิดโฟลเดอร์สไตล์ท้องถิ่น
+LAUNCHLUT_TEXT,เปิดตัวแก้ไข LUT
+SHADOWINT_TEXT,ความเข้มของเงา
+SHADOWBIAS_TEXT,ตัวคูณการปรับแต่งเงา
+CLASSICFOG_TEXT,หมอกคลาสสิก
+FOGINTENSITY_TEXT,ความหนาของหมอก
+LIGHTCOMP_TEXT,ความสามารถที่ถูกปิดใช้งานเนื่องจากมีการซ้อนทับกันของโมดูล
+MOD_CAUSE_TEXT,ตรวจพบ Render It/Daylight Classic/Relight
+SAVE_TEXT,บันทึก
+STYLENAME_TEXT,ชื่อสไตล์
+VISUALISMCOMP_TEXT,การตั้งค่าเงาและหมอกถูกปิดใช้งาน
+VISUALISM_CAUSE_TEXT,ตรวจพบ Render It/Daylight Classic/Fog Controller
+EDGEFOG_TEXT,หมอกบริเวณขอบ
+FOGSETTINGS_TEXT,การปรับควบคุมหมอก
+FOGVISIBILITY_TEXT,การลดสี
+NIGHTFOG_TEXT,หมอกขนาดกลางถึงขนาดใหญ่
+CUBEMAP_TEXT,แผนที่คิวบิค
+CUBEMAP_TEXT_DISABLED,การตั้งค่าแผนที่คิวบิคถูกปิดใช้งาน
+CUBEMAP_TEXT_DISABLED_CAUSE,ตรวจพบแทนแผนที่คิวบิค
+LUT_MOD_NAME,ตัวสร้าง LUT
+SAVE_LUT_TEXT,บันทึก Lut
+LUT_SLIDER_TEXT,ความทึบ
+LUT_SLIDER_OPACITY_TEXT,ความทึบ
+LUT_SLIDER_HUE_TEXT,สี
+EDGEDISTANCE_TEXT,ระยะห่างของขอบ
+HORIZONHEIGHT_TEXT,ความสูงของขอบฟ้า
+FOGDISTANCE_TEXT,ระยะห่างของหมอก
+FOGHEIGHT_TEXT,ความสูงของหมอก
