@@ -1,29 +1,29 @@
-LANGUAGE,Français
-MOD_DESCRIPTION,Éclairage optimisé et ajustement adaptable des tons.
+LANGUAGE,Francais
+MOD_DESCRIPTION,Éclairage optimisé et ajustement adaptable de la tonalité.
 MOD_NAME,Lumina
-HOTKEY,"Définir une touche de raccourci"
+HOTKEY,"Définir la touche de raccourci"
 CLOSE_TEXT,Fermer
 EXPOSURECONTROL_TEXT,Contrôle d'exposition
 LUMINOSITY_TEXT,Luminosité
 GAMMA_TEXT,Gamma
 RADIANCE_TEXT,Contraste
 LIGHTING_TEXT,Éclairage
-HUE_TEXT,Tonalité
+HUE_TEXT,Teinte
 TINT_TEXT,Teinte
 STYLES_MOD_NAME,Styles
 COLOR_CORRECTION_MOD_NAME,Correction des couleurs
 VISUALISM_MOD_NAME,Visualisme
-SUNTEMP_TEXT,Temperature du soleil
+SUNTEMP_TEXT,Temps du soleil
 SUNTINT_TEXT,Teinte du soleil
-SKYTEMP_TEXT,Temperature du ciel
+SKYTEMP_TEXT,Température du ciel
 SKYTINT_TEXT,Teinte du ciel
-MOONTEMP_TEXT,Temperature de la lune
+MOONTEMP_TEXT,Température de la lune
 MOONTINT_TEXT,Teinte de la lune
 MOONLIGHT_TEXT,Lumière de la lune
 TWILIGHTTINT_TEXT,Teinte du crépuscule
-ENABLE_SKYTONE_TEXT,Activer le mappage tonal du ciel
-DISABLE_SHADOWSMOOTH_TEXT,Désactiver l'adoucissement des ombres
-FORCELOWBIAS_TEXT,Forcer le décalage minimal des ombres
+ENABLE_SKYTONE_TEXT,Activer la correction tonale du ciel
+DISABLE_SHADOWSMOOTH_TEXT,Désactiver le lissage des ombres
+FORCELOWBIAS_TEXT,Imposer un décalage minimal des ombres
 RESET_TEXT,Réinitialiser tout
 LOAD_TEXT,Charger
 DELETE_TEXT,Supprimer
@@ -31,10 +31,34 @@ WORKSHOP_TEXT,Atelier
 NOstyle_TEXT,Style Lumina introuvable !
 RELOADstyle_TEXT,Recharger la liste des styles
 OPENLOCALFOLDER_TEXT,Ouvrir le dossier des styles locaux
-LAUNCHLUT_TEXT,Ouvrir l'éditeur LUT
+LAUNCHLUT_TEXT,Lancer l'éditeur LUT
 SHADOWINT_TEXT,Intensité des ombres
 SHADOWBIAS_TEXT,Multiplicateur de décalage des ombres
 CLASSICFOG_TEXT,Brouillard classique
 FOGINTENSITY_TEXT,Intensité du brouillard
-LIGHTCOMP_TEXT,Les fonctions ont été désactivées car Render It!, Relight, Softer Shadows ou Daylight Classic ont été détectés.
+LIGHTCOMP_TEXT,Fonctions désactivées en raison de mods superposés.
+MOD_CAUSE_TEXT,Render It/Daylight Classic/Relight ont été détectés.
 SAVE_TEXT,Enregistrer
+STYLENAME_TEXT,Nom du style
+VISUALISMCOMP_TEXT,Les paramètres d'ombres et de brouillard ont été désactivés.
+VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller ont été détectés.
+EDGEFOG_TEXT,Brouillard en bordure
+FOGSETTINGS_TEXT,Ajustement du brouillard
+FOGVISIBILITY_TEXT,Décroissance de la couleur
+NIGHTFOG_TEXT,Désactiver le brouillard classique la nuit
+FOGINTENSITY_TEXT,Intensité du brouillard
+FOGVISIBILITY_TEXT,Visibilité du brouillard
+EDGEDISTANCE_TEXT,Distance de bordure
+HORIZONHEIGHT_TEXT,Hauteur de l'horizon
+FOGHEIGHT_TEXT,Hauteur du brouillard
+FOGDISTANCE_TEXT,Distance du brouillard
+CUBEMAP_TEXT,Cubemap
+CUBEMAP_TEXT_DISABLED,Paramètres de la cubemap désactivés.
+CUBEMAP_TEXT_DISABLED_CAUSE,Un remplacement de cubemap a été détecté.
+LUT_MOD_NAME,Créateur de LUT
+SAVE_LUT_TEXT,Enregistrer LUT
+LUT_SLIDER_TEXT,Opacité
+LUT_SLIDER_OPACITY_TEXT,Opacité
+LUT_SLIDER_HUE_TEXT,Teinte
+ADVANCED,Avancé
+IGNORE,Ignorer l'avertissement de compatibilité (Expérimental)

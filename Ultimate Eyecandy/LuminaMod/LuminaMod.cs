@@ -50,9 +50,7 @@ namespace Lumina
         public override void LoadSettings()
         {
             ModSettings.Load();
-            shadowtab.EnsureSettingsFileExists();
-            shadowtab.SaveSettings();
-            shadowtab.LoadSettings();
+            
             FXAAController = new FXAAController();
             SunShaftsCompositeRenderer SunShaftsCompositeRenderer = new SunShaftsCompositeRenderer();
             // Call the Start() method on the created instance

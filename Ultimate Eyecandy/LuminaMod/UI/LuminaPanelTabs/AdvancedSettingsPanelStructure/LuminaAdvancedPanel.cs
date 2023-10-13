@@ -8,19 +8,19 @@
     using UnityEngine;
 
     /// <summary>
-    /// The Lumina UI panel.
+    /// The Lumina Advanced panel.
     /// </summary>
-    public sealed class LuminaPanel : StandalonePanel
+    public sealed class AdvancedTab : StandalonePanel
     {
         /// <summary>
         /// Width of panel content.
         /// </summary>
         internal const float ContentWidth = 500f;
-        MainAdvancedTab shadowtab;
-            
+        
+
         // Layout constants - private.
-        private const float TitleHeight = 40f;
-        private const float ContainerHeight = 650f;
+        private const float TitleHeight = 38f;
+        private const float ContainerHeight = 325f;
 
         /// <summary>
         /// Gets the panel width.
@@ -53,23 +53,12 @@
             AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, Margin, TitleHeight, ContentWidth, ContainerHeight, out _);
 
             // Add tabs and panels.
-            new LightingTab(tabStrip, 0);
-            new StylesTab(tabStrip, 1);
-            new ShadowTab(tabStrip, 2);
-            shadowtab.LoadSettings();
-
-            if (ModUtils.IsModEnabled("lutcreator"))
-            {
-                Debug.Log("[LUMINA] LUT Creator plugin enabled.");
-                new LookUpTableTab(tabStrip, 3);
-            }
-
+            new MainAdvancedTab(tabStrip, 0);
 
             // Force initial tab selection.
-            tabStrip.selectedIndex = -1;
-            tabStrip.selectedIndex = 0;
+        
 
-            SetIcon(UITextures.LoadSprite("UUI"), "normal");
+            SetIcon(UITextures.LoadSprite("ADV"), "normal");
         }
 
         /// <summary>
@@ -81,13 +70,9 @@
             // Deselect UUI button.
             LuminaLogic.Instance?.ResetButton();
             LuminaLogic.Instance.UUIButton.IsPressed = false;
-           
-
-         
 
             // Save settings.
             ModSettings.Save();
-            shadowtab.SaveSettings();
 
             // Always okay to close.
             return true;

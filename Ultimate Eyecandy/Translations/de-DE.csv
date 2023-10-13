@@ -1,26 +1,26 @@
 LANGUAGE,Deutsch
-MOD_DESCRIPTION,Optimiertes und anpassbares Beleuchtungs- und Tonanpassungssystem.
+MOD_DESCRIPTION,Optimierte Beleuchtung und anpassbare Tonanpassung.
 MOD_NAME,Lumina
+HOTKEY,"Tastenkürzel festlegen"
 CLOSE_TEXT,Schließen
 EXPOSURECONTROL_TEXT,Belichtungssteuerung
 LUMINOSITY_TEXT,Helligkeit
 GAMMA_TEXT,Gamma
-RADIANCE_TEXT,Strahlung
+RADIANCE_TEXT,Kontrast
 LIGHTING_TEXT,Beleuchtung
-HUE_TEXT,Farbton
+HUE_TEXT,Farbe
 TINT_TEXT,Tönung
-LIGHTNESS_MOD_NAME,Helligkeit
 STYLES_MOD_NAME,Stile
 COLOR_CORRECTION_MOD_NAME,Farbkorrektur
 VISUALISM_MOD_NAME,Visualismus
-SUNTEMP_TEXT,Sonnenfarbtemperatur
+SUNTEMP_TEXT,Sonnen-Temperatur
 SUNTINT_TEXT,Sonnen-Tönung
-SKYTEMP_TEXT,Himmelsfarbtemperatur
+SKYTEMP_TEXT,Himmelstemperatur
 SKYTINT_TEXT,Himmelstönung
-MOONTEMP_TEXT,Mondfarbtemperatur
+MOONTEMP_TEXT,Mond-Temperatur
 MOONTINT_TEXT,Mondtönung
 MOONLIGHT_TEXT,Mondlicht
-TWILIGHTTINT_TEXT,Dämmerungstönung
+TWILIGHTTINT_TEXT,Abenddämmerungstönung
 ENABLE_SKYTONE_TEXT,Himmels-Tonemapping aktivieren
 DISABLE_SHADOWSMOOTH_TEXT,Schattenweichzeichnung deaktivieren
 FORCELOWBIAS_TEXT,Minimale Schattenverschiebung erzwingen
@@ -29,8 +29,36 @@ LOAD_TEXT,Laden
 DELETE_TEXT,Löschen
 WORKSHOP_TEXT,Workshop
 NOstyle_TEXT,Lumina-Stil nicht gefunden!
-RELOADstyle_TEXT,Stilliste neu laden
-OPENLOCALFOLDER_TEXT,Lokalen Stilordner öffnen
+RELOADstyle_TEXT,Stil-Liste neu laden
+OPENLOCALFOLDER_TEXT,Lokalen Stile-Ordner öffnen
 LAUNCHLUT_TEXT,LUT-Editor starten
 SHADOWINT_TEXT,Schattenintensität
-SHADOWBIAS_TEXT,Schattenverschiebung
+SHADOWBIAS_TEXT,Schattenverschiebungsfaktor
+CLASSICFOG_TEXT,Klassischer Nebel
+FOGINTENSITY_TEXT,Nebelintensität
+LIGHTCOMP_TEXT,Funktionen deaktiviert aufgrund sich überlappender Mods.
+MOD_CAUSE_TEXT,Render It/Daylight Classic/Relight wurden erkannt.
+SAVE_TEXT,Speichern
+STYLENAME_TEXT,Stilname
+VISUALISMCOMP_TEXT,Schatten- und Nebel-Einstellungen wurden deaktiviert.
+VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller wurden erkannt.
+EDGEFOG_TEXT,Kanten-Nebel
+FOGSETTINGS_TEXT,Nebel-Einstellung
+FOGVISIBILITY_TEXT,Farbabnahme
+NIGHTFOG_TEXT,Klassischen Nebel in der Nacht deaktivieren
+FOGINTENSITY_TEXT,Nebelintensität
+FOGVISIBILITY_TEXT,Nebel-Sichtbarkeit
+EDGEDISTANCE_TEXT,Kantenentfernung
+HORIZONHEIGHT_TEXT,Horizonthöhe
+FOGHEIGHT_TEXT,Nebelhöhe
+FOGDISTANCE_TEXT,Nebelentfernung
+CUBEMAP_TEXT,Cubemap
+CUBEMAP_TEXT_DISABLED,Cubemap-Einstellungen deaktiviert.
+CUBEMAP_TEXT_DISABLED_CAUSE,Cubemap-Ersatz wurde erkannt.
+LUT_MOD_NAME,LUT-Ersteller
+SAVE_LUT_TEXT,LUT speichern
+LUT_SLIDER_TEXT,Transparenz
+LUT_SLIDER_OPACITY_TEXT,Transparenz
+LUT_SLIDER_HUE_TEXT,Farbe
+ADVANCED,Fortschrittlich
+IGNORE,Kompatibilitätswarnung ignorieren (Experimentell)

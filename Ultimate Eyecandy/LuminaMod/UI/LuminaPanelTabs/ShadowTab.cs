@@ -288,6 +288,16 @@ namespace Lumina
                     _fogCheckBox.isChecked = false;
                     _edgefogCheckbox.isChecked = false;
                 };
+
+                // Calculate the X-coordinate for reset2Button based on resetButton's position and width
+                float advbuttonX = resetButton.relativePosition.x - 120f;
+
+                UIButton advbutton = UIButtons.AddSmallerButton(panel, advbuttonX, currentY, Translations.Translate(LuminaTR.TranslationID.ADVANCED), 120f);
+                advbutton.eventClicked += (c, p) =>
+                {
+                    StandalonePanelManager<AdvancedTab>.Create();
+                };
+
             }
         }
 

@@ -45,7 +45,13 @@ VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller have been detecte
 EDGEFOG_TEXT,Edge Fog
 FOGSETTINGS_TEXT,Fog Adjustment
 FOGVISIBILITY_TEXT,Color Decay
-NIGHTFOG_TEXT,Day/Night Fog
+NIGHTFOG_TEXT,Disable classic fog at night 
+FOGINTENSITY_TEXT,Fog Intensity
+FOGVISIBILITY_TEXT,Fog Visibility
+EDGEDISTANCE_TEXT,Edge Distance
+HORIZONHEIGHT_TEXT,Horizon Height
+FOGHEIGHT_TEXT,Fog Height
+FOGDISTANCE_TEXT,Fog Distance
 CUBEMAP_TEXT,Cubemap
 CUBEMAP_TEXT_DISABLED,Cubemap settings disabled.
 CUBEMAP_TEXT_DISABLED_CAUSE,Cubemap Replacer has been detected.
@@ -54,3 +60,5 @@ SAVE_LUT_TEXT,Save Lut
 LUT_SLIDER_TEXT,Opacity
 LUT_SLIDER_OPACITY_TEXT,Opacity
 LUT_SLIDER_HUE_TEXT,Hue
+ADVANCED,Advanced
+IGNORE,Ignore compatibility warning (Experimental)

@@ -80,5 +80,8 @@ namespace LuminaTR
         public const string SSAA_SLIDER_TEXT = "SSAA_SLIDER_TEXT";
         public const string SSAA_BUTTON = "SSAA_BUTTON";
 
+        public const string ADVANCED = "ADVANCED";
+        
+
     }
 }

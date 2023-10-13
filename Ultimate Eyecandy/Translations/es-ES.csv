@@ -1,5 +1,5 @@
 LANGUAGE,Español
-MOD_DESCRIPTION,Iluminación optimizada y ajuste adaptable de tonos.
+MOD_DESCRIPTION,Iluminación optimizada y ajuste adaptable de tono.
 MOD_NAME,Lumina
 HOTKEY,"Establecer tecla de acceso rápido"
 CLOSE_TEXT,Cerrar
@@ -23,18 +23,42 @@ MOONLIGHT_TEXT,Luz de la luna
 TWILIGHTTINT_TEXT,Tinte del crepúsculo
 ENABLE_SKYTONE_TEXT,Habilitar tonemapping del cielo
 DISABLE_SHADOWSMOOTH_TEXT,Desactivar suavizado de sombras
-FORCELOWBIAS_TEXT,Forzar desplazamiento mínimo de sombras
+FORCELOWBIAS_TEXT,Imponer un desplazamiento mínimo de sombras
 RESET_TEXT,Restablecer todo
 LOAD_TEXT,Cargar
 DELETE_TEXT,Eliminar
 WORKSHOP_TEXT,Taller
-NOstyle_TEXT,¡No se encontró el estilo Lumina!
+NOstyle_TEXT,¡Estilo Lumina no encontrado!
 RELOADstyle_TEXT,Recargar lista de estilos
 OPENLOCALFOLDER_TEXT,Abrir carpeta de estilos locales
-LAUNCHLUT_TEXT,Abrir editor de LUT
+LAUNCHLUT_TEXT,Iniciar editor de LUT
 SHADOWINT_TEXT,Intensidad de sombras
-SHADOWBIAS_TEXT,Multiplicador de desplazamiento de sombras
+SHADOWBIAS_TEXT,Multiplicador de sesgo de sombras
 CLASSICFOG_TEXT,Niebla clásica
 FOGINTENSITY_TEXT,Intensidad de niebla
-LIGHTCOMP_TEXT,Las funciones se han desactivado porque se detectó Render It!, Relight, Softer Shadows o Daylight Classic.
+LIGHTCOMP_TEXT,Funciones deshabilitadas debido a mods superpuestos.
+MOD_CAUSE_TEXT,Se detectaron Render It/Daylight Classic/Relight.
 SAVE_TEXT,Guardar
+STYLENAME_TEXT,Nombre del estilo
+VISUALISMCOMP_TEXT,La configuración de sombras y niebla ha sido desactivada.
+VISUALISM_CAUSE_TEXT,Se detectaron Render It/Daylight Classic/Fog Controller.
+EDGEFOG_TEXT,Niebla en los bordes
+FOGSETTINGS_TEXT,Ajuste de niebla
+FOGVISIBILITY_TEXT,Decadencia del color
+NIGHTFOG_TEXT,Desactivar niebla clásica de noche
+FOGINTENSITY_TEXT,Intensidad de niebla
+FOGVISIBILITY_TEXT,Visibilidad de niebla
+EDGEDISTANCE_TEXT,Distancia de los bordes
+HORIZONHEIGHT_TEXT,Altura del horizonte
+FOGHEIGHT_TEXT,Altura de la niebla
+FOGDISTANCE_TEXT,Distancia de la niebla
+CUBEMAP_TEXT,Cubemap
+CUBEMAP_TEXT_DISABLED,Configuración de cubemap desactivada.
+CUBEMAP_TEXT_DISABLED_CAUSE,Se detectó un reemplazo de cubemap.
+LUT_MOD_NAME,Creador de LUT
+SAVE_LUT_TEXT,Guardar LUT
+LUT_SLIDER_TEXT,Opacidad
+LUT_SLIDER_OPACITY_TEXT,Opacidad
+LUT_SLIDER_HUE_TEXT,Tono
+ADVANCED,Avanzado
+IGNORE,Ignorar advertencia de compatibilidad (Experimental)
