@@ -4,7 +4,9 @@
     using System.Xml.Serialization;
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
+    using ColossalFramework.UI;
     using UnityEngine;
+    using static Lumina.MainAdvancedTab;
     using static LuminaStyle;
 
     /// <summary>
@@ -61,5 +63,19 @@
         /// Saves settings to file.
         /// </summary>
         internal static void Save() => XMLFileUtils.Save<ModSettings>(SettingsFile);
+
+
+        /// <summary>
+        /// Saves AdvancedTab settings.
+        /// </summary>
+        internal static void saveXML()
+        {
+            // Create an instance of ExternalSettingsHandler
+            ExternalSettingsHandler handler = new ExternalSettingsHandler();
+
+            // Call the SaveSettings method on the instance
+            handler.SaveSettings();
+        }
+        
     }
 }

@@ -50,6 +50,7 @@ namespace Lumina
         public override void LoadSettings()
         {
             ModSettings.Load();
+          
             // Enable detailed logging.
             Logging.DetailLogging = true;
         }

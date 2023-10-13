@@ -22,7 +22,7 @@
         private const float TitleHeight = 38f;
         private const float ContainerHeight = 325f;
 
-        MainAdvancedTab advtab;
+        
         /// <summary>
         /// Gets the panel width.
         /// </summary>
@@ -55,10 +55,6 @@
 
             // Add tabs and panels.
             new MainAdvancedTab(tabStrip, 0);
-            advtab.LoadSettings();
-
-            // Force initial tab selection.
-        
 
             SetIcon(UITextures.LoadSprite("ADV"), "normal");
         }
@@ -71,8 +67,7 @@
         {
 
             // Save settings.
-            advtab.SaveSettings();
-            ModSettings.Save();
+            ModSettings.saveXML();
 
             // Always okay to close.
             return true;

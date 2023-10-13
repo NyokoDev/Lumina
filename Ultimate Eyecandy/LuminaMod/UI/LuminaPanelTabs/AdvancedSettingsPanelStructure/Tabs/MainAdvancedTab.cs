@@ -105,6 +105,7 @@ namespace Lumina
         }
 
 
+       
         private void OnApplyButtonClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
             float ssaaValue = SSAASlider.value;
@@ -126,43 +127,111 @@ namespace Lumina
             SaveSettings();
         }
 
-        public void SaveSettings()
-        {
-            Settings settings = new Settings
-            {
-                SliderValue = SSAASlider.value,
-                SunIntensity = sunIntensitySlider.value, // Save Sun Intensity
-                Exposure = ExposureSlider.value,
-                RayleighScattering = SkyRayleighScattering.value,
-                MieScattering = SkyMieScattering.value,
-                SimulationSpeed = SimSpeed.value,
-
-            };
-
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            using (TextWriter writer = new StreamWriter(settingsFilePath))
-            {
-                serializer.Serialize(writer, settings);
-            }
-        }
 
         public void LoadSettings()
         {
-            if (File.Exists(settingsFilePath))
+            if (!File.Exists(settingsFilePath))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-                using (TextReader reader = new StreamReader(settingsFilePath))
+                if (CreateDefaultSettings())
                 {
-                    Settings settings = (Settings)serializer.Deserialize(reader);
-                    SSAASlider.value = settings.SliderValue;
-                    sunIntensitySlider.value = settings.SunIntensity;
-                    ExposureSlider.value = settings.Exposure;
-                    SkyRayleighScattering.value = settings.RayleighScattering;
-                    SkyMieScattering.value = settings.MieScattering;
-                    SimSpeed.value = settings.SimulationSpeed;
+                    Debug.Log("[LUMINA] Created default settings file at path: " + settingsFilePath);
+                }
+                else
+                {
+                    Debug.LogError("[LUMINA] Failed to create default settings file at path: " + settingsFilePath);
+                }
+                return;
+            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+            using (TextReader reader = new StreamReader(settingsFilePath))
+            {
+                Settings settings = (Settings)serializer.Deserialize(reader);
+
+                if (settings != null)
+                {
+                    if (SSAASlider != null)
+                    {
+                        SSAASlider.value = settings.SliderValue;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] SSAASlider is null.");
+                    }
+
+                    if (sunIntensitySlider != null)
+                    {
+                        sunIntensitySlider.value = settings.SunIntensity;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] sunIntensitySlider is null.");
+                    }
+
+                    if (ExposureSlider != null)
+                    {
+                        ExposureSlider.value = settings.Exposure;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] ExposureSlider is null.");
+                    }
+
+                    if (SkyRayleighScattering != null)
+                    {
+                        SkyRayleighScattering.value = settings.RayleighScattering;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] SkyRayleighScattering is null.");
+                    }
+
+                    if (SkyMieScattering != null)
+                    {
+                        SkyMieScattering.value = settings.MieScattering;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] SkyMieScattering is null.");
+                    }
+
+                    if (SimSpeed != null)
+                    {
+                        SimSpeed.value = settings.SimulationSpeed;
+                    }
+                    else
+                    {
+                        Debug.LogError("[LUMINA] SimSpeed is null.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("[LUMINA] Loaded settings object is null.");
                 }
             }
         }
+
+        private bool CreateDefaultSettings()
+        {
+            try
+            {
+                Settings defaultSettings = new Settings();
+
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                using (TextWriter writer = new StreamWriter(settingsFilePath))
+                {
+                    serializer.Serialize(writer, defaultSettings);
+                }
+
+                return true; // File creation successful
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[LUMINA] Failed to create default settings file: " + e.Message);
+                return false; // File creation failed
+            }
+        }
+
 
 
         private void SetScreenResolution(int width, int height)
@@ -198,5 +267,61 @@ namespace Lumina
             SetScreenResolution(defaultScreenWidth, defaultScreenHeight);
         }
 
+
+
+
+        public void SaveSettings()
+        {
+            Settings settings = new Settings
+            {
+                SliderValue = SSAASlider.value,
+                SunIntensity = sunIntensitySlider.value, // Save Sun Intensity
+                Exposure = ExposureSlider.value,
+                RayleighScattering = SkyRayleighScattering.value,
+                MieScattering = SkyMieScattering.value,
+                SimulationSpeed = SimSpeed.value,
+
+            };
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+            using (TextWriter writer = new StreamWriter(settingsFilePath))
+            {
+                serializer.Serialize(writer, settings);
+            }
+        }
+
+        public class ExternalSettingsHandler
+        {
+            private MainAdvancedTab mainTab;
+
+           
+            public void HandleApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+            {
+                mainTab.OnApplyButtonClicked(component, eventParam);
+            }
+
+            public void HandleResetButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+            {
+                mainTab.OnResetButtonClicked(component, eventParam);
+            }
+
+            public void LoadSettings()
+            {
+                mainTab.LoadSettings();
+            }
+
+            public void SaveSettings()
+            {
+                if (mainTab != null)
+                {
+                    mainTab.SaveSettings();
+                }
+                else
+                {
+                    Debug.LogError("[LUMINA] mainTab is null.");
+                }
+            }
+
+        }
     }
 }
