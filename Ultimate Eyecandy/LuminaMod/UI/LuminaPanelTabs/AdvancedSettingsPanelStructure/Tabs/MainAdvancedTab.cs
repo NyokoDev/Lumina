@@ -77,29 +77,33 @@ namespace Lumina
 
             // Sun Intensity Slider
             sunIntensitySlider = AddSlider(panel, "Sun Intensity", 0f, 8f, 0, ref currentY);
-            sunIntensitySlider.eventValueChanged += (c, value) => { AdvancedLogic.DayNightSunIntensity = value; }; // Set Sun Intensity value
+            sunIntensitySlider.eventValueChanged += (c, value) => { AdvancedLogic.DayNightSunIntensity = value; SaveSettings(); };  // Set Sun Intensity value
             currentY += 2f; // Add space
 
             // Exposure Slider
             ExposureSlider = AddSlider(panel, "Exposure", 0f, 5f, 0, ref currentY);
-            ExposureSlider.eventValueChanged += (c, value) => { AdvancedLogic.m_Exposure = value; }; // Set Exposure value
+            ExposureSlider.eventValueChanged += (c, value) => { AdvancedLogic.m_Exposure = value; SaveSettings(); };  // Set Exposure value
             currentY += 0.5f; // Add space
 
             // Sky Rayleigh Scattering
             SkyRayleighScattering = AddSlider(panel, "Rayleigh Scattering", 0f, 5f, 0, ref currentY);
-            SkyRayleighScattering.eventValueChanged += (c, value) => { AdvancedLogic.SkyRayleighScattering = value; }; // Set Sky Rayleigh value
+            SkyRayleighScattering.eventValueChanged += (c, value) => { AdvancedLogic.SkyRayleighScattering = value; SaveSettings(); };  // Set Sky Rayleigh value
             currentY += 0.5f; // Add space
 
             // Sky Mie Scattering
             SkyMieScattering = AddSlider(panel, "Mie Scattering", 0f, 5f, 0, ref currentY);
-            SkyMieScattering.eventValueChanged += (c, value) => { AdvancedLogic.SkyMieScattering = value; }; // Set Sky Mie value
+            SkyMieScattering.eventValueChanged += (c, value) => { AdvancedLogic.SkyMieScattering = value; SaveSettings(); };// Set Sky Mie value
 
             SimSpeed = AddSlider(panel, "Simulation Speed", 0f, 2f, 0, ref currentY);
-            SimSpeed.eventValueChanged += (c, value) => { AdvancedLogic.CustomTimeScale = value; }; // Set Sim Speed value
+            SimSpeed.eventValueChanged += (c, value) => { AdvancedLogic.CustomTimeScale = value; SaveSettings(); };  // Set Sim Speed value
 
-            // Initialize mainTab
-            ExternalSettingsHandler externalSettingsHandler = new ExternalSettingsHandler();
-            externalSettingsHandler.mainTab = this;
+            // Set the mainAdvancedTabInstance in the ModSettings class
+            ModSettings.mainAdvancedTabInstance = this;
+
+           
+
+            // Pass the instance of MainAdvancedTab to ExternalSettingsHandler
+            ExternalSettingsHandler externalSettingsHandler = new ExternalSettingsHandler(this);
 
             // Load saved settings
             externalSettingsHandler.LoadSettings();
@@ -276,24 +280,37 @@ namespace Lumina
             Settings settings = new Settings
             {
                 SliderValue = SSAASlider.value,
-                SunIntensity = sunIntensitySlider.value, // Save Sun Intensity
+                SunIntensity = sunIntensitySlider.value,
                 Exposure = ExposureSlider.value,
                 RayleighScattering = SkyRayleighScattering.value,
                 MieScattering = SkyMieScattering.value,
-                SimulationSpeed = SimSpeed.value,
-
+                SimulationSpeed = SimSpeed.value
             };
 
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            using (TextWriter writer = new StreamWriter(settingsFilePath))
+            try
             {
-                serializer.Serialize(writer, settings);
+                using (TextWriter writer = new StreamWriter(settingsFilePath))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                    serializer.Serialize(writer, settings);
+                }
+            }
+            catch (IOException e)
+            {
+                // Handle the exception, e.g., by logging an error message or informing the user.
+                Debug.LogError("[LUMINA] Error while saving settings: " + e.Message);
             }
         }
 
+
         public class ExternalSettingsHandler
         {
-            public MainAdvancedTab mainTab;
+            private MainAdvancedTab mainTab;
+
+            public ExternalSettingsHandler(MainAdvancedTab mainTab)
+            {
+                this.mainTab = mainTab;
+            }
 
 
             public void HandleApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)

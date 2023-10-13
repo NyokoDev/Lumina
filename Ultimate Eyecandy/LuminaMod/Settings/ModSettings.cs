@@ -17,6 +17,9 @@
     {
         // Settings file name.
         [XmlIgnore]
+        internal static MainAdvancedTab mainAdvancedTabInstance;
+
+        [XmlIgnore]
         private static readonly string SettingsFileName = "Lumina.xml";
 
         // User settings directory.
@@ -66,16 +69,18 @@
 
 
         /// <summary>
-        /// Saves AdvancedTab settings.
+        /// Saves settings to file.
         /// </summary>
-        internal static void saveXML()
+        internal static void saveXML(MainAdvancedTab mainAdvancedTabInstance)
         {
-            // Create an instance of ExternalSettingsHandler
-            ExternalSettingsHandler handler = new ExternalSettingsHandler();
+            // Create an instance of ExternalSettingsHandler and pass the MainAdvancedTab instance
+            ExternalSettingsHandler handler = new ExternalSettingsHandler(mainAdvancedTabInstance);
 
             // Call the SaveSettings method on the instance
             handler.SaveSettings();
         }
-        
+
+
+
     }
 }

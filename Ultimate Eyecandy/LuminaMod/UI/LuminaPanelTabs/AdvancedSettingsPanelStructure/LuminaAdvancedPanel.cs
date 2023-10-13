@@ -16,13 +16,14 @@
         /// Width of panel content.
         /// </summary>
         internal const float ContentWidth = 500f;
-        
+        private MainAdvancedTab mainAdvancedTabInstance;
+
 
         // Layout constants - private.
         private const float TitleHeight = 38f;
         private const float ContainerHeight = 325f;
 
-        
+
         /// <summary>
         /// Gets the panel width.
         /// </summary>
@@ -56,6 +57,7 @@
             // Add tabs and panels.
             new MainAdvancedTab(tabStrip, 0);
 
+
             SetIcon(UITextures.LoadSprite("ADV"), "normal");
         }
 
@@ -65,9 +67,8 @@
         /// <returns>Always true.</returns>
         protected override bool PreClose()
         {
-
-            // Save settings.
-            ModSettings.saveXML();
+            // Call the saveXML method and pass the MainAdvancedTab instance
+            ModSettings.saveXML(mainAdvancedTabInstance);
 
             // Always okay to close.
             return true;
