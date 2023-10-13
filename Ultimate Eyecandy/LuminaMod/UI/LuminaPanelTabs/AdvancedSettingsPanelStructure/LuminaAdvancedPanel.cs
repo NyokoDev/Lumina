@@ -22,6 +22,7 @@
         private const float TitleHeight = 38f;
         private const float ContainerHeight = 325f;
 
+        MainAdvancedTab advtab;
         /// <summary>
         /// Gets the panel width.
         /// </summary>
@@ -54,6 +55,7 @@
 
             // Add tabs and panels.
             new MainAdvancedTab(tabStrip, 0);
+            advtab.LoadSettings();
 
             // Force initial tab selection.
         
@@ -67,11 +69,9 @@
         /// <returns>Always true.</returns>
         protected override bool PreClose()
         {
-            // Deselect UUI button.
-            LuminaLogic.Instance?.ResetButton();
-            LuminaLogic.Instance.UUIButton.IsPressed = false;
 
             // Save settings.
+            advtab.SaveSettings();
             ModSettings.Save();
 
             // Always okay to close.

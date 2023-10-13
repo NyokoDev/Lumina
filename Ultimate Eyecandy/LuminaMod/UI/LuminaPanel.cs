@@ -16,7 +16,7 @@
         /// Width of panel content.
         /// </summary>
         internal const float ContentWidth = 500f;
-        MainAdvancedTab shadowtab;
+     
             
         // Layout constants - private.
         private const float TitleHeight = 40f;
@@ -56,7 +56,6 @@
             new LightingTab(tabStrip, 0);
             new StylesTab(tabStrip, 1);
             new ShadowTab(tabStrip, 2);
-            shadowtab.LoadSettings();
 
             if (ModUtils.IsModEnabled("lutcreator"))
             {
@@ -81,13 +80,8 @@
             // Deselect UUI button.
             LuminaLogic.Instance?.ResetButton();
             LuminaLogic.Instance.UUIButton.IsPressed = false;
-           
-
-         
-
             // Save settings.
             ModSettings.Save();
-            shadowtab.SaveSettings();
 
             // Always okay to close.
             return true;

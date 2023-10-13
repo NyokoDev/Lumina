@@ -18,7 +18,7 @@ namespace Lumina
         /// </summary>
         ShadowTab shadowtab;    /// 
 
-        private FXAAController FXAAController;
+
         public override string BaseName => "Lumina";
 
         /// <summary>
@@ -50,15 +50,6 @@ namespace Lumina
         public override void LoadSettings()
         {
             ModSettings.Load();
-            
-            FXAAController = new FXAAController();
-            SunShaftsCompositeRenderer SunShaftsCompositeRenderer = new SunShaftsCompositeRenderer();
-            // Call the Start() method on the created instance
-            FXAAController.Start();
-            SunShaftsCompositeRenderer.Start();
-
-            
-
             // Enable detailed logging.
             Logging.DetailLogging = true;
         }
