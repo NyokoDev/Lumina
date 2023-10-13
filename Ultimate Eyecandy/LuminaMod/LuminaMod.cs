@@ -7,6 +7,7 @@ namespace Lumina
     using ICities;
     using System;
     using System.Reflection;
+    using static Lumina.MainAdvancedTab;
 
     /// <summary>
     /// The base mod class for instantiation by the game.
@@ -16,7 +17,9 @@ namespace Lumina
         /// <summary>
         /// Gets the mod's base display name (name only).
         /// </summary>
-        ShadowTab shadowtab;    /// 
+          /// 
+        ExternalSettingsHandler handler;
+        ShadowTab VisualismHandler;
 
 
         public override string BaseName => "Lumina";
@@ -50,7 +53,9 @@ namespace Lumina
         public override void LoadSettings()
         {
             ModSettings.Load();
-          
+            
+            
+
             // Enable detailed logging.
             Logging.DetailLogging = true;
         }

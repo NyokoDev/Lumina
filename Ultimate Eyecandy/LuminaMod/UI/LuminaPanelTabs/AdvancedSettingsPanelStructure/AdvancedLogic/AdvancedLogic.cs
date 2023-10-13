@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AdvancedLogic : MonoBehaviour
+public class AdvancedLogic 
 {
     public static float m_Exposure
     {

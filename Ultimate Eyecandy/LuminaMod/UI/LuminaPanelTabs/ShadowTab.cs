@@ -14,8 +14,8 @@ using UnityEngine;
 
 namespace Lumina
 {
-    [Serializable]
-    public class ShadowTabSettings
+    [XmlRoot("VisualismTabSettings")]
+    public class VisualismTabSettings
     {
         public bool ClassicFogEnabled { get; set; }
         public bool EdgeFogEnabled { get; set; }
@@ -53,21 +53,22 @@ namespace Lumina
         private string _currentDayCubemap; // Store the current day cubemap value separately
         private Options Options;
         private string _currentNightCubemap; // Store the current night cubemap value separately
-        private ShadowTabSettings _settings;
-     
+        private VisualismTabSettings _settings;
+
         private UISlider EdgeDistanceSlider;
         private UISlider HorizonHeight;
         private UISlider FogHeight;
-       
+        private string Visualism = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "VisualismTabSettings.xml");
+
         private UISlider FogDistanceSlider;
 
-     
+
         private string _vanillaDayCubemap;
         private string _vanillaNightCubemap;
         private string _vanillaOuterSpaceCubemap;
         private float CurrentSlider = 8f;
 
-     
+
         private List<string> GetCubemapItems()
         {
             List<string> items = new List<string>
@@ -99,7 +100,9 @@ namespace Lumina
                 {
                     _settings.SelectedDayCubemap = selectedCubemap;
                     SetCubemapValue(selectedCubemap, isDayCubemap: true);
+
                     Debug.Log($"Setting day cubemap to: {selectedCubemap}");
+
 
                 }
                 else if (CubemapManager.GetNightReplacement(selectedCubemap) != null)
@@ -107,6 +110,7 @@ namespace Lumina
                     _settings.SelectedNightCubemap = selectedCubemap;
                     SetCubemapValue(selectedCubemap, isDayCubemap: false);
                     Debug.Log($"Setting night cubemap to: {selectedCubemap}");
+
                 }
             }
             else
@@ -126,7 +130,7 @@ namespace Lumina
                 SkyboxReplacer.SkyboxReplacer.SetDayCubemap(cubemap);
                 _currentDayCubemap = cubemap;
                 Debug.Log($"Setting day cubemap to: {cubemap}");
-                SaveSettings();
+
             }
             else
             {
@@ -134,7 +138,7 @@ namespace Lumina
                 SkyboxReplacer.SkyboxReplacer.SetNightCubemap(cubemap);
                 _currentNightCubemap = cubemap;
                 Debug.Log($"Setting night cubemap to: {cubemap}");
-                SaveSettings();
+
             }
         }
         internal ShadowTab(UITabstrip tabStrip, int tabIndex)
@@ -156,6 +160,7 @@ namespace Lumina
                 cubemapdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
                 cubemapdropdown.items = GetCubemapItems().ToArray();
                 cubemapdropdown.eventSelectedIndexChanged += OnCubemapDropdownValueChanged;
+
                 currentY += 30f;
             }
 
@@ -298,47 +303,30 @@ namespace Lumina
                     StandalonePanelManager<AdvancedTab>.Create();
                 };
 
+                _settings = new VisualismTabSettings();
+                LoadSettings();
             }
         }
 
         private void Awake()
         {
             // Create the settings file if it doesn't exist
-            EnsureSettingsFileExists();
-        }
-
-        public void EnsureSettingsFileExists()
-        {
-            string filePath = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ShadowTabSettings.xml");
-            if (!File.Exists(filePath))
-            {
-                // Create a new settings object if the file doesn't exist
-                _settings = new ShadowTabSettings();
-                Debug.Log("[LUMINA] ShadowTabSettings.xml file created.");
-
-                // Save the default settings to the XML file
-                SaveSettings();
-            }
-            else
-            {
-                // Load existing settings from the XML file
-                LoadSettings();
-            }
+            SaveSettings();
         }
 
         // Helper method to load saved settings from an XML file
         public void LoadSettings()
         {
-            string filePath = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ShadowTabSettings.xml");
-            if (File.Exists(filePath))
+
+            if (File.Exists(Visualism))
             {
                 try
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(ShadowTabSettings));
-                    using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                    XmlSerializer serializer = new XmlSerializer(typeof(VisualismTabSettings));
+                    using (FileStream stream = new FileStream(Visualism, FileMode.Open))
                     {
                         // Deserialize the XML and store the settings in the _settings object
-                        _settings = (ShadowTabSettings)serializer.Deserialize(stream);
+                        _settings = (VisualismTabSettings)serializer.Deserialize(stream);
 
                         // Apply the loaded settings to UI elements
                         _fogCheckBox.isChecked = _settings.ClassicFogEnabled;
@@ -354,18 +342,18 @@ namespace Lumina
                         SetCubemapValue(_settings.SelectedDayCubemap, isDayCubemap: true);
                         SetCubemapValue(_settings.SelectedNightCubemap, isDayCubemap: false);
                         // Add code to apply other settings as needed
-                        Debug.Log("[LUMINA] Visualism tab settings loaded succesfully.");
+                        Debug.Log("[LUMINA] Visualism tab settings loaded successfully.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError("[LUMINA] Error loading settings: " + ex.Message);
+                    Debug.LogError("[LUMINA] Error loading Visualism tab settings: " + ex.Message);
                 }
             }
             else
             {
                 // Create a new settings object if the file doesn't exist
-                _settings = new ShadowTabSettings();
+                SaveSettings();
             }
         }
 
@@ -374,33 +362,99 @@ namespace Lumina
         {
             try
             {
-                // Save UI element settings into the _settings object
-                _settings.ClassicFogEnabled = _fogCheckBox.isChecked;
-                _settings.EdgeFogEnabled = _edgefogCheckbox.isChecked;
-                _settings.FogEffectEnabled = _nightfog.isChecked;
-                _settings.FogIntensity = _fogIntensitySlider.value;
-                _settings.ColorDecay = _colordecaySlider.value;
-                _settings.EdgeFogDistance = EdgeDistanceSlider.value;
-                _settings.HorizonHeight = HorizonHeight.value;
-                _settings.FogHeight = FogHeight.value;
-                _settings.FogDistance = FogDistanceSlider.value;
+                if (_fogCheckBox != null)
+                {
+                    _settings.ClassicFogEnabled = _fogCheckBox.isChecked;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] _fogCheckBox is null. ClassicFogEnabled not saved.");
+                }
 
-                //SAVE ALL SETTINGS 
-                string filePath = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ShadowTabSettings.xml");
-                XmlSerializer serializer = new XmlSerializer(typeof(ShadowTabSettings));
-                using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                if (_edgefogCheckbox != null)
+                {
+                    _settings.EdgeFogEnabled = _edgefogCheckbox.isChecked;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] _edgefogCheckbox is null. EdgeFogEnabled not saved.");
+                }
+
+                if (_nightfog != null)
+                {
+                    _settings.FogEffectEnabled = _nightfog.isChecked;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] _nightfog is null. FogEffectEnabled not saved.");
+                }
+
+                if (_fogIntensitySlider != null)
+                {
+                    _settings.FogIntensity = _fogIntensitySlider.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] _fogIntensitySlider is null. FogIntensity not saved.");
+                }
+
+                if (_colordecaySlider != null)
+                {
+                    _settings.ColorDecay = _colordecaySlider.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] _colordecaySlider is null. ColorDecay not saved.");
+                }
+
+                if (EdgeDistanceSlider != null)
+                {
+                    _settings.EdgeFogDistance = EdgeDistanceSlider.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] EdgeDistanceSlider is null. EdgeFogDistance not saved.");
+                }
+
+                if (HorizonHeight != null)
+                {
+                    _settings.HorizonHeight = HorizonHeight.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] HorizonHeight is null. HorizonHeight not saved.");
+                }
+
+                if (FogHeight != null)
+                {
+                    _settings.FogHeight = FogHeight.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] FogHeight is null. FogHeight not saved.");
+                }
+
+                if (FogDistanceSlider != null)
+                {
+                    _settings.FogDistance = FogDistanceSlider.value;
+                }
+                else
+                {
+                    Debug.LogWarning("[LUMINA] FogDistanceSlider is null. FogDistance not saved.");
+                }
+
+                // SAVE ALL SETTINGS 
+                XmlSerializer serializer = new XmlSerializer(typeof(VisualismTabSettings));
+                using (FileStream stream = new FileStream(Visualism, FileMode.Create))
                 {
                     serializer.Serialize(stream, _settings);
                 }
-                Debug.Log("[LUMINA] Visualism tab settings saved succesfully.");
+                Debug.Log("[LUMINA] Visualism tab settings saved successfully.");
             }
             catch (Exception ex)
             {
-                Debug.LogError("[LUMINA] Error saving settings: " + ex.Message);
+                Debug.LogError("[LUMINA] Error saving Visualism settings: " + ex.Message);
             }
         }
-
-        // Override the OnDestroy method to save settings when the tab is destroyed
-        
     }
 }

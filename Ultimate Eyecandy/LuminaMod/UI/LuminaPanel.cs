@@ -6,6 +6,7 @@
     using Lumina.CompChecker;
     using System.IO;
     using UnityEngine;
+    using static Lumina.MainAdvancedTab;
 
     /// <summary>
     /// The Lumina UI panel.
@@ -16,8 +17,11 @@
         /// Width of panel content.
         /// </summary>
         internal const float ContentWidth = 500f;
-     
-            
+
+
+        ExternalSettingsHandler handler;
+        ShadowTab VisualismHandler;
+
         // Layout constants - private.
         private const float TitleHeight = 40f;
         private const float ContainerHeight = 650f;
@@ -69,6 +73,9 @@
             tabStrip.selectedIndex = 0;
 
             SetIcon(UITextures.LoadSprite("UUI"), "normal");
+            VisualismHandler.LoadSettings();
+            handler.LoadSettings();
+
         }
 
         /// <summary>
