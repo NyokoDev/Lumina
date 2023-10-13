@@ -97,11 +97,12 @@ namespace Lumina
             SimSpeed = AddSlider(panel, "Simulation Speed", 0f, 2f, 0, ref currentY);
             SimSpeed.eventValueChanged += (c, value) => { AdvancedLogic.CustomTimeScale = value; }; // Set Sim Speed value
 
+            // Initialize mainTab
+            ExternalSettingsHandler externalSettingsHandler = new ExternalSettingsHandler();
+            externalSettingsHandler.mainTab = this;
 
-
-
-            // Load saved settings from the XML file
-            LoadSettings();
+            // Load saved settings
+            externalSettingsHandler.LoadSettings();
         }
 
 
@@ -292,9 +293,9 @@ namespace Lumina
 
         public class ExternalSettingsHandler
         {
-            private MainAdvancedTab mainTab;
+            public MainAdvancedTab mainTab;
 
-           
+
             public void HandleApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
             {
                 mainTab.OnApplyButtonClicked(component, eventParam);
@@ -315,12 +316,14 @@ namespace Lumina
                 if (mainTab != null)
                 {
                     mainTab.SaveSettings();
+                    Debug.Log("[LUMINA] SaveSettings method ran successfully.");
                 }
                 else
                 {
                     Debug.LogError("[LUMINA] mainTab is null.");
                 }
             }
+
 
         }
     }
