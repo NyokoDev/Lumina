@@ -128,7 +128,7 @@ namespace Lumina
             }
             set
             {
-                float clampedValue = Mathf.Clamp(value, -10f, 20000f); // Clamp the value between -10 and 10
+                float clampedValue = Mathf.Clamp(value, 0f, 20000f); // Clamp the value between 0 and 20000
                 FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
                 if (fogProperties != null)
                 {
@@ -136,6 +136,7 @@ namespace Lumina
                 }
             }
         }
+
 
         public static float ThirdFogDistance
         {

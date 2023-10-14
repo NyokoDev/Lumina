@@ -266,14 +266,15 @@ namespace Lumina
 
 
                 // Slider 7 - Fog Distance
-                // Assuming you have a reference to the FogEffect component named "fogEffectComponent"
-                FogDistanceSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGDISTANCE_TEXT), -10f, 20000f, -1, ref currentY);
+               
+                FogDistanceSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGDISTANCE_TEXT), 0f, 20000f, -1, ref currentY);
                 FogDistanceSlider.value = LuminaLogic.FogDistance;
                 FogDistanceSlider.eventValueChanged += (c, value) =>
                 {
-                    LuminaLogic.VolumeFogDistance = value;
+                 
                     LuminaLogic.FogDistance = value;
-                    LuminaLogic.ThirdFogDistance = 0f;
+                    LuminaLogic.ThirdFogDistance = value;
+                  
                     SaveSettings();
 
                 };
