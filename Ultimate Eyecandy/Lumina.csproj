@@ -12,6 +12,8 @@
 			$(ManagedDLLPath)
 		</AssemblySearchPaths>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageId>LuminaTest</PackageId>
+		<AssemblyName>Lumina</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="CitiesHarmony.API" Version="2.2.0" />

@@ -24,7 +24,6 @@ namespace Lumina
 
     internal sealed class MainAdvancedTab : AdvancedPanelTabBase
     {
-        private UISlider SSAASlider;
         private UISlider sunIntensitySlider;
         private UISlider ExposureSlider;
         private UISlider SkyRayleighScattering;
@@ -49,31 +48,6 @@ namespace Lumina
             // Label for Screen Resolution
             ssaaLabel = UILabels.AddLabel(panel, Margin, currentY, "Advanced Adjustments", panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
             currentY += ssaaLabel.height + Margin;
-
-            // SSAA Slider
-            SSAASlider = AddSlider(panel, "Screen Resolution Level", 1f, 4f, 0, ref currentY);
-            currentY += 0.5f; // Add space
-
-            // Apply Button
-            SSAAApplyButton = UIButtons.AddSmallerButton(panel, Margin, currentY, "Apply");
-            SSAAApplyButton.eventClicked += OnApplyButtonClicked;
-            currentY += 0.5f; // Add space
-
-            // Calculate the X-coordinate for the Reset Button
-            float resetButtonX = SSAAApplyButton.relativePosition.x + SSAAApplyButton.width + Margin;
-
-            // Reset Button
-            SSAAResetButton = UIButtons.AddSmallerButton(panel, resetButtonX, currentY, "Reset");
-            SSAAResetButton.eventClicked += OnResetButtonClicked;
-            currentY += 0.5f; // Add space
-
-            // Increment the Y position if needed
-            currentY += SSAAApplyButton.height + Margin; // You can adjust this based on your layout
-            currentY += 0.5f; // Add space
-
-            // Increment the Y position again
-            currentY += SSAAResetButton.height + Margin;
-            currentY += 0.5f; // Add space
 
             // Sun Intensity Slider
             sunIntensitySlider = AddSlider(panel, "Sun Intensity", 0f, 8f, 0, ref currentY);
@@ -100,38 +74,18 @@ namespace Lumina
             // Set the mainAdvancedTabInstance in the ModSettings class
             ModSettings.mainAdvancedTabInstance = this;
 
-           
-
             // Pass the instance of MainAdvancedTab to ExternalSettingsHandler
             ExternalSettingsHandler externalSettingsHandler = new ExternalSettingsHandler(this);
 
             // Load saved settings
             externalSettingsHandler.LoadSettings();
-        }
+        
+    }
 
 
-       
-        private void OnApplyButtonClicked(UIComponent component, UIMouseEventParameter eventParam)
-        {
-            float ssaaValue = SSAASlider.value;
-            ApplyScreenResolutionSettings(ssaaValue);
 
-            // Save settings to the XML file
-            SaveSettings();
-        }
 
-        private void OnResetButtonClicked(UIComponent component, UIMouseEventParameter eventParam)
-        {
-            // Reset the screen resolution to its default values
-            ResetScreenResolutionSettings();
-
-            // Reset the slider value to its default
-            SSAASlider.value = 1.0f;
-
-            // Save settings to the XML file
-            SaveSettings();
-        }
-
+   
 
         public void LoadSettings()
         {
@@ -154,16 +108,8 @@ namespace Lumina
                 Settings settings = (Settings)serializer.Deserialize(reader);
 
                 if (settings != null)
-                {
-                    if (SSAASlider != null)
-                    {
-                        SSAASlider.value = settings.SliderValue;
-                    }
-                    else
-                    {
-                        Debug.LogError("[LUMINA] SSAASlider is null.");
-                    }
-
+                {  
+                 
                     if (sunIntensitySlider != null)
                     {
                         sunIntensitySlider.value = settings.SunIntensity;
@@ -279,7 +225,6 @@ namespace Lumina
         {
             Settings settings = new Settings
             {
-                SliderValue = SSAASlider.value,
                 SunIntensity = sunIntensitySlider.value,
                 Exposure = ExposureSlider.value,
                 RayleighScattering = SkyRayleighScattering.value,
@@ -313,15 +258,6 @@ namespace Lumina
             }
 
 
-            public void HandleApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-            {
-                mainTab.OnApplyButtonClicked(component, eventParam);
-            }
-
-            public void HandleResetButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-            {
-                mainTab.OnResetButtonClicked(component, eventParam);
-            }
 
             public void LoadSettings()
             {
