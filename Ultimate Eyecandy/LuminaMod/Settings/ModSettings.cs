@@ -4,10 +4,8 @@
     using System.Xml.Serialization;
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
-    using ColossalFramework.UI;
     using UnityEngine;
     using static Lumina.MainAdvancedTab;
-    using static LuminaStyle;
 
     /// <summary>
     /// Global mod settings.
@@ -52,6 +50,24 @@
         public LuminaData LightingSettings { get => StyleManager.LoadedData; set => StyleManager.LoadedData = value; }
 
         /// <summary>
+        /// Gets or sets the current Lumina fog settings.
+        /// </summary>
+        [XmlElement("FogSettings")]
+        public FogData FogSettings { get => new FogData { IsValid = Loading.IsLoaded }; set => LuminaLogic.LoadedFogData = value; }
+
+        /// <summary>
+        /// Gets or sets the name of the selected daytime CubeMap.
+        /// </summary>
+        [XmlElement("DayCubeMap")]
+        public string DayCubeMap { get => LuminaLogic.DayCubeMap; set => LuminaLogic.DayCubeMap = value; }
+
+        /// <summary>
+        /// Gets or sets the name of the selected nighttime CubeMap.
+        /// </summary>
+        [XmlElement("NightCubeMap")]
+        public string NightCubeMap { get => LuminaLogic.NightCubeMap; set => LuminaLogic.NightCubeMap = value; }
+
+        /// <summary>
         /// Gets the current hotkey as a UUI UnsavedInputKey.
         /// </summary>
         [XmlIgnore]
@@ -67,7 +83,6 @@
         /// </summary>
         internal static void Save() => XMLFileUtils.Save<ModSettings>(SettingsFile);
 
-
         /// <summary>
         /// Saves settings to file.
         /// </summary>
@@ -79,8 +94,5 @@
             // Call the SaveSettings method on the instance
             handler.SaveSettings();
         }
-
-
-
     }
 }

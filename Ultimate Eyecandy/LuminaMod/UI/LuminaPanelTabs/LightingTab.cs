@@ -3,10 +3,7 @@
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
-    using Lumina.CompChecker;
     using Lumina.CompatibilityPolice;
-    using UnityEngine;
-    using System.ComponentModel;
 
     /// <summary>
     /// Lumina panel tab for setting lighting options.
@@ -105,8 +102,6 @@
                 };
             }
         }
-
-
 
         /// <summary>
         /// Adds a Lumina exposure slider to the given UIComponent.

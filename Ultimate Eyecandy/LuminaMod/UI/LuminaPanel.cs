@@ -1,10 +1,9 @@
 ﻿namespace Lumina
 {
+    using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
-    using Lumina.CompatibilityPolice;
     using Lumina.CompChecker;
-    using System.IO;
     using UnityEngine;
     using static Lumina.MainAdvancedTab;
 
@@ -67,15 +66,12 @@
                 new LookUpTableTab(tabStrip, 3);
             }
 
+            SetIcon(UITextures.LoadSprite("UUI"), "normal");
+            //handler.LoadSettings();
 
             // Force initial tab selection.
             tabStrip.selectedIndex = -1;
             tabStrip.selectedIndex = 0;
-
-            SetIcon(UITextures.LoadSprite("UUI"), "normal");
-            VisualismHandler.LoadSettings();
-            handler.LoadSettings();
-
         }
 
         /// <summary>
@@ -87,6 +83,7 @@
             // Deselect UUI button.
             LuminaLogic.Instance?.ResetButton();
             LuminaLogic.Instance.UUIButton.IsPressed = false;
+
             // Save settings.
             ModSettings.Save();
 
