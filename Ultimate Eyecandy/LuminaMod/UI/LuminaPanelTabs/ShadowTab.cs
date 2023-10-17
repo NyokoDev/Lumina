@@ -1,32 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using AlgernonCommons.Translation;
-using AlgernonCommons.UI;
-using ColossalFramework.UI;
-using Lumina.CompatibilityPolice;
-using Lumina.CompChecker;
-using SkyboxReplacer.OptionsFramework.Attibutes;
-using SkyboxReplacer;
-using UnityEngine;
-
-namespace Lumina
+﻿namespace Lumina
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Serialization;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using ColossalFramework.UI;
+    using Lumina.CompatibilityPolice;
+    using Lumina.CompChecker;
+    using SkyboxReplacer.OptionsFramework.Attibutes;
+    using SkyboxReplacer;
+    using UnityEngine;
+
     [XmlRoot("VisualismTabSettings")]
     public class VisualismTabSettings
     {
-        public bool ClassicFogEnabled { get; set; }
-        public bool EdgeFogEnabled { get; set; }
-        public bool FogEffectEnabled { get; set; }
-        public float FogIntensity { get; set; }
-        public float ColorDecay { get; set; }
-        public float EdgeFogDistance { get; set; }
-        public float HorizonHeight { get; set; }
-        public float FogHeight { get; set; }
-        public float FogDistance { get; set; }
-
         public string SelectedDayCubemap { get; set; }
         public string SelectedNightCubemap { get; set; }
     }
@@ -53,7 +42,6 @@ namespace Lumina
         private string _currentDayCubemap; // Store the current day cubemap value separately
         private Options Options;
         private string _currentNightCubemap; // Store the current night cubemap value separately
-        private VisualismTabSettings _settings;
 
         private UISlider EdgeDistanceSlider;
         private UISlider HorizonHeight;
@@ -68,79 +56,11 @@ namespace Lumina
         private string _vanillaOuterSpaceCubemap;
         private float CurrentSlider = 8f;
 
-
-        private List<string> GetCubemapItems()
-        {
-            List<string> items = new List<string>
-            {
-                "Vanilla", // Add the vanilla option to the dropdown
-            };
-
-            // Get the day cubemap options from CubemapManager
-            DropDownEntry<string>[] dayCubemaps = CubemapManager.GetDayCubemaps();
-            items.AddRange(dayCubemaps.Select(entry => entry.Code)); // Use entry.Description instead of entry.Value
-
-            return items;
-        }
-
-        // Function to handle changes in the cubemap dropdown selection
-        private void OnCubemapDropdownValueChanged(UIComponent component, int value)
-        {
-            string selectedCubemap = cubemapdropdown.items[value];
-
-            // Get the day and night cubemap dictionaries from CubemapManager (No need for ImportCubemapDictionaries)
-            CubemapManager.ImportFromMods();
-
-            List<string> cubemaps = GetCubemapItems();
-
-            // Handle day and night cubemap selection
-            if (cubemaps.Contains(selectedCubemap))
-            {
-                if (CubemapManager.GetDayReplacement(selectedCubemap) != null)
-                {
-                    _settings.SelectedDayCubemap = selectedCubemap;
-                    SetCubemapValue(selectedCubemap, isDayCubemap: true);
-
-                    Debug.Log($"Setting day cubemap to: {selectedCubemap}");
-
-
-                }
-                else if (CubemapManager.GetNightReplacement(selectedCubemap) != null)
-                {
-                    _settings.SelectedNightCubemap = selectedCubemap;
-                    SetCubemapValue(selectedCubemap, isDayCubemap: false);
-                    Debug.Log($"Setting night cubemap to: {selectedCubemap}");
-
-                }
-            }
-            else
-            {
-                // Handle the case where the selected cubemap is not found in the dictionary
-                Debug.LogError($"Cubemap with code '{selectedCubemap}' not found in the dictionary.");
-            }
-        }
-
-
-        // Function to set the selected cubemap value in the SkyboxReplacer.Options class
-        private void SetCubemapValue(string cubemap, bool isDayCubemap)
-        {
-            if (isDayCubemap)
-            {
-                // Set the day cubemap in SkyboxReplacer
-                SkyboxReplacer.SkyboxReplacer.SetDayCubemap(cubemap);
-                _currentDayCubemap = cubemap;
-                Debug.Log($"Setting day cubemap to: {cubemap}");
-
-            }
-            else
-            {
-                // Set the night cubemap in SkyboxReplacer
-                SkyboxReplacer.SkyboxReplacer.SetNightCubemap(cubemap);
-                _currentNightCubemap = cubemap;
-                Debug.Log($"Setting night cubemap to: {cubemap}");
-
-            }
-        }
+        /// <summary>
+        /// Creates a new <see cref="ShadowTab"/> instance.
+        /// </summary>
+        /// <param name="tabStrip">Parent TabStrip.</param>
+        /// <param name="tabIndex">Tab index.</param>
         internal ShadowTab(UITabstrip tabStrip, int tabIndex)
         {
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
@@ -215,55 +135,54 @@ namespace Lumina
                 // Checkbox 3: Classic Fog Checkbox
                 _fogCheckBox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CLASSICFOG_TEXT));
                 _fogCheckBox.isChecked = LuminaLogic.ClassicFogEnabled;
-                _fogCheckBox.eventCheckChanged += (c, isChecked) => { LuminaLogic.ClassicFogEnabled = isChecked; SaveSettings(); };
+                _fogCheckBox.eventCheckChanged += (c, isChecked) => LuminaLogic.ClassicFogEnabled = isChecked;
                 currentY += CheckHeight + Margin;
 
                 // Checkbox 4: Edge Fog Checkbox
                 _edgefogCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.EDGEFOG_TEXT));
                 _edgefogCheckbox.isChecked = LuminaLogic.EdgeFogEnabled;
-                _edgefogCheckbox.eventCheckChanged += (c, isChecked) => { LuminaLogic.EdgeFogEnabled = isChecked; SaveSettings(); };
+                _edgefogCheckbox.eventCheckChanged += (c, isChecked) => LuminaLogic.EdgeFogEnabled = isChecked;
                 currentY += CheckHeight + Margin;
 
                 // Checkbox: Night Fog
                 _nightfog = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.NIGHTFOG_TEXT));
                 _nightfog.isChecked = LuminaLogic.FogEffectEnabled;
-                _nightfog.eventCheckChanged += (c, isChecked) => { LuminaLogic.FogEffectEnabled = isChecked; SaveSettings(); };
+                _nightfog.eventCheckChanged += (c, isChecked) => LuminaLogic.FogEffectEnabled = isChecked;
                 currentY += CheckHeight + Margin;
 
                 // Slider 3: Fog Intensity Slider
                 _fogIntensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT), 0f, 0.01f, -1, ref currentY);
                 _fogIntensitySlider.value = LuminaLogic.FogIntensity;
-                _fogIntensitySlider.eventValueChanged += (c, value) => { LuminaLogic.FogIntensity = value; SaveSettings(); };
+                _fogIntensitySlider.eventValueChanged += (c, value) => LuminaLogic.FogIntensity = value;
                 _fogIntensitySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGINTENSITY_TEXT);
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
 
                 // Slider 4 - Color Decay
                 _colordecaySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT), 0.06f, 0.4f, -1, ref currentY);
                 _colordecaySlider.value = LuminaLogic.ColorDecay;
-                _colordecaySlider.eventValueChanged += (c, value) => { LuminaLogic.ColorDecay = value; SaveSettings(); };
+                _colordecaySlider.eventValueChanged += (c, value) => LuminaLogic.ColorDecay = value;
                 _colordecaySlider.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGVISIBILITY_TEXT);
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
 
                 // Slider 5 - Edge Distance
-                EdgeDistanceSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.EDGEDISTANCE_TEXT), 0f, 3800f, -1, ref currentY);
+                EdgeDistanceSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.EDGEDISTANCE_TEXT), 0f, 2800f, -1, ref currentY);
                 EdgeDistanceSlider.value = LuminaLogic.EdgeFogDistance;
-                EdgeDistanceSlider.eventValueChanged += (c, value) => { LuminaLogic.EdgeFogDistance = value; SaveSettings(); };
+                EdgeDistanceSlider.eventValueChanged += (c, value) => LuminaLogic.EdgeFogDistance = value;
                 EdgeDistanceSlider.tooltip = Translations.Translate(LuminaTR.TranslationID.EDGEDISTANCE_TEXT);
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
 
                 // Slider 6 - Horizon Height
                 HorizonHeight = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.HORIZONHEIGHT_TEXT), 0f, 5000f, -1, ref currentY);
                 HorizonHeight.value = LuminaLogic.HorizonHeight;
-                HorizonHeight.eventValueChanged += (c, value) => { LuminaLogic.HorizonHeight = value; SaveSettings(); };
+                HorizonHeight.eventValueChanged += (c, value) => LuminaLogic.HorizonHeight = value;
                 HorizonHeight.tooltip = Translations.Translate(LuminaTR.TranslationID.HORIZONHEIGHT_TEXT);
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
 
                 FogHeight = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGHEIGHT_TEXT), 0f, 5000f, -1, ref currentY);
                 FogHeight.value = LuminaLogic.FogHeight;
-                FogHeight.eventValueChanged += (c, value) => { LuminaLogic.FogHeight = value; SaveSettings(); };
+                FogHeight.eventValueChanged += (c, value) => LuminaLogic.FogHeight = value;
                 FogHeight.tooltip = Translations.Translate(LuminaTR.TranslationID.FOGHEIGHT_TEXT);
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
-
 
                 // Slider 7 - Fog Distance
                
@@ -271,12 +190,8 @@ namespace Lumina
                 FogDistanceSlider.value = LuminaLogic.FogDistance;
                 FogDistanceSlider.eventValueChanged += (c, value) =>
                 {
-                 
                     LuminaLogic.FogDistance = value;
-                    LuminaLogic.ThirdFogDistance = value;
-                  
-                    SaveSettings();
-
+                    LuminaLogic.ThreeDFogDistance = value;
                 };
 
                 // Reset Button
@@ -304,157 +219,97 @@ namespace Lumina
                     StandalonePanelManager<AdvancedTab>.Create();
                 };
 
-                _settings = new VisualismTabSettings();
-                LoadSettings();
+                SetInitialValues();
             }
         }
 
-        private void Awake()
+        private List<string> GetCubemapItems()
         {
-            // Create the settings file if it doesn't exist
-            SaveSettings();
+            List<string> items = new List<string>
+            {
+                "Vanilla", // Add the vanilla option to the dropdown
+            };
+
+            // Get the day cubemap options from CubemapManager
+            DropDownEntry<string>[] dayCubemaps = CubemapManager.GetDayCubemaps();
+            items.AddRange(dayCubemaps.Select(entry => entry.Code)); // Use entry.Description instead of entry.Value
+
+            return items;
         }
 
-        // Helper method to load saved settings from an XML file
-        public void LoadSettings()
+        // Function to handle changes in the cubemap dropdown selection
+        private void OnCubemapDropdownValueChanged(UIComponent component, int value)
         {
+            string selectedCubemap = cubemapdropdown.items[value];
 
-            if (File.Exists(Visualism))
+            // Get the day and night cubemap dictionaries from CubemapManager (No need for ImportCubemapDictionaries)
+            CubemapManager.ImportFromMods();
+
+            List<string> cubemaps = GetCubemapItems();
+
+            // Handle day and night cubemap selection
+            if (cubemaps.Contains(selectedCubemap))
             {
-                try
+                if (CubemapManager.GetDayReplacement(selectedCubemap) != null)
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(VisualismTabSettings));
-                    using (FileStream stream = new FileStream(Visualism, FileMode.Open))
-                    {
-                        // Deserialize the XML and store the settings in the _settings object
-                        _settings = (VisualismTabSettings)serializer.Deserialize(stream);
+                    LuminaLogic.DayCubeMap = selectedCubemap;
+                    SetCubemapValue(selectedCubemap, isDayCubemap: true);
 
-                        // Apply the loaded settings to UI elements
-                        _fogCheckBox.isChecked = _settings.ClassicFogEnabled;
-                        _edgefogCheckbox.isChecked = _settings.EdgeFogEnabled;
-                        _nightfog.isChecked = _settings.FogEffectEnabled;
-                        _fogIntensitySlider.value = _settings.FogIntensity;
-                        _colordecaySlider.value = _settings.ColorDecay;
-                        EdgeDistanceSlider.value = _settings.EdgeFogDistance;
-                        HorizonHeight.value = _settings.HorizonHeight;
-                        FogHeight.value = _settings.FogHeight;
-                        FogDistanceSlider.value = _settings.FogDistance;
+                    Debug.Log($"Setting day cubemap to: {selectedCubemap}");
 
-                        SetCubemapValue(_settings.SelectedDayCubemap, isDayCubemap: true);
-                        SetCubemapValue(_settings.SelectedNightCubemap, isDayCubemap: false);
-                        // Add code to apply other settings as needed
-                        Debug.Log("[LUMINA] Visualism tab settings loaded successfully.");
-                    }
+
                 }
-                catch (Exception ex)
+                else if (CubemapManager.GetNightReplacement(selectedCubemap) != null)
                 {
-                    Debug.LogError("[LUMINA] Error loading Visualism tab settings: " + ex.Message);
+                    LuminaLogic.NightCubeMap = selectedCubemap;
+                    SetCubemapValue(selectedCubemap, isDayCubemap: false);
+                    Debug.Log($"Setting night cubemap to: {selectedCubemap}");
+
                 }
             }
             else
             {
-                // Create a new settings object if the file doesn't exist
-                SaveSettings();
+                // Handle the case where the selected cubemap is not found in the dictionary
+                Debug.LogError($"Cubemap with code '{selectedCubemap}' not found in the dictionary.");
             }
         }
-
-        // Helper method to save current settings to an XML file
-        public void SaveSettings()
+        
+        // Function to set the selected cubemap value in the SkyboxReplacer.Options class
+        private void SetCubemapValue(string cubemap, bool isDayCubemap)
         {
-            try
+            /*
+            if (isDayCubemap)
             {
-                if (_fogCheckBox != null)
-                {
-                    _settings.ClassicFogEnabled = _fogCheckBox.isChecked;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] _fogCheckBox is null. ClassicFogEnabled not saved.");
-                }
+                // Set the day cubemap in SkyboxReplacer
+                SkyboxReplacer.SkyboxReplacer.SetDayCubemap(cubemap);
+                _currentDayCubemap = cubemap;
+                Debug.Log($"Setting day cubemap to: {cubemap}");
 
-                if (_edgefogCheckbox != null)
-                {
-                    _settings.EdgeFogEnabled = _edgefogCheckbox.isChecked;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] _edgefogCheckbox is null. EdgeFogEnabled not saved.");
-                }
-
-                if (_nightfog != null)
-                {
-                    _settings.FogEffectEnabled = _nightfog.isChecked;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] _nightfog is null. FogEffectEnabled not saved.");
-                }
-
-                if (_fogIntensitySlider != null)
-                {
-                    _settings.FogIntensity = _fogIntensitySlider.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] _fogIntensitySlider is null. FogIntensity not saved.");
-                }
-
-                if (_colordecaySlider != null)
-                {
-                    _settings.ColorDecay = _colordecaySlider.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] _colordecaySlider is null. ColorDecay not saved.");
-                }
-
-                if (EdgeDistanceSlider != null)
-                {
-                    _settings.EdgeFogDistance = EdgeDistanceSlider.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] EdgeDistanceSlider is null. EdgeFogDistance not saved.");
-                }
-
-                if (HorizonHeight != null)
-                {
-                    _settings.HorizonHeight = HorizonHeight.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] HorizonHeight is null. HorizonHeight not saved.");
-                }
-
-                if (FogHeight != null)
-                {
-                    _settings.FogHeight = FogHeight.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] FogHeight is null. FogHeight not saved.");
-                }
-
-                if (FogDistanceSlider != null)
-                {
-                    _settings.FogDistance = FogDistanceSlider.value;
-                }
-                else
-                {
-                    Debug.LogWarning("[LUMINA] FogDistanceSlider is null. FogDistance not saved.");
-                }
-
-                // SAVE ALL SETTINGS 
-                XmlSerializer serializer = new XmlSerializer(typeof(VisualismTabSettings));
-                using (FileStream stream = new FileStream(Visualism, FileMode.Create))
-                {
-                    serializer.Serialize(stream, _settings);
-                }
-                Debug.Log("[LUMINA] Visualism tab settings saved successfully.");
             }
-            catch (Exception ex)
+            else
             {
-                Debug.LogError("[LUMINA] Error saving Visualism settings: " + ex.Message);
+                // Set the night cubemap in SkyboxReplacer
+                SkyboxReplacer.SkyboxReplacer.SetNightCubemap(cubemap);
+                _currentNightCubemap = cubemap;
+                Debug.Log($"Setting night cubemap to: {cubemap}");
+
+            }
+            */
+        }
+        
+        /// <summary>
+        /// Sets initial control values.
+        /// </summary>
+        private void SetInitialValues()
+        {
+            if (!string.IsNullOrEmpty(LuminaLogic.DayCubeMap))
+            {
+                SetCubemapValue(LuminaLogic.DayCubeMap, isDayCubemap: true);
+            }
+
+            if (!string.IsNullOrEmpty(LuminaLogic.NightCubeMap))
+            {
+                SetCubemapValue(LuminaLogic.NightCubeMap, isDayCubemap: false);
             }
         }
     }

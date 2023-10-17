@@ -1,21 +1,19 @@
-﻿using System;
-using System.Reflection;
-using AlgernonCommons;
-using AlgernonCommons.Translation;
-using AlgernonCommons.UI;
-using ColossalFramework.UI;
-using UnifiedUI.Helpers;
-using UnityEngine;
-using static ItemClass;
-
-namespace Lumina
+﻿namespace Lumina
 {
+    using System;
+    using System.Reflection;
+    using AlgernonCommons;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using UnifiedUI.Helpers;
+    using UnityEngine;
+
     /// <summary>
     /// Lumina logic class.
     /// </summary>
     internal sealed class LuminaLogic
     {
-        // Shadows values.
+        // Shadow values.
         private static bool s_disableSmoothing;
         private static float s_shadowIntensity = 1f;
 
@@ -66,144 +64,40 @@ namespace Lumina
                 s_instance?.UpdateShadowSettings();
             }
         }
-        public static float FogIntensity
+
+        /// <summary>
+        /// Sets loaded fog data (from configuration file).
+        /// </summary>
+        internal static FogData LoadedFogData { private get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the selected daytime CubeMap.
+        /// </summary>
+        internal static string DayCubeMap { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets the name of the selected nighttime CubeMap.
+        /// </summary>
+        internal static string NightCubeMap { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether fog effects are enabled.
+        /// </summary>
+        internal static bool FogEffectEnabled
         {
             get
             {
-                var fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                return fogProperties != null ? fogProperties.m_FogDensity : 0f;
-            }
-            internal set
-            {
-                var fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
                 {
-                    fogProperties.m_FogDensity = value;
+                    return LoadedFogData.FogEffectEnabled;
                 }
-            }
-        }
 
-        public static float FogHeight
-        {
-            get
-            {
-                RenderProperties fogProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_fogHeight : 5000f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, 0f, 5000f); // Clamp the value between -10 and 10
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
-                {
-                    fogProperties.m_FogHeight = clampedValue;
-                }
-            }
-        }
-
-        public static float VolumeFogDistance
-        {
-            get
-            {
-                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-                return (renderProperties != null && renderProperties.enabled) ? renderProperties.m_volumeFogDistance : 10f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, -10f, 4800f); // Clamp the value between -10 and 20000
-                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-                if (renderProperties != null)
-                {
-                    renderProperties.m_volumeFogDistance = clampedValue;
-                }
-            }
-        }
-
-        public static float FogDistance
-        {
-            get
-            {
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_FogDistance : 10f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, 0f, 20000f); // Clamp the value between 0 and 20000
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
-                {
-                    fogProperties.m_FogDistance = clampedValue;
-                }
-            }
-        }
-
-
-        public static float ThirdFogDistance
-        {
-            get
-            {
-                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                return (fogEffect != null && fogEffect.enabled) ? fogEffect.m_3DFogDistance : 8f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, -10f, 10f); // Clamp the value between -10 and 10
-                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                if (fogEffect != null)
-                {
-                    fogEffect.m_3DFogDistance = clampedValue;
-                }
-            }
-        }
-
-
-
-        public static float HorizonHeight
-        {
-            get
-            {
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_HorizonHeight : 800f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, 0f, 5000f);
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
-                {
-                    fogProperties.m_HorizonHeight = clampedValue;
-                }
-            }
-        }
-
-
-
-        public static bool EdgeFogEnabled
-        {
-            get
-            {
-                var cedge = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                return cedge != null && cedge.m_edgeFog;
-            }
-            internal set
-            {
-                var cedge = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                if (cedge != null)
-                {
-                    cedge.m_edgeFog = value;
-                }
-            }
-        }
-
-        //Disable at Night
-
-        public static bool FogEffectEnabled
-        {
-            get
-            {
+                // Otherwise use active settings.
                 FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
                 return fogEffect != null && fogEffect.enabled;
             }
+
             set
             {
                 FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
@@ -214,70 +108,269 @@ namespace Lumina
             }
         }
 
-
-        public static float ColorDecay
+        /// <summary>
+        /// Gets or sets a value indicating whether classic fog effects are enabled.
+        /// </summary>
+        internal static bool ClassicFogEnabled
         {
             get
             {
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_ColorDecay : 0.0f;
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.FogEffectEnabled;
+                }
+
+                // Otherwise use active settings.
+                FogEffect fog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return fog != null && fog.enabled;
             }
+
             set
             {
-                float clampedValue = Mathf.Clamp(value, 0f, 1f);
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
+                FogEffect fog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fog != null)
                 {
-                    fogProperties.m_ColorDecay = clampedValue;
-                }
-            }
-        }
-
-
-
-        //Color Decay
-        public static float EdgeFogDistance
-        {
-            get
-            {
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_EdgeFogDistance : 0.0f;
-            }
-            set
-            {
-                float clampedValue = Mathf.Clamp(value, 0f, 3800f); // Assuming the range is from 0f to 3800f.
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
-                if (fogProperties != null)
-                {
-                    fogProperties.m_EdgeFogDistance = clampedValue;
-                }
-            }
-        }
-
-
-
-
-
-
-        public static bool ClassicFogEnabled
-        {
-            get
-            {
-                var cfog = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                return cfog != null && cfog.enabled;
-            }
-            internal set
-            {
-                var cfog = UnityEngine.Object.FindObjectOfType<FogEffect>();
-                if (cfog != null)
-                {
-                    cfog.enabled = value;
+                    fog.enabled = value;
                     // Optionally, synchronize EdgeFogEnabled with ClassicFogEnabled when setting ClassicFogEnabled.
                     EdgeFogEnabled = value;
                 }
             }
         }
 
+        /// <summary>
+        /// Gets or sets fog intensity.
+        /// </summary>
+        internal static float FogIntensity
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.FogIntensity;
+                }
+
+                // Otherwise use active settings.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return fogProperties != null ? fogProperties.m_FogDensity : 0f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogDensity = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets fog height.
+        /// </summary>
+        internal static float FogHeight
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.FogHeight;
+                }
+
+                // Otherwise use active settings.
+                RenderProperties fogProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_fogHeight : 5000f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogHeight = Mathf.Clamp(value, 0f, 5000f);
+                }
+            }
+        }
+
+        public static float FogDistance
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.FogDistance;
+                }
+
+                // Otherwise use active settings.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_FogDistance : 10f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_FogDistance = Mathf.Clamp(value, -10f, 20000f);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets fog color decay.
+        /// </summary>
+        internal static float ColorDecay
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.ColorDecay;
+                }
+
+                // Otherwise use active settings.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_ColorDecay : 0.0f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_ColorDecay = Mathf.Clamp(value, 0f, 1f); ;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether edge fog effects are enabled.
+        /// </summary>
+        internal static bool EdgeFogEnabled
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.EdgeFogEnabled;
+                }
+
+                // Otherwise use active settings.
+                FogEffect fog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return fog != null && fog.m_edgeFog;
+            }
+
+            set
+            {
+                FogEffect fog = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fog != null)
+                {
+                    fog.m_edgeFog = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets edge fog distance.
+        /// </summary>
+        public static float EdgeFogDistance
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.EdgeFogDistance;
+                }
+
+                // Otherwise use active settings.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_EdgeFogDistance : 0.0f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_EdgeFogDistance = Mathf.Clamp(value, 0f, 2800f);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizon height.
+        /// </summary>
+        internal static float HorizonHeight
+        {
+            get
+            {
+                // Use loaded data if available.
+                if (LoadedFogData != null && LoadedFogData.IsValid)
+                {
+                    return LoadedFogData.HorizonHeight;
+                }
+
+                // Otherwise use active settings.
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_HorizonHeight : 800f;
+            }
+
+            set
+            {
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    fogProperties.m_HorizonHeight = Mathf.Clamp(value, 0f, 5000f); ;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the volume fog distance.
+        /// </summary>
+        internal static float VolumeFogDistance
+        {
+            private get
+            {
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                return (renderProperties != null && renderProperties.enabled) ? renderProperties.m_volumeFogDistance : 10f;
+            }
+            set
+            {
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                if (renderProperties != null)
+                {
+                    renderProperties.m_volumeFogDistance = Mathf.Clamp(value, -10f, 4800f);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the 3D fog distance.
+        /// </summary>
+        internal static float ThreeDFogDistance
+        {
+            private get
+            {
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                return (fogEffect != null && fogEffect.enabled) ? fogEffect.m_3DFogDistance : 8f;
+            }
+
+            set
+            {
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fogEffect != null)
+                {
+                    fogEffect.m_3DFogDistance = Mathf.Clamp(value, -10f, 10f);
+                }
+            }
+        }
 
         /// <summary>
         /// Loads current settings and ensure an active instance.
@@ -314,6 +407,10 @@ namespace Lumina
             StyleManager.ApplySettings();
             s_instance.ApplyShadowSmoothing();
             s_instance.UpdateShadowSettings();
+
+            // Apply any loaded fog values and then clear reference.
+            ApplyFogValues();
+            LoadedFogData = null;
         }
 
         /// <summary>
@@ -655,6 +752,27 @@ namespace Lumina
         {
             var daynight = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
             daynight.m_Tonemapping = enable;
+        }
+
+
+        /// <summary>
+        /// Applies previously-loaded fog values.
+        /// </summary>
+        private static void ApplyFogValues()
+        {
+            // Only apply if data is loaded and valid.
+            if (LoadedFogData != null && LoadedFogData.IsValid)
+            {
+                FogEffectEnabled = LoadedFogData.FogEffectEnabled;
+                ClassicFogEnabled = LoadedFogData.ClassicFogEnabled;
+                FogIntensity = LoadedFogData.FogIntensity;
+                FogHeight = LoadedFogData.FogHeight;
+                FogDistance = LoadedFogData.FogDistance;
+                ColorDecay = LoadedFogData.ColorDecay;
+                EdgeFogEnabled = LoadedFogData.EdgeFogEnabled;
+                EdgeFogDistance = LoadedFogData.EdgeFogDistance;
+                HorizonHeight = LoadedFogData.HorizonHeight;
+            }
         }
     }
 }
