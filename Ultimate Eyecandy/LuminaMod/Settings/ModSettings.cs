@@ -59,13 +59,13 @@
         /// Gets or sets the name of the selected daytime CubeMap.
         /// </summary>
         [XmlElement("DayCubeMap")]
-        public string DayCubeMap { get => LuminaLogic.DayCubeMap; set => LuminaLogic.DayCubeMap = value; }
+        public string DayCubeMap { get => CubemapManager.DayCubeMap; set => CubemapManager.DayCubeMap = value; }
 
         /// <summary>
         /// Gets or sets the name of the selected nighttime CubeMap.
         /// </summary>
         [XmlElement("NightCubeMap")]
-        public string NightCubeMap { get => LuminaLogic.NightCubeMap; set => LuminaLogic.NightCubeMap = value; }
+        public string NightCubeMap { get => CubemapManager.NightCubeMap; set => CubemapManager.NightCubeMap = value; }
 
         /// <summary>
         /// Gets the current hotkey as a UUI UnsavedInputKey.

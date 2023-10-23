@@ -4,13 +4,12 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Serialization;
+    using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
     using Lumina.CompChecker;
-    using SkyboxReplacer.OptionsFramework.Attibutes;
-    using SkyboxReplacer;
     using UnityEngine;
 
     [XmlRoot("VisualismTabSettings")]
@@ -37,23 +36,14 @@
         private UICheckBox _nightfog;
         private UISlider _colordecaySlider;
         private UILabel _Effects;
-        private UIDropDown cubemapdropdown;
-        private SunShaftsCompositeShaderProperties sunShaftsScript;
-        private string _currentDayCubemap; // Store the current day cubemap value separately
-        private Options Options;
-        private string _currentNightCubemap; // Store the current night cubemap value separately
+        private UIDropDown _cubemapDropDown;
 
         private UISlider EdgeDistanceSlider;
         private UISlider HorizonHeight;
         private UISlider FogHeight;
-        private string Visualism = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "VisualismTabSettings.xml");
 
         private UISlider FogDistanceSlider;
 
-
-        private string _vanillaDayCubemap;
-        private string _vanillaNightCubemap;
-        private string _vanillaOuterSpaceCubemap;
         private float CurrentSlider = 8f;
 
         /// <summary>
@@ -77,9 +67,10 @@
             else
             {
                 // Dropdown Cubemap
-                cubemapdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
-                cubemapdropdown.items = GetCubemapItems().ToArray();
-                cubemapdropdown.eventSelectedIndexChanged += OnCubemapDropdownValueChanged;
+                _cubemapDropDown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                _cubemapDropDown.items = CubemapManager.Instance.DayCubemapDescriptions;
+                _cubemapDropDown.selectedIndex = CubemapManager.Instance.DayCubmapIndex;
+                _cubemapDropDown.eventSelectedIndexChanged += (c, index) => CubemapManager.Instance.SetDayReplacment(index);
 
                 currentY += 30f;
             }
@@ -97,13 +88,6 @@
             }
             else
             {
-                _currentDayCubemap = "Vanilla";
-                _currentNightCubemap = "Vanilla";
-                // Set the vanilla cubemap values
-                _vanillaDayCubemap = UnityEngine.Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
-                _vanillaNightCubemap = UnityEngine.Object.FindObjectOfType<RenderProperties>()?.m_cubemap?.name;
-                _vanillaOuterSpaceCubemap = UnityEngine.Object.FindObjectOfType<DayNightProperties>()?.m_OuterSpaceCubemap?.name;
-
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
@@ -218,98 +202,6 @@
                 {
                     StandalonePanelManager<AdvancedTab>.Create();
                 };
-
-                SetInitialValues();
-            }
-        }
-
-        private List<string> GetCubemapItems()
-        {
-            List<string> items = new List<string>
-            {
-                "Vanilla", // Add the vanilla option to the dropdown
-            };
-
-            // Get the day cubemap options from CubemapManager
-            DropDownEntry<string>[] dayCubemaps = CubemapManager.GetDayCubemaps();
-            items.AddRange(dayCubemaps.Select(entry => entry.Code)); // Use entry.Description instead of entry.Value
-
-            return items;
-        }
-
-        // Function to handle changes in the cubemap dropdown selection
-        private void OnCubemapDropdownValueChanged(UIComponent component, int value)
-        {
-            string selectedCubemap = cubemapdropdown.items[value];
-
-            // Get the day and night cubemap dictionaries from CubemapManager (No need for ImportCubemapDictionaries)
-            CubemapManager.ImportFromMods();
-
-            List<string> cubemaps = GetCubemapItems();
-
-            // Handle day and night cubemap selection
-            if (cubemaps.Contains(selectedCubemap))
-            {
-                if (CubemapManager.GetDayReplacement(selectedCubemap) != null)
-                {
-                    LuminaLogic.DayCubeMap = selectedCubemap;
-                    SetCubemapValue(selectedCubemap, isDayCubemap: true);
-
-                    Debug.Log($"Setting day cubemap to: {selectedCubemap}");
-
-
-                }
-                else if (CubemapManager.GetNightReplacement(selectedCubemap) != null)
-                {
-                    LuminaLogic.NightCubeMap = selectedCubemap;
-                    SetCubemapValue(selectedCubemap, isDayCubemap: false);
-                    Debug.Log($"Setting night cubemap to: {selectedCubemap}");
-
-                }
-            }
-            else
-            {
-                // Handle the case where the selected cubemap is not found in the dictionary
-                Debug.LogError($"Cubemap with code '{selectedCubemap}' not found in the dictionary.");
-            }
-        }
-        
-        // Function to set the selected cubemap value in the SkyboxReplacer.Options class
-        private void SetCubemapValue(string cubemap, bool isDayCubemap)
-        {
-            /*
-            if (isDayCubemap)
-            {
-                // Set the day cubemap in SkyboxReplacer
-                SkyboxReplacer.SkyboxReplacer.SetDayCubemap(cubemap);
-                _currentDayCubemap = cubemap;
-                Debug.Log($"Setting day cubemap to: {cubemap}");
-
-            }
-            else
-            {
-                // Set the night cubemap in SkyboxReplacer
-                SkyboxReplacer.SkyboxReplacer.SetNightCubemap(cubemap);
-                _currentNightCubemap = cubemap;
-                Debug.Log($"Setting night cubemap to: {cubemap}");
-
-            }
-            */
-        }
-        
-        /// <summary>
-        /// Sets initial control values.
-        /// </summary>
-        private void SetInitialValues()
-        {
-            if (!string.IsNullOrEmpty(LuminaLogic.DayCubeMap))
-            {
-                SetCubemapValue(LuminaLogic.DayCubeMap, isDayCubemap: true);
-            }
-
-            if (!string.IsNullOrEmpty(LuminaLogic.NightCubeMap))
-            {
-                SetCubemapValue(LuminaLogic.NightCubeMap, isDayCubemap: false);
             }
         }
     }
