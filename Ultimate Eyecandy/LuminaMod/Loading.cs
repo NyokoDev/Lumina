@@ -25,6 +25,7 @@
             LuminaLogic.Destroy();
         }
 
+        private UnityEngine.GameObject _gameObject;
         /// <summary>
         /// Performs any actions upon successful level loading completion.
         /// </summary>
@@ -35,6 +36,12 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
+
+            // Initialize cubemaps.
+            CubemapManager.Initialize();
+
+            _gameObject = new UnityEngine.GameObject("CubemapReplacerRedux");
+            _gameObject.AddComponent<CubemapUpdater>();
         }
     }
 }

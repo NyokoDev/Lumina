@@ -71,16 +71,6 @@
         internal static FogData LoadedFogData { private get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the selected daytime CubeMap.
-        /// </summary>
-        internal static string DayCubeMap { get; set; } = null;
-
-        /// <summary>
-        /// Gets or sets the name of the selected nighttime CubeMap.
-        /// </summary>
-        internal static string NightCubeMap { get; set; } = null;
-
-        /// <summary>
         /// Gets or sets a value indicating whether fog effects are enabled.
         /// </summary>
         internal static bool FogEffectEnabled
