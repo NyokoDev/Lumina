@@ -14,6 +14,7 @@ namespace LuminaTR
         public const string LIGHTING_TEXT = "LIGHTING_TEXT"; // LIGHTING_TEXT
         public const string HUE_TEXT = "HUE_TEXT"; // HUE
         public const string TINT_TEXT = "TINT_TEXT"; // TINT
+        public const string LUT_TEXT = "LUT_TEXT"; // LUT
 
 
 
@@ -81,6 +82,7 @@ namespace LuminaTR
         public const string SSAA_BUTTON = "SSAA_BUTTON";
 
         public const string ADVANCED = "ADVANCED";
+        public const string BLUEHAZE = "BLUEHAZE";
         
 
     }

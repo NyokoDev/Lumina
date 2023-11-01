@@ -62,3 +62,4 @@ LUT_SLIDER_OPACITY_TEXT,Opacity
 LUT_SLIDER_HUE_TEXT,Hue
 ADVANCED,Advanced
 IGNORE,Ignore compatibility warning (Experimental)
+BLUEHAZE,Disable Inscattering Effects

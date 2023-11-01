@@ -1,10 +1,13 @@
 ﻿namespace Lumina
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Xml.Serialization;
     using AlgernonCommons;
+    using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
@@ -19,13 +22,14 @@
         public string SelectedNightCubemap { get; set; }
     }
 
-    internal sealed class ShadowTab : PanelTabBase
+    internal sealed class EffectsTab : PanelTabBase
     {
         private UISlider _intensitySlider;
         private UISlider _biasSlider;
         private UICheckBox _shadowSmoothCheck;
         private UICheckBox _minShadOffsetCheck;
         private UICheckBox _fogCheckBox;
+        private UICheckBox HazeCheckbox;
         private UICheckBox _edgefogCheckbox;
         private UISlider _fogIntensitySlider;
         private UILabel _modlabel;
@@ -37,24 +41,38 @@
         private UISlider _colordecaySlider;
         private UILabel _Effects;
         private UIDropDown _cubemapDropDown;
-
+        private int offsetY;
+        private UISlider SimSpeed;
+        private LuminaLogic LuminaLogic;
+        Loading Loading;
         private UISlider EdgeDistanceSlider;
         private UISlider HorizonHeight;
         private UISlider FogHeight;
-
+        private UISlider sunIntensitySlider;
+        private UIDropDown _colorcorrectiondropdown;
+        private UISlider ExposureSlider;
+        private UISlider SkyRayleighScattering;
+        private UISlider SkyMieScattering;
+        private UIButton SSAAApplyButton;
+        private UIButton SSAAResetButton;
+        private UILabel ssaaLabel;
+        private int defaultScreenWidth;
+        private int defaultScreenHeight;
         private UISlider FogDistanceSlider;
 
         private float CurrentSlider = 8f;
 
         /// <summary>
-        /// Creates a new <see cref="ShadowTab"/> instance.
+        /// Creates a new <see cref="EffectsTab"/> instance.
         /// </summary>
         /// <param name="tabStrip">Parent TabStrip.</param>
         /// <param name="tabIndex">Tab index.</param>
-        internal ShadowTab(UITabstrip tabStrip, int tabIndex)
+        internal EffectsTab(UITabstrip tabStrip, int tabIndex)
         {
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.VISUALISM_MOD_NAME), tabIndex, out UIButton _);
+
             float currentY = Margin;
+            UIScrollbars.AddScrollbar(panel);
 
             if (ModUtils.IsModEnabled("skyboxreplacer"))
             {
@@ -88,6 +106,9 @@
             }
             else
             {
+
+
+
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
@@ -169,40 +190,169 @@
                 currentY += CurrentSlider; // Adjust the spacing as needed (10 in this case)
 
                 // Slider 7 - Fog Distance
-               
+
                 FogDistanceSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.FOGDISTANCE_TEXT), 0f, 20000f, -1, ref currentY);
                 FogDistanceSlider.value = LuminaLogic.FogDistance;
                 FogDistanceSlider.eventValueChanged += (c, value) =>
                 {
                     LuminaLogic.FogDistance = value;
                     LuminaLogic.ThreeDFogDistance = value;
+                    LuminaLogic.InscatteringExponent = 0f;
+                    LuminaLogic.InscatteringStartDistance = 0f;
+                    LuminaLogic.InscatteringIntensity = 0f;
                 };
+
+                SimSpeed = AddSlider(panel, "Simulation Speed", 0f, 2f, 0, ref currentY);
+                SimSpeed.value = LuminaLogic.CustomTimeScale;
+                SimSpeed.eventValueChanged += (c, value) =>
+                {
+
+                    LuminaLogic.CustomTimeScale = value;
+                };  // Set Sim Speed value
+
+                sunIntensitySlider = AddSlider(panel, "Sun Intensity", 0f, 8f, 0, ref currentY);
+                sunIntensitySlider.value = LuminaLogic.DayNightSunIntensity;
+                sunIntensitySlider.eventValueChanged += (c, value) => { LuminaLogic.DayNightSunIntensity = value; };  // Set Sun Intensity value
+                currentY += 2f; // Add space
+
+                // Exposure Slider
+                ExposureSlider = AddSlider(panel, "Exposure", 0f, 5f, 0, ref currentY);
+                ExposureSlider.value = LuminaLogic.m_Exposure;
+                ExposureSlider.eventValueChanged += (c, value) => { LuminaLogic.m_Exposure = value; };  // Set Exposure value
+                currentY += 0.5f; // Add space
+
+                // Sky Rayleigh Scattering
+                SkyRayleighScattering = AddSlider(panel, "Rayleigh Scattering", 0f, 5f, 0, ref currentY);
+                SkyRayleighScattering.value = LuminaLogic.SkyRayleighScattering;
+                SkyRayleighScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyRayleighScattering = value; };  // Set Sky Rayleigh value
+                currentY += 0.5f; // Add space
+
+                // Sky Mie Scattering
+                SkyMieScattering = AddSlider(panel, "Mie Scattering", 0f, 5f, 0, ref currentY);
+                SkyMieScattering.value = LuminaLogic.SkyMieScattering;
+                SkyMieScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyMieScattering = value; };// Set Sky Mie value
+
+                // Assuming you have an event handler for when the checkbox state changes
+                ModSettings instance = new ModSettings();
+                HazeCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.BLUEHAZE));
+                HazeCheckbox.isChecked = instance.HazeEnabled;
+                HazeCheckbox.eventCheckChanged += (c, isChecked) =>
+                {
+                    if (isChecked)
+                    {
+                        BlueHaze();
+                    }
+                };
+
+
 
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
                 resetButton.eventClicked += (c, p) =>
                 {
-                    _intensitySlider.value = 1f;
-                    _biasSlider.value = 0f;
-                    _fogIntensitySlider.value = 0f;
-                    _colordecaySlider.value = 1f;
-                    _nightfog.isChecked = false;
-                    _shadowSmoothCheck.isChecked = false;
-                    _minShadOffsetCheck.isChecked = false;
-                    HorizonHeight.value = 0f;
-                    _fogCheckBox.isChecked = false;
-                    _edgefogCheckbox.isChecked = false;
+                    // Show a confirmation popup
+                    ConfirmNotification notification = NotificationBase.ShowNotification<ConfirmNotification>();
+                    notification.AddParas("Reset all Lumina settings? Action can't be undone.");
+
+                    notification._yesButton.eventClicked += (sender, args) =>
+                    {
+                        // Reset all settings
+                        _intensitySlider.value = 1f;
+                        _biasSlider.value = 0f;
+                        _fogIntensitySlider.value = 0f;
+                        _colordecaySlider.value = 1f;
+                        _nightfog.isChecked = false;
+                        _shadowSmoothCheck.isChecked = false;
+                        _minShadOffsetCheck.isChecked = false;
+                        HorizonHeight.value = 0f;
+                        _fogCheckBox.isChecked = false;
+                        _edgefogCheckbox.isChecked = false;
+                        SimSpeed.value = 1f;
+                        sunIntensitySlider.value = 1f;
+                        ExposureSlider.value = 1f;
+                        SkyRayleighScattering.value = 1f;
+                        SkyMieScattering.value = 1f;
+
+                        notification.Close();
+                    };
                 };
+
+
+
+
+
+
+
+
+
 
                 // Calculate the X-coordinate for reset2Button based on resetButton's position and width
                 float advbuttonX = resetButton.relativePosition.x - 120f;
+            }
+        }
 
-                UIButton advbutton = UIButtons.AddSmallerButton(panel, advbuttonX, currentY, Translations.Translate(LuminaTR.TranslationID.ADVANCED), 120f);
-                advbutton.eventClicked += (c, p) =>
-                {
-                    StandalonePanelManager<AdvancedTab>.Create();
-                };
+      
+        public bool BlueHaze()
+        {
+            try
+            {
+                LuminaLogic.InscatteringExponent = 0f;
+                LuminaLogic.InscatteringStartDistance = 0f;
+                LuminaLogic.InscatteringIntensity = 0f;
+                ModSettings instance = new ModSettings();
+                instance.HazeEnabled = true;
+                return true;
+              
+            }
+            catch (Exception ex)
+            {
+                ModSettings instance = new ModSettings();
+                instance.HazeEnabled = false;
+                return false;
+            }
+        }
+
+
+        public class ConfirmNotification : ListNotification
+        {
+            // Don't Show Again button.
+            internal UIButton _noButton;
+            internal UIButton _yesButton;
+
+            /// <summary>
+            /// Gets the 'No' button (button 1) instance.
+            /// </summary>
+            public UIButton NoButton => _noButton;
+
+            /// <summary>
+            /// Gets the 'Yes' button (button 2) instance.
+            /// </summary>
+            public UIButton YesButton => _yesButton;
+
+            /// <summary>
+            /// Gets the number of buttons for this panel (for layout).
+            /// </summary>
+            protected override int NumButtons => 2;
+
+
+            
+            /// <summary>
+            /// Adds buttons to the message box.
+            /// </summary>
+            public override void AddButtons()
+            {
+            
+                // Add yes button.
+                _yesButton = AddButton(1, NumButtons, Translations.Translate("YES"), Close);
+                
+
+                _noButton = AddButton(2, NumButtons, Translations.Translate("NO"), Close);
+                
             }
         }
     }
 }
+
+
+   
+

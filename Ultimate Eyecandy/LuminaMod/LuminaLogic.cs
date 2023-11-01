@@ -1,10 +1,15 @@
 ﻿namespace Lumina
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Xml.Linq;
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using ColossalFramework;
     using UnifiedUI.Helpers;
     using UnityEngine;
 
@@ -48,6 +53,8 @@
                 s_instance?.ApplyShadowSmoothing();
             }
         }
+
+
 
         /// <summary>
         /// Gets or sets shadow intensity.
@@ -742,6 +749,264 @@
         {
             var daynight = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
             daynight.m_Tonemapping = enable;
+        }
+
+        //ColorCorrection
+
+        internal int SelectedLut { get; set; }
+
+        public string[] _lutnames;
+        public string[] Names
+        {
+            get
+            {
+                if (_lutnames == null)
+                {
+                    _lutnames = SingletonResource<ColorCorrectionManager>.instance.items.ToArray();
+                }
+
+                return _lutnames;
+            }
+        }
+
+        public void ApplyLut(string name)
+        {
+            try
+            {
+                SingletonResource<ColorCorrectionManager>.instance.currentSelection = IndexOf(name);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[LUMINA] Exception" + e.Message);
+            }
+        }
+
+        public int IndexOf(string name)
+        {
+            try
+            {
+                int index = Array.FindIndex(Names, x => x.Equals(name));
+
+                return index != -1 ? index : 0;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("LUMINA IndexOf failed" + e.Message);
+                return 0;
+            }
+        }
+
+        internal string[] ColorCorrections
+        {
+            get
+            {
+                string[] internalNames = GetLutArray().Select(lut => lut.internal_name).ToArray();
+                string[] displayNames = internalNames.Select(internalName => GetLutDisplayName(internalName)).ToArray();
+                return displayNames;
+            }
+        }
+
+
+
+
+        // Lut Population Fix. Taken of Ultimate Eyecandy/Eyecandy X Code - Nyoko.
+
+        public static Lut GetLut(string name)
+        {
+            foreach (var lut in GetLutArray())
+            {
+                if (lut.internal_name == name) return lut;
+            }
+            return null;
+        }
+
+        public static string GetLutNameByIndex(int index)
+        {
+            foreach (var lut in GetLutArray())
+            {
+                if (lut.index == index) return lut.name;
+            }
+            return "None";
+        }
+
+        private static readonly string[] vanillaLuts = new string[] {
+            "None",
+            "LUTSunny",
+            "LUTNorth",
+            "LUTTropical",
+            "LUTeurope"
+        };
+
+        public static Lut[] GetLutArray()
+        {
+            var lutList = new List<Lut>();
+            var i = 0;
+
+            foreach (var lut in ColorCorrectionManager.instance.items)
+            {
+
+
+                Lut l = new Lut()
+                {
+                    index = i,
+                    name = GetLutDisplayName(lut),
+                    internal_name = lut
+                };
+
+                lutList.Add(l);
+                i++;
+            }
+
+            return lutList.ToArray();
+        }
+
+
+
+
+
+        public static string GetLutDisplayName(string name)
+        {
+            //  Get friendly Workshop Lut name:
+            if (name.Contains('.'))
+            {
+                name = name.Remove(0, 10);
+            }
+            //  Get friendly Built-In Lut name:
+            else
+            {
+                if (name.ToLower() == "lutsunny")
+                {
+                    name = "Temperate";
+                }
+                if (name.ToLower() == "lutnorth")
+                {
+                    name = "Boreal";
+                }
+                if (name.ToLower() == "luttropical")
+                {
+                    name = "Tropical";
+                }
+                if (name.ToLower() == "luteurope")
+                {
+                    name = "European";
+                }
+            }
+            return name;
+        }
+
+        public class Lut
+        {
+            public int index;
+            public string name;
+            public string internal_name;
+        }
+        ///End of LUT Population Utility
+        ///
+
+        public static float m_Exposure
+        {
+            get
+            {
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                return (dayNightProperties != null && dayNightProperties.enabled) ? dayNightProperties.m_Exposure : 0.1f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0.0f, 5.0f); // Clamp the value between 0 and 5
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                if (dayNightProperties != null)
+                {
+                    dayNightProperties.m_Exposure = clampedValue;
+                }
+            }
+        }
+
+        public static float SkyRayleighScattering
+        {
+            get
+            {
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                return (dayNightProperties != null && dayNightProperties.enabled) ? dayNightProperties.m_RayleighScattering : 0.0f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0.0f, 5.0f); // Clamp the value between 0 and 5
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                if (dayNightProperties != null)
+                {
+                    dayNightProperties.m_RayleighScattering = clampedValue;
+                }
+            }
+        }
+
+        public static float SkyMieScattering
+        {
+            get
+            {
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                return (dayNightProperties != null && dayNightProperties.enabled) ? dayNightProperties.m_MieScattering : 0.0f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0.0f, 5.0f); // Clamp the value between 0 and 5
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                if (dayNightProperties != null)
+                {
+                    dayNightProperties.m_MieScattering = clampedValue;
+                }
+            }
+        }
+
+        public static float DayNightSunIntensity
+        {
+            get
+            {
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                return (dayNightProperties != null && dayNightProperties.enabled) ? dayNightProperties.m_SunIntensity : 0.1f;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0.0f, 8.0f); // Clamp the value between 0 and 8
+                DayNightProperties dayNightProperties = UnityEngine.Object.FindObjectOfType<DayNightProperties>();
+                if (dayNightProperties != null)
+                {
+                    dayNightProperties.m_SunIntensity = clampedValue;
+                }
+            }
+        }
+        // Custom property to control Time.timeScale
+        public static float CustomTimeScale
+        {
+            get
+            {
+                return Time.timeScale;
+            }
+            set
+            {
+                float clampedValue = Mathf.Clamp(value, 0.0f, 2.0f); // Clamp the value between 0 and 8
+                Time.timeScale = clampedValue;
+            }
+        }
+
+
+        public static RenderProperties HazeProperties { get; set; } = new RenderProperties();
+
+        public static float InscatteringExponent
+        {
+            get { return HazeProperties.m_inscatteringExponent; }
+            set { HazeProperties.m_inscatteringExponent = value; }
+        }
+
+        public static float InscatteringIntensity
+        {
+            get { return HazeProperties.m_inscatteringIntensity; }
+            set { HazeProperties.m_inscatteringIntensity = value; }
+        }
+
+        public static float InscatteringStartDistance
+        {
+            get { return HazeProperties.m_inscatteringStartDistance; }
+            set { HazeProperties.m_inscatteringStartDistance = value; }
         }
 
 

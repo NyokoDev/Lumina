@@ -5,7 +5,7 @@
     using AlgernonCommons.UI;
     using Lumina.CompChecker;
     using UnityEngine;
-    using static Lumina.MainAdvancedTab;
+
 
     /// <summary>
     /// The Lumina UI panel.
@@ -18,12 +18,12 @@
         internal const float ContentWidth = 500f;
 
 
-        ExternalSettingsHandler handler;
-        ShadowTab VisualismHandler;
+    
+        EffectsTab VisualismHandler;
 
         // Layout constants - private.
         private const float TitleHeight = 40f;
-        private const float ContainerHeight = 650f;
+        private const float ContainerHeight = 930f;
 
         /// <summary>
         /// Gets the panel width.
@@ -40,6 +40,8 @@
         /// </summary>
         protected override string PanelTitle => Translations.Translate(LuminaTR.TranslationID.MOD_NAME);
 
+
+        Loading Loading;
         /// <summary>
         /// Gets the panel opacity.
         /// </summary>
@@ -55,24 +57,27 @@
             // Add tabstrip.
             AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, Margin, TitleHeight, ContentWidth, ContainerHeight, out _);
 
-            // Add tabs and panels.
-            new LightingTab(tabStrip, 0);
-            new StylesTab(tabStrip, 1);
-            new ShadowTab(tabStrip, 2);
+           
+                // Add tabs and panels.
+                new LightingTab(tabStrip, 0);
+                new StylesTab(tabStrip, 1);
+                new EffectsTab(tabStrip, 2);
 
-            if (ModUtils.IsModEnabled("lutcreator"))
-            {
-                Debug.Log("[LUMINA] LUT Creator plugin enabled.");
-                new LookUpTableTab(tabStrip, 3);
+                if (ModUtils.IsModEnabled("lutcreator"))
+                {
+                    Debug.Log("[LUMINA] LUT Creator plugin enabled.");
+                    new LookUpTableTab(tabStrip, 3);
+                }
+
+                SetIcon(UITextures.LoadSprite("UUI"), "normal");
+                //handler.LoadSettings();
+
+                // Force initial tab selection.
+                tabStrip.selectedIndex = -1;
+                tabStrip.selectedIndex = 0;
             }
 
-            SetIcon(UITextures.LoadSprite("UUI"), "normal");
-            //handler.LoadSettings();
-
-            // Force initial tab selection.
-            tabStrip.selectedIndex = -1;
-            tabStrip.selectedIndex = 0;
-        }
+        
 
         /// <summary>
         /// Performs any actions required before closing the panel and checks that it's safe to do so.

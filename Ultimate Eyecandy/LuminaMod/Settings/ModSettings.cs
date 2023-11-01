@@ -5,20 +5,21 @@
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
     using UnityEngine;
-    using static Lumina.MainAdvancedTab;
+
 
     /// <summary>
     /// Global mod settings.
     /// </summary>
     [XmlRoot("Lumina")]
-    public sealed class ModSettings : SettingsXMLBase
+    public class ModSettings : SettingsXMLBase
     {
         // Settings file name.
-        [XmlIgnore]
-        internal static MainAdvancedTab mainAdvancedTabInstance;
+
 
         [XmlIgnore]
         private static readonly string SettingsFileName = "Lumina.xml";
+
+
 
         // User settings directory.
         [XmlIgnore]
@@ -67,6 +68,59 @@
         [XmlElement("NightCubeMap")]
         public string NightCubeMap { get => CubemapManager.NightCubeMap; set => CubemapManager.NightCubeMap = value; }
 
+
+        [XmlElement("SelectedLut")]
+        public int SelectedLut
+        {
+            get => LuminaLogicInstance.SelectedLut;
+            set => LuminaLogicInstance.SelectedLut = value;
+        }
+
+
+        [XmlElement("SunIntensityLevel")]
+        public float SunIntensity
+        {
+            get => LuminaLogic.DayNightSunIntensity;
+            set => LuminaLogic.DayNightSunIntensity = value;
+        }
+
+        [XmlElement("ExposureLevel")]
+        public float Exposure
+        {
+            get => LuminaLogic.m_Exposure;
+            set => LuminaLogic.m_Exposure = value;
+        }
+
+        [XmlElement("SkyRayleighScattering")]
+        public float SkyRayleighScattering
+        {
+            get => LuminaLogic.SkyRayleighScattering;
+            set => LuminaLogic.SkyRayleighScattering = value;
+        }
+
+        [XmlElement("SkyMieScattering")]
+        public float SkyMieScattering
+        {
+            get => LuminaLogic.SkyMieScattering;
+            set => LuminaLogic.SkyMieScattering = value;
+        }
+
+        [XmlElement("Simulation Speed")]
+        public float SimulationSpeed
+        {
+            get => LuminaLogic.CustomTimeScale;
+            set => LuminaLogic.CustomTimeScale = value;
+        }
+
+        [XmlElement("DisableInscatteringEffects")]
+        public bool HazeEnabled = false;
+
+
+
+
+        LuminaLogic LuminaLogicInstance = new LuminaLogic(); // Create an instance of LuminaLogic
+
+
         /// <summary>
         /// Gets the current hotkey as a UUI UnsavedInputKey.
         /// </summary>
@@ -86,13 +140,5 @@
         /// <summary>
         /// Saves settings to file.
         /// </summary>
-        internal static void saveXML(MainAdvancedTab mainAdvancedTabInstance)
-        {
-            // Create an instance of ExternalSettingsHandler and pass the MainAdvancedTab instance
-            ExternalSettingsHandler handler = new ExternalSettingsHandler(mainAdvancedTabInstance);
-
-            // Call the SaveSettings method on the instance
-            handler.SaveSettings();
-        }
     }
 }

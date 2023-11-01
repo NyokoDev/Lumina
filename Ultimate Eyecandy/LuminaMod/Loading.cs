@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using AlgernonCommons.Patching;
     using ICities;
+   
 
     /// <summary>
     /// Main loading class: the mod runs from here.
@@ -12,6 +13,9 @@
         /// <summary>
         /// Gets a list of permitted loading modes.
         /// </summary>
+        /// 
+        public ColorCorrectionManager colorCorrectionManager;
+      
         protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
 
         /// <summary>
@@ -36,6 +40,7 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
+           
 
             // Initialize cubemaps.
             CubemapManager.Initialize();

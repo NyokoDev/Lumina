@@ -7,7 +7,7 @@ namespace Lumina
     using ICities;
     using System;
     using System.Reflection;
-    using static Lumina.MainAdvancedTab;
+
 
     /// <summary>
     /// The base mod class for instantiation by the game.
@@ -18,8 +18,8 @@ namespace Lumina
         /// Gets the mod's base display name (name only).
         /// </summary>
           /// 
-        ExternalSettingsHandler handler;
-        ShadowTab VisualismHandler;
+      
+        EffectsTab VisualismHandler;
 
 
         public override string BaseName => "Lumina";
@@ -30,7 +30,7 @@ namespace Lumina
         public override string HarmonyID => "com.nyoko.lumina.patch";
 
 
-        
+       
 
         /// <summary>
         /// Gets the mod's description for display in the content manager.
