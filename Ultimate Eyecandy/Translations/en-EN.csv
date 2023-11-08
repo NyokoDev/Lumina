@@ -58,6 +58,7 @@ CUBEMAP_TEXT_DISABLED_CAUSE,Cubemap Replacer has been detected.
 LUT_MOD_NAME,LUT Creator
 SAVE_LUT_TEXT,Save Lut
 LUT_SLIDER_TEXT,Opacity
+LUT_TEXT,Color Correction
 LUT_SLIDER_OPACITY_TEXT,Opacity
 LUT_SLIDER_HUE_TEXT,Hue
 ADVANCED,Advanced

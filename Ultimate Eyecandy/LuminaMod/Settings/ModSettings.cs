@@ -72,8 +72,8 @@
         [XmlElement("SelectedLut")]
         public int SelectedLut
         {
-            get => LuminaLogicInstance.SelectedLut;
-            set => LuminaLogicInstance.SelectedLut = value;
+            get => ColorCorrectionManager.instance.lastSelection;
+            set => ColorCorrectionManager.instance.currentSelection = value;
         }
 
 

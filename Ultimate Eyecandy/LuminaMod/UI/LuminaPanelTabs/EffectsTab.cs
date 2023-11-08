@@ -41,6 +41,7 @@
         private UISlider _colordecaySlider;
         private UILabel _Effects;
         private UIDropDown _cubemapDropDown;
+       
         private int offsetY;
         private UISlider SimSpeed;
         private LuminaLogic LuminaLogic;
@@ -107,6 +108,8 @@
             else
             {
 
+
+               
 
 
                 // Slider 1: Intensity Slider
@@ -291,7 +294,7 @@
             }
         }
 
-      
+
         public bool BlueHaze()
         {
             try
@@ -302,7 +305,7 @@
                 ModSettings instance = new ModSettings();
                 instance.HazeEnabled = true;
                 return true;
-              
+
             }
             catch (Exception ex)
             {
@@ -335,24 +338,24 @@
             protected override int NumButtons => 2;
 
 
-            
+
             /// <summary>
             /// Adds buttons to the message box.
             /// </summary>
             public override void AddButtons()
             {
-            
+
                 // Add yes button.
                 _yesButton = AddButton(1, NumButtons, Translations.Translate("YES"), Close);
-                
+
 
                 _noButton = AddButton(2, NumButtons, Translations.Translate("NO"), Close);
-                
+
             }
         }
     }
 }
 
 
-   
+
 

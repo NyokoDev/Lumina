@@ -10,6 +10,7 @@
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework;
+    using ColossalFramework.UI;
     using UnifiedUI.Helpers;
     using UnityEngine;
 
@@ -756,6 +757,8 @@
         internal int SelectedLut { get; set; }
 
         public string[] _lutnames;
+        public bool _disableEvents;
+
         public string[] Names
         {
             get
@@ -796,112 +799,7 @@
             }
         }
 
-        internal string[] ColorCorrections
-        {
-            get
-            {
-                string[] internalNames = GetLutArray().Select(lut => lut.internal_name).ToArray();
-                string[] displayNames = internalNames.Select(internalName => GetLutDisplayName(internalName)).ToArray();
-                return displayNames;
-            }
-        }
-
-
-
-
-        // Lut Population Fix. Taken of Ultimate Eyecandy/Eyecandy X Code - Nyoko.
-
-        public static Lut GetLut(string name)
-        {
-            foreach (var lut in GetLutArray())
-            {
-                if (lut.internal_name == name) return lut;
-            }
-            return null;
-        }
-
-        public static string GetLutNameByIndex(int index)
-        {
-            foreach (var lut in GetLutArray())
-            {
-                if (lut.index == index) return lut.name;
-            }
-            return "None";
-        }
-
-        private static readonly string[] vanillaLuts = new string[] {
-            "None",
-            "LUTSunny",
-            "LUTNorth",
-            "LUTTropical",
-            "LUTeurope"
-        };
-
-        public static Lut[] GetLutArray()
-        {
-            var lutList = new List<Lut>();
-            var i = 0;
-
-            foreach (var lut in ColorCorrectionManager.instance.items)
-            {
-
-
-                Lut l = new Lut()
-                {
-                    index = i,
-                    name = GetLutDisplayName(lut),
-                    internal_name = lut
-                };
-
-                lutList.Add(l);
-                i++;
-            }
-
-            return lutList.ToArray();
-        }
-
-
-
-
-
-        public static string GetLutDisplayName(string name)
-        {
-            //  Get friendly Workshop Lut name:
-            if (name.Contains('.'))
-            {
-                name = name.Remove(0, 10);
-            }
-            //  Get friendly Built-In Lut name:
-            else
-            {
-                if (name.ToLower() == "lutsunny")
-                {
-                    name = "Temperate";
-                }
-                if (name.ToLower() == "lutnorth")
-                {
-                    name = "Boreal";
-                }
-                if (name.ToLower() == "luttropical")
-                {
-                    name = "Tropical";
-                }
-                if (name.ToLower() == "luteurope")
-                {
-                    name = "European";
-                }
-            }
-            return name;
-        }
-
-        public class Lut
-        {
-            public int index;
-            public string name;
-            public string internal_name;
-        }
-        ///End of LUT Population Utility
-        ///
+     
 
         public static float m_Exposure
         {
@@ -987,6 +885,13 @@
                 Time.timeScale = clampedValue;
             }
         }
+
+        internal void OnSelectedIndexChanged(UIComponent component, int value)
+        {
+            if (_disableEvents) return;
+            ColorCorrectionManager.instance.currentSelection = value;
+        }
+
 
 
         public static RenderProperties HazeProperties { get; set; } = new RenderProperties();

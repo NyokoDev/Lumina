@@ -4,6 +4,8 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
+    using Lumina.CompChecker;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Lumina panel tab for setting lighting options.
@@ -27,6 +29,8 @@
         private UICheckBox _skyTonemappingCheck;
         private UILabel _disabledLabel;
         private UILabel _causeLabel;
+        private UILabel LUTLabel;
+        private UIDropDown _lutdropdown;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LightingTab"/> class.
@@ -72,6 +76,65 @@
                 _moonTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.MOONTINT_TEXT), LuminaStyle.ValueIndex.MoonTint, ref currentY);
                 _moonLightSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.MOONLIGHT_TEXT), LuminaStyle.ValueIndex.MoonLight, ref currentY);
                 _twilightTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.TWILIGHTTINT_TEXT), LuminaStyle.ValueIndex.TwilightTint, ref currentY);
+
+
+                if (!ModUtils.IsModEnabled("renderit")){ 
+                    
+                    UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                    currentY += 30f;
+
+
+                    _lutdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                    currentY += 30f;
+
+                    // Define a dictionary to hold the mapping of lowercased names
+                    Dictionary<string, string> nameMapping = new Dictionary<string, string>
+{
+    { "LUTSunny", "Temperate" },
+    { "lutnorth", "Boreal" },
+    { "luttropical", "Tropical" },
+    { "luteurope", "European" },
+    { "lutcold", "Cold" },
+    { "lutdark", "Dark" },
+    { "lutfaded", "Faded" },
+    { "lutneutral", "Neutral" },
+    { "lutvibrant", "Vibrant" },
+    { "lutwarm", "Warm" }
+};
+
+                    // Create a List<string> to hold the modified items
+                    List<string> modifiedItems = new List<string>();
+
+                    foreach (var item in ColorCorrectionManager.instance.items)
+                    {
+                        // Check if the item name matches any lowercased name in the mapping
+                        string lowercasedName = item.ToLower();
+                        if (nameMapping.ContainsKey(lowercasedName))
+                        {
+                            // If so, add the mapped value to the modified list
+                            modifiedItems.Add(nameMapping[lowercasedName]);
+                        }
+                        else
+                        {
+                            // If not, process the item name according to the dot-separated rule
+                            int dotIndex = item.LastIndexOf('.');
+                            if (dotIndex >= 0 && dotIndex < item.Length - 1)
+                            {
+                                modifiedItems.Add(item.Substring(dotIndex + 1));
+                            }
+                        }
+                    }
+
+                    // Set the modified items to the dropdown
+                    _lutdropdown.items = modifiedItems.ToArray(); // Convert back to array if necessary
+
+                    _lutdropdown.selectedIndex = ColorCorrectionManager.instance.lastSelection;
+                    _lutdropdown.eventSelectedIndexChanged += LuminaLogic.Instance.OnSelectedIndexChanged;
+                    _lutdropdown.localeID = LocaleID.BUILTIN_COLORCORRECTION;
+                }
+           
+
+
 
                 // Reset button.
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
