@@ -13,7 +13,9 @@
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
     using Lumina.CompChecker;
+    using System.Drawing;
     using UnityEngine;
+    using Color = UnityEngine.Color;
 
     [XmlRoot("VisualismTabSettings")]
     public class VisualismTabSettings
@@ -74,8 +76,9 @@
 
             float currentY = Margin;
             UIScrollbars.AddScrollbar(panel);
+            ModSettings instance = new ModSettings();
 
-            if (ModUtils.IsModEnabled("skyboxreplacer"))
+            if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("skyboxreplacer")))
             {
                 _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += CheckHeight + Margin;
@@ -95,7 +98,7 @@
             }
 
             // Check if Renderit mod or fog manipulating mods are enabled
-            if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+            if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("renderit") && CompatibilityHelper.IsAnyFogManipulatingModsEnabled()))
             {
                 _modlabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.VISUALISMCOMP_TEXT));
                 _modlabel2 = UILabels.AddLabel(panel, Margin, currentY + _modlabel.height + Margin, Translations.Translate(LuminaTR.TranslationID.VISUALISM_CAUSE_TEXT));
@@ -107,11 +110,6 @@
             }
             else
             {
-
-
-               
-
-
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
@@ -205,7 +203,7 @@
                     LuminaLogic.InscatteringIntensity = 0f;
                 };
 
-                SimSpeed = AddSlider(panel, "Simulation Speed", 0f, 2f, 0, ref currentY);
+                SimSpeed = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0f, 2f, 0, ref currentY);
                 SimSpeed.value = LuminaLogic.CustomTimeScale;
                 SimSpeed.eventValueChanged += (c, value) =>
                 {
@@ -213,30 +211,30 @@
                     LuminaLogic.CustomTimeScale = value;
                 };  // Set Sim Speed value
 
-                sunIntensitySlider = AddSlider(panel, "Sun Intensity", 0f, 8f, 0, ref currentY);
+                sunIntensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SUNINTENSITY_TEXT), 0f, 8f, 0, ref currentY);
                 sunIntensitySlider.value = LuminaLogic.DayNightSunIntensity;
                 sunIntensitySlider.eventValueChanged += (c, value) => { LuminaLogic.DayNightSunIntensity = value; };  // Set Sun Intensity value
                 currentY += 2f; // Add space
 
                 // Exposure Slider
-                ExposureSlider = AddSlider(panel, "Exposure", 0f, 5f, 0, ref currentY);
+                ExposureSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.EXPOSURESLIDER_TEXT), 0f, 5f, 0, ref currentY);
                 ExposureSlider.value = LuminaLogic.m_Exposure;
                 ExposureSlider.eventValueChanged += (c, value) => { LuminaLogic.m_Exposure = value; };  // Set Exposure value
                 currentY += 0.5f; // Add space
 
                 // Sky Rayleigh Scattering
-                SkyRayleighScattering = AddSlider(panel, "Rayleigh Scattering", 0f, 5f, 0, ref currentY);
+                SkyRayleighScattering = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAYSCATTERING_TEXT), 0f, 5f, 0, ref currentY);
                 SkyRayleighScattering.value = LuminaLogic.SkyRayleighScattering;
                 SkyRayleighScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyRayleighScattering = value; };  // Set Sky Rayleigh value
                 currentY += 0.5f; // Add space
 
                 // Sky Mie Scattering
-                SkyMieScattering = AddSlider(panel, "Mie Scattering", 0f, 5f, 0, ref currentY);
+                SkyMieScattering = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.MIESCATTERING_TEXT), 0f, 5f, 0, ref currentY);
                 SkyMieScattering.value = LuminaLogic.SkyMieScattering;
                 SkyMieScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyMieScattering = value; };// Set Sky Mie value
 
                 // Assuming you have an event handler for when the checkbox state changes
-                ModSettings instance = new ModSettings();
+       
                 HazeCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.BLUEHAZE));
                 HazeCheckbox.isChecked = instance.HazeEnabled;
                 HazeCheckbox.eventCheckChanged += (c, isChecked) =>
@@ -302,6 +300,7 @@
                 LuminaLogic.InscatteringExponent = 0f;
                 LuminaLogic.InscatteringStartDistance = 0f;
                 LuminaLogic.InscatteringIntensity = 0f;
+                LuminaLogic._InScatteringColor = new UnityEngine.Color(0.5f, 0.5f, 0.5f, 1f); // This sets the color to a neutral gray
                 ModSettings instance = new ModSettings();
                 instance.HazeEnabled = true;
                 return true;

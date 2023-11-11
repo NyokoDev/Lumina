@@ -5,7 +5,7 @@
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
     using UnityEngine;
-
+  
 
     /// <summary>
     /// Global mod settings.
@@ -18,7 +18,6 @@
 
         [XmlIgnore]
         private static readonly string SettingsFileName = "Lumina.xml";
-
 
 
         // User settings directory.
@@ -105,6 +104,13 @@
             set => LuminaLogic.SkyMieScattering = value;
         }
 
+        [XmlElement("InscatteringColor")]
+        public Color InscatteringColor
+        {
+            get => LuminaLogic._InScatteringColor;
+            set => LuminaLogic._InScatteringColor = value;
+        }
+
         [XmlElement("Simulation Speed")]
         public float SimulationSpeed
         {
@@ -115,10 +121,55 @@
         [XmlElement("DisableInscatteringEffects")]
         public bool HazeEnabled = false;
 
+        [XmlElement("CompatibilityHelper")]
+        public bool Compatibility {
+            
+            get => LuminaLogic.CompatibilityDisabled; 
+            set => LuminaLogic.CompatibilityDisabled = value; }
 
 
+        [XmlElement("LockedSliderValue")]
+        public float LockedSliderValue
+        {
+            get { return ShaderStructure.LockedSliderValue; }
+            set { ShaderStructure.LockedSliderValue = value; }
+        }
 
-        LuminaLogic LuminaLogicInstance = new LuminaLogic(); // Create an instance of LuminaLogic
+        [XmlElement("SSAAFactor")]
+        public float SsaaFactor
+        {
+            get { return ShaderStructure.ssaaFactor; }
+            set { ShaderStructure.ssaaFactor = value; }
+        }
+
+        [XmlElement("UnlockSlider")]
+        public bool UnlockSlider
+        {
+            get { return ShaderStructure.unlockSlider; }
+            set { ShaderStructure.unlockSlider = value; }
+        }
+
+
+        [XmlElement("SsaoState")]
+        public bool SsaoState
+        {
+            get { return ShaderStructure.ssaoState; }
+            set { ShaderStructure.ssaoState = value; }
+        }
+
+        [XmlElement("LowerVRAMUsage")]
+        public bool LowerVRAMUsage
+        {
+            get { return ShaderStructure.lowerVRAMUsage; }
+            set { ShaderStructure.lowerVRAMUsage = value; }
+        }
+
+        [XmlElement("SliderMaximumIndex")]
+        public int SliderMaximumIndex
+        {
+            get { return ShaderStructure.sliderMaximumIndex; }
+            set { ShaderStructure.sliderMaximumIndex = value; }
+        }
 
 
         /// <summary>

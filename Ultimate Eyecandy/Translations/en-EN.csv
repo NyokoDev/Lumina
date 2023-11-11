@@ -63,4 +63,18 @@ LUT_SLIDER_OPACITY_TEXT,Opacity
 LUT_SLIDER_HUE_TEXT,Hue
 ADVANCED,Advanced
 IGNORE,Ignore compatibility warning (Experimental)
+IGNORECheckbox,Disregard compatibility suggestions
 BLUEHAZE,Disable Inscattering Effects
+SUNINTENSITY_TEXT,Sun Intensity
+EXPOSURESLIDER_TEXT,Exposure
+RAYSCATTERING_TEXT,Rayleigh Scattering
+MIESCATTERING_TEXT,Mie Scattering
+SIMULATIONSPEED_TEXT,Simulation Speed
+COLORDISABLED,LUT Selection disabled.
+DYNAMICRESOLUTION_TEXT,Dynamic Resolution
+LOWERVRAMUSAGE,Optimize VRAM Usage
+DRSLIDERLABEL,Anti-Aliasing Level
+UnlockSlider,Proceed
+UnlockSliderLabel,Unlock slider
+LockSlider,Go back
+SSAA_SLIDER_TEXT,Set

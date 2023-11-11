@@ -1,10 +1,13 @@
 ﻿namespace Lumina
 {
     using AlgernonCommons.Keybinding;
+    using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+    using static Lumina.EffectsTab;
 
     /// <summary>
     /// The mod's settings options panel.
@@ -37,22 +40,80 @@
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
 
+            UICheckBox CompatibilityHelper = UICheckBoxes.AddLabelledCheckBox(this, LeftMargin, currentY, Translations.Translate("IGNORECheckbox"), 16, (float)0.8, null); // Approach for compatibility control
+
+            if (LuminaLogic.CompatibilityDisabled == true)
+            {
+                CompatibilityHelper.isChecked = true;
+            }
+            else
+            {
+                CompatibilityHelper.isChecked = false;
+            }
+
+            CompatibilityHelper.eventCheckChanged += (c, index) =>
+            {
+                IgnoreWarningNotif notification = NotificationBase.ShowNotification<IgnoreWarningNotif>();
+                notification.AddParas("Ignore compatibiity notices? Ignoring compatibility notices can lead to overlapping functions between other mods and potential problems between mods that do the same thing. Would you like to proceed?");
+
+                notification._yesButton.eventClicked += (sender, args) =>
+                {
+                    LuminaLogic.CompatibilityDisabled = true;
+                    CompatibilityHelper.isChecked = true;
+                };
+                notification._noButton.eventClicked += (sender, args) =>
+                {
+                    LuminaLogic.CompatibilityDisabled = false;
+                    CompatibilityHelper.isChecked = false;
+                };
+
+
+            };
+            
          
         }
 
         /// <summary>
-        /// Opens the LUT editor.
+        /// Provides a panel to alert the user of ignoring compatibility notices.
         /// </summary>
-        private void OpenLUTEditor()
+        private void IgnoreWarning()
         {
-            // TODO: fix to use package path.
-            string lutEditorPath = @"C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2983036781\LUT Editor\";
+            
+        }
+        public class IgnoreWarningNotif : ListNotification
+        {
+            // Don't Show Again button.
+            public UIButton _noButton;
+            public UIButton _yesButton;
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = lutEditorPath;
-            startInfo.UseShellExecute = true;
+            /// <summary>
+            /// Gets the 'No' button (button 1) instance.
+            /// </summary>
+            public UIButton NoButton => _noButton;
 
-            Process.Start(startInfo);
+            /// <summary>
+            /// Gets the 'Yes' button (button 2) instance.
+            /// </summary>
+            public UIButton YesButton => _yesButton;
+
+            /// <summary>
+            /// Gets the number of buttons for this panel (for layout).
+            /// </summary>
+            protected override int NumButtons => 2;
+
+            /// <summary>
+            /// Adds buttons to the message box.
+            /// </summary>
+            public override void AddButtons()
+            {
+
+                _yesButton = AddButton(1, NumButtons, Translations.Translate("Turn on the compatibility-disabled mode"), Close);
+      
+                _noButton = AddButton(2, NumButtons, Translations.Translate("Enable the default compatibility settings."), Close);
+
+            
+                
+            }
         }
     }
 }

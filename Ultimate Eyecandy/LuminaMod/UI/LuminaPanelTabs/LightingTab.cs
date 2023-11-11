@@ -1,11 +1,16 @@
 ﻿namespace Lumina
 {
+    using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
     using Lumina.CompChecker;
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Eventing.Reader;
+    using UnityEngine;
+    using static Lumina.EffectsTab;
 
     /// <summary>
     /// Lumina panel tab for setting lighting options.
@@ -31,6 +36,12 @@
         private UILabel _causeLabel;
         private UILabel LUTLabel;
         private UIDropDown _lutdropdown;
+        private UISlider SSAAConfig;
+        private UILabel SSAALabel;
+        private UICheckBox LowerVRAMUSAGE;
+        private UIButton SSAAButton;
+        private UICheckBox UnlockSliderCheckbox;
+       
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LightingTab"/> class.
@@ -42,6 +53,8 @@
             // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.LIGHTING_TEXT), tabIndex, out UIButton _);
             float currentY = Margin * 2f;
+            
+
 
             if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
             {
@@ -78,8 +91,16 @@
                 _twilightTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.TWILIGHTTINT_TEXT), LuminaStyle.ValueIndex.TwilightTint, ref currentY);
 
 
-                if (!ModUtils.IsModEnabled("renderit")){ 
-                    
+                if (ModUtils.IsModEnabled("renderit"))
+                {
+
+                    UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.COLORDISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                    currentY += 30f;
+
+                }
+                else {
+
+
                     UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                     currentY += 30f;
 
@@ -132,12 +153,70 @@
                     _lutdropdown.eventSelectedIndexChanged += LuminaLogic.Instance.OnSelectedIndexChanged;
                     _lutdropdown.localeID = LocaleID.BUILTIN_COLORCORRECTION;
                 }
-           
+
+                
+
+                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                currentY += 30f;
+                SSAAConfig = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0f, ShaderStructure.LockedSliderValue, 1, ref currentY);
+                SSAAConfig.value = ShaderStructure.ssaaFactor;
+                SSAAButton = UIButtons.AddButton(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
+                currentY += 32f;
+                SSAAButton.eventClicked += (c, p) => HandleButtonClick(SSAAConfig.value);
+                
+
+                LowerVRAMUSAGE = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LOWERVRAMUSAGE));
+                currentY += 30f;
+                LowerVRAMUSAGE.isChecked = ShaderStructure.lowerVRAMUsage;
+                LowerVRAMUSAGE.eventCheckChanged += (c, isChecked) =>
+                {
+                    if (isChecked != ShaderStructure.lowerVRAMUsage)
+                    {
+                        ShaderStructure.lowerVRAMUsage = isChecked;
+                        CameraHook.instance.SaveConfig();
+                    }
+                };
+
+                UnlockSliderCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.UnlockSliderLabel));
+                currentY += 30f;
+                UnlockSliderCheckbox.isChecked = ShaderStructure.unlockSlider;
+                UnlockSliderCheckbox.eventCheckChanged += (c, isChecked) =>
+                {
+      
+                    UnlockSliderNotif notification = NotificationBase.ShowNotification<UnlockSliderNotif>();
+                        notification.AddParas("Unlocking the Dynamic Resolution slider comes with a cautionary note, as it may lead to potential instability within the game. Before proceeding, we would like to bring to your attention the possibility of encountering issues related to game stability, including potential implications for your GPU performance. Could you confirm your decision to unlock the Dynamic Resolution slider?");
+                        notification._yesButton.eventClicked += (sender, args) =>
+                        {
+                            ShaderStructure.LockedSliderValue = 10f;
+                            UnlockSliderCheckbox.isChecked = true;
+                            ModSettings.Save();
+                            notification.Close();
+
+                        };
+                        notification._noButton.eventClicked += (sender, args) =>
+                        {
+                            UnlockSliderCheckbox.isChecked = false;
+                            ShaderStructure.LockedSliderValue = 4f;
+                            notification.Close();
+                        };
+                    
+                };
+                
+
+
+
+
+
+
+
+
+
 
 
 
                 // Reset button.
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
+                currentY += 30f;
                 resetButton.eventClicked += (c, p) =>
                 {
                     _luminositySlider.value = 0f;
@@ -154,9 +233,11 @@
                     _moonLightSlider.value = 0f;
                     _twilightTintSlider.value = 0f;
                 };
+               
 
                 // Checkboxes.
                 _skyTonemappingCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.ENABLE_SKYTONE_TEXT));
+                currentY += 30f;
                 _skyTonemappingCheck.isChecked = StyleManager.EnableSkyTonemapping;
                 _skyTonemappingCheck.eventCheckChanged += (c, isChecked) =>
                 {
@@ -165,6 +246,14 @@
                 };
             }
         }
+
+
+        private void HandleButtonClick(float value)
+        {
+            Loading.hook.SetSSAAFactor(value, ShaderStructure.lowerVRAMUsage);
+            RefreshCameraHook();
+        }
+
 
         /// <summary>
         /// Adds a Lumina exposure slider to the given UIComponent.
@@ -191,15 +280,27 @@
             return newSlider;
         }
 
-        /// <summary>
-        /// Adds a Lumina lighting slider to the given UIComponent.
-        /// </summary>
-        /// <param name="panel">Parent component.</param>
-        /// <param name="label">Slider text label.</param>
-        /// <param name="index">Slider setting index.</param>
-        /// <param name="currentY">Relative Y position reference.</param>
-        /// <returns>New UISlider.</returns>
-        private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
+
+
+        private void RefreshCameraHook()
+        {
+            if (Loading.hook != null)
+            {
+                Loading.hook.SaveConfig();
+            }
+        
+    }
+
+
+    /// <summary>
+    /// Adds a Lumina lighting slider to the given UIComponent.
+    /// </summary>
+    /// <param name="panel">Parent component.</param>
+    /// <param name="label">Slider text label.</param>
+    /// <param name="index">Slider setting index.</param>
+    /// <param name="currentY">Relative Y position reference.</param>
+    /// <returns>New UISlider.</returns>
+    private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
             UISlider newSlider = AddSlider(panel, label, -1f, 1f, (int)index, ref currentY);
             newSlider.value = StyleManager.ActiveSettings[(int)index];
@@ -224,5 +325,6 @@
             };
             return newSlider;
         }
+
     }
 }

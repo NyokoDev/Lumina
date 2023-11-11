@@ -78,6 +78,14 @@
         /// </summary>
         internal static FogData LoadedFogData { private get; set; }
 
+
+        /// <summary>
+        /// Disables compatibility recommendations.
+        /// </summary>
+        internal static bool CompatibilityDisabled { get; set; }
+
+
+
         /// <summary>
         /// Gets or sets a value indicating whether fog effects are enabled.
         /// </summary>
@@ -900,6 +908,16 @@
         {
             get { return HazeProperties.m_inscatteringExponent; }
             set { HazeProperties.m_inscatteringExponent = value; }
+        }
+
+
+        public static Color _InScatteringColor
+        {
+            get { return HazeProperties.m_inscatteringColor; }
+            set
+            {
+                HazeProperties.m_inscatteringColor = value;
+            }
         }
 
         public static float InscatteringIntensity

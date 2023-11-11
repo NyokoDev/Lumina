@@ -15,9 +15,6 @@ namespace LuminaTR
         public const string HUE_TEXT = "HUE_TEXT"; // HUE
         public const string TINT_TEXT = "TINT_TEXT"; // TINT
         public const string LUT_TEXT = "LUT_TEXT"; // LUT
-
-
-
         public const string LIGHTNESS_MOD_NAME = "LIGHTNESS_MOD_NAME"; // Lightness
         public const string STYLES_MOD_NAME = "STYLES_MOD_NAME"; //styles
         public const string COLOR_CORRECTION_MOD_NAME = "COLOR_CORRECTION_MOD_NAME"; // Color Correction
@@ -41,7 +38,6 @@ namespace LuminaTR
         public const string RELOADstyle_TEXT = "RELOADstyle_TEXT"; // Reload style list
         public const string OPENLOCALFOLDER_TEXT = "OPENLOCALFOLDER_TEXT"; // Open Local styles Folder
         public const string LAUNCHLUT_TEXT = "LAUNCHLUT_TEXT"; // Launch LUT Editor
-
         public const string SHADOWINT_TEXT = "SHADOWINT_TEXT"; // Shadow Intensity
         public const string SHADOWBIAS_TEXT = "SHADOWBIAS_TEXT"; // Shadow Bias
         public const string CLASSICFOG_TEXT = "CLASSICFOG_TEXT"; // Classic Fog
@@ -51,7 +47,6 @@ namespace LuminaTR
         public const string STYLENAME_TEXT = "STYLENAME_TEXT";
         public const string SAVE_TEXT = "SAVE_TEXT";
         public const string MOD_CAUSE_TEXT = "MOD_CAUSE_TEXT";
-
         public const string VISUALISMCOMP_TEXT = "VISUALISMCOMP_TEXT";
         public const string VISUALISM_CAUSE_TEXT = "VISUALISM_CAUSE_TEXT";
         public const string EDGEFOG_TEXT = "EDGEFOG_TEXT";
@@ -61,29 +56,30 @@ namespace LuminaTR
         public const string CUBEMAP_TEXT = "CUBEMAP_TEXT";
         public const string CUBEMAP_TEXT_DISABLED = "CUBEMAP_TEXT_DISABLED";
         public const string CUBEMAP_TEXT_DISABLED_CAUSE = "CUBEMAP_TEXT_DISABLED_CAUSE";
-
         public const string LUT_SLIDER_OPACITY_TEXT = "LUT_SLIDER_OPACITY_TEXT";
-
         public const string LUT_MOD_NAME = "LUT_MOD_NAME";
-
         public const string SAVE_LUT_TEXT = "SAVE_LUT_TEXT";
-
         public const string LUT_SLIDER_HUE_TEXT = "LUT_SLIDER_HUE_TEXT";
-
         public const string EDGEDISTANCE_TEXT = "EDGEDISTANCE_TEXT";
-
         public const string HORIZONHEIGHT_TEXT = "HORIZONHEIGHT_TEXT";
-
         public const string FOGDISTANCE_TEXT = "FOGDISTANCE_TEXT";
-
         public const string FOGHEIGHT_TEXT = "FOGHEIGHT_TEXT";
         public const string SSAA_MOD_NAME = "SSAA_MOD_NAME";
         public const string SSAA_SLIDER_TEXT = "SSAA_SLIDER_TEXT";
         public const string SSAA_BUTTON = "SSAA_BUTTON";
-
         public const string ADVANCED = "ADVANCED";
         public const string BLUEHAZE = "BLUEHAZE";
-        
-
+        public const string COLORDISABLED = "COLORDISABLED";
+        public const string SUNINTENSITY_TEXT = "SUNINTENSITY_TEXT";
+        public const string EXPOSURESLIDER_TEXT = "EXPOSURESLIDER_TEXT";
+        public const string RAYSCATTERING_TEXT = "RAYSCATTERING_TEXT";
+        public const string MIESCATTERING_TEXT = "MIESCATTERING_TEXT";
+        public const string SIMULATIONSPEED_TEXT = "SIMULATIONSPEED_TEXT";
+        public const string DYNAMICRESOLUTION_TEXT = "DYNAMICRESOLUTION_TEXT";
+        public const string LOWERVRAMUSAGE = "LOWERVRAMUSAGE";
+        public const string DRSLIDERLABEL = "DRSLIDERLABEL";
+        public const string UnlockSlider = "UnlockSlider";
+        public const string LockSlider = "LockSlider";
+        public const string UnlockSliderLabel = "UnlockSliderLabel";
     }
 }

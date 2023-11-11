@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using AlgernonCommons.Patching;
     using ICities;
-   
+    using UnityEngine;
+
 
     /// <summary>
     /// Main loading class: the mod runs from here.
@@ -29,6 +30,8 @@
             LuminaLogic.Destroy();
         }
 
+        public static CameraHook hook = null;
+
         private UnityEngine.GameObject _gameObject;
         /// <summary>
         /// Performs any actions upon successful level loading completion.
@@ -40,7 +43,10 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
-           
+
+
+            var cameraController = GameObject.FindObjectOfType<CameraController>();
+            hook = cameraController.gameObject.AddComponent<CameraHook>();
 
             // Initialize cubemaps.
             CubemapManager.Initialize();

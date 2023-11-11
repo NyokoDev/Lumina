@@ -7,6 +7,7 @@ namespace Lumina
     using ICities;
     using System;
     using System.Reflection;
+    using UnityEngine;
 
 
     /// <summary>
@@ -46,13 +47,21 @@ namespace Lumina
         /// <summary>
         /// Loads settings file.
         /// WhatsNewMessage message = new WhatsNewMessage
+        /// 
 
 
+        
 
         /// </summary>
         public override void LoadSettings()
         {
+
+
+
+
+
             ModSettings.Load();
+
             
             
 
