@@ -53,7 +53,7 @@
             // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.LIGHTING_TEXT), tabIndex, out UIButton _);
             float currentY = Margin * 2f;
-            
+
 
 
             if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
@@ -155,6 +155,7 @@
                     _lutdropdown.eventSelectedIndexChanged += LuminaLogic.Instance.OnSelectedIndexChanged;
                     _lutdropdown.localeID = LocaleID.BUILTIN_COLORCORRECTION;
                 }
+                
 
                 
 

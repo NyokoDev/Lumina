@@ -69,24 +69,25 @@
         public string NightCubeMap { get => CubemapManager.NightCubeMap; set => CubemapManager.NightCubeMap = value; }
 
 
+        [XmlIgnore]
+        public bool ShouldSerializeSelectedLut => !ModUtils.IsAnyModsEnabled(PotentialConflicts);
+
         [XmlElement("SelectedLut")]
         public int SelectedLut
         {
             get => ColorCorrectionManager.instance.lastSelection;
-            set => ColorCorrectionManager.instance.currentSelection = value;
+            set
+            {
+                if (ShouldSerializeSelectedLut)
+                {
+                    ColorCorrectionManager.instance.currentSelection = value;
+                }
+            }
         }
+
 
         [XmlIgnore]
         public string[] PotentialConflicts = { "renderit", "thememixer" };
-
-        // Additional method for conditional serialization
-        public bool ShouldSerializeSelectedLut()
-        {
-            // Check your conditions here
-            return !(ModUtils.IsAnyModsEnabled(PotentialConflicts));
-        }
-
-
 
         [XmlElement("SunIntensityLevel")]
         public float SunIntensity
