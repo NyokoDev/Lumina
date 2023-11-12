@@ -4,6 +4,7 @@
     using System.Xml.Serialization;
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
+    using Lumina.CompChecker;
     using UnityEngine;
   
 
@@ -74,6 +75,17 @@
             get => ColorCorrectionManager.instance.lastSelection;
             set => ColorCorrectionManager.instance.currentSelection = value;
         }
+
+        [XmlIgnore]
+        public string[] PotentialConflicts = { "renderit", "thememixer" };
+
+        // Additional method for conditional serialization
+        public bool ShouldSerializeSelectedLut()
+        {
+            // Check your conditions here
+            return !(ModUtils.IsAnyModsEnabled(PotentialConflicts));
+        }
+
 
 
         [XmlElement("SunIntensityLevel")]

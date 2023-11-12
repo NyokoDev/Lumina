@@ -90,8 +90,10 @@
                 _moonLightSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.MOONLIGHT_TEXT), LuminaStyle.ValueIndex.MoonLight, ref currentY);
                 _twilightTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.TWILIGHTTINT_TEXT), LuminaStyle.ValueIndex.TwilightTint, ref currentY);
 
+                string[] potentialConflicts = { "renderit", "thememixer" };
 
-                if (ModUtils.IsModEnabled("renderit"))
+
+                if (ModUtils.IsAnyModsEnabled(potentialConflicts))
                 {
 
                     UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.COLORDISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
