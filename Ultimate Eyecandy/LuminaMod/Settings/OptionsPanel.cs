@@ -40,45 +40,6 @@
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
 
-            UICheckBox CompatibilityHelper = UICheckBoxes.AddLabelledCheckBox(this, LeftMargin, currentY, Translations.Translate("IGNORECheckbox"), 16, (float)0.8, null); // Approach for compatibility control
-
-            if (LuminaLogic.CompatibilityDisabled == true)
-            {
-                CompatibilityHelper.isChecked = true;
-            }
-            else
-            {
-                CompatibilityHelper.isChecked = false;
-            }
-
-            CompatibilityHelper.eventCheckChanged += (c, index) =>
-            {
-                IgnoreWarningNotif notification = NotificationBase.ShowNotification<IgnoreWarningNotif>();
-                notification.AddParas("Ignore compatibiity notices? Ignoring compatibility notices can lead to overlapping functions between other mods and potential problems between mods that do the same thing. Would you like to proceed?");
-
-                notification._yesButton.eventClicked += (sender, args) =>
-                {
-                    LuminaLogic.CompatibilityDisabled = true;
-                    CompatibilityHelper.isChecked = true;
-                };
-                notification._noButton.eventClicked += (sender, args) =>
-                {
-                    LuminaLogic.CompatibilityDisabled = false;
-                    CompatibilityHelper.isChecked = false;
-                };
-
-
-            };
-            
-         
-        }
-
-        /// <summary>
-        /// Provides a panel to alert the user of ignoring compatibility notices.
-        /// </summary>
-        private void IgnoreWarning()
-        {
-            
         }
         public class IgnoreWarningNotif : ListNotification
         {

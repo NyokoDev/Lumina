@@ -81,7 +81,7 @@
 
             if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("skyboxreplacer")))
             {
-                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), 0.5f,  alignment: UIHorizontalAlignment.Center);
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), 0.6f,  alignment: UIHorizontalAlignment.Center);
                 currentY += 30f;
 
                 _cubemaplabel2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED_CAUSE), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
@@ -102,7 +102,8 @@
             }
 
             // Check if Renderit mod or fog manipulating mods are enabled
-            if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("renderit") && CompatibilityHelper.IsAnyFogManipulatingModsEnabled()))
+            if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+
             {
                 _modlabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.VISUALISMCOMP_TEXT));
                 _modlabel2 = UILabels.AddLabel(panel, Margin, currentY + _modlabel.height + Margin, Translations.Translate(LuminaTR.TranslationID.VISUALISM_CAUSE_TEXT));

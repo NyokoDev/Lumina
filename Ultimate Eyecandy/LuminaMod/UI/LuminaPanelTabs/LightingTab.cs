@@ -58,7 +58,7 @@
             if (!ModUtils.IsModEnabled("DynamicResolution"))
             {
 
-                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.5f, alignment: UIHorizontalAlignment.Center);
+                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.6f, alignment: UIHorizontalAlignment.Center);
                 currentY += 20f;
                 SSAAConfig = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0f, ShaderStructure.LockedSliderValue, 1, ref currentY);
                 SSAAConfig.value = ShaderStructure.ssaaFactor;
