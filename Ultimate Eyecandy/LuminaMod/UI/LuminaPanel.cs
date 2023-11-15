@@ -3,7 +3,7 @@
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
-    using Lumina.CompChecker;
+    using Lumina;
     using UnityEngine;
 
 

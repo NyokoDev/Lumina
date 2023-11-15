@@ -1,4 +1,4 @@
-﻿using Lumina.CompChecker;
+﻿using Lumina;
 
 namespace Lumina.CompatibilityPolice
 {

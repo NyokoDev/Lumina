@@ -172,7 +172,7 @@
                         // Ensure valid code.
                         if (replacement.Code.IsNullOrWhiteSpace())
                         {
-                           Logging.Error("Empty cubemap replacement code for ", pluginInfo.name);
+                            Logging.Error("Empty cubemap replacement code for ", pluginInfo.name);
                             continue;
                         }
 

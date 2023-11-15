@@ -23,9 +23,10 @@ public class CameraHook : MonoBehaviour
 
     private RenderTexture rt;
 
-    public float userSSAAFactor = 1.0f;
-    public float currentSSAAFactor = 1.0f;
-    public float sliderMaximum = 3.0f;
+    public float userSSAAFactor { get; set; }
+        public float currentSSAAFactor { get; set; }
+
+        public float sliderMaximum = 3.0f;
 
     private bool initialized = false;
 
@@ -77,8 +78,10 @@ public class CameraHook : MonoBehaviour
 
     public void SaveConfig()
     {
+       
         ShaderStructure.ssaaFactor = userSSAAFactor;
-        ModSettings.Save();
+     
+            ModSettings.Save();
     }
 
     public void SetInGameAA(bool state)
@@ -147,6 +150,7 @@ public class CameraHook : MonoBehaviour
         CameraRenderer.mainCamera.targetTexture = rt;
 
         currentSSAAFactor = factor;
+        userSSAAFactor = factor;
 
         initialized = true;
     }

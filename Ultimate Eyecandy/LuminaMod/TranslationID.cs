@@ -53,7 +53,9 @@ namespace LuminaTR
         public const string FOGSETTINGS_TEXT = "FOGSETTINGS_TEXT";
         public const string FOGVISIBILITY_TEXT = "FOGVISIBILITY_TEXT";
         public const string NIGHTFOG_TEXT = "NIGHTFOG_TEXT";
+        public const string CUBEMAP_TEXT_CONTROLLER = "CUBEMAP_TEXT_CONTROLLER";
         public const string CUBEMAP_TEXT = "CUBEMAP_TEXT";
+        public const string CUBEMAP_TEXTNIGHT = "CUBEMAP_TEXTNIGHT";
         public const string CUBEMAP_TEXT_DISABLED = "CUBEMAP_TEXT_DISABLED";
         public const string CUBEMAP_TEXT_DISABLED_CAUSE = "CUBEMAP_TEXT_DISABLED_CAUSE";
         public const string LUT_SLIDER_OPACITY_TEXT = "LUT_SLIDER_OPACITY_TEXT";
@@ -81,5 +83,6 @@ namespace LuminaTR
         public const string UnlockSlider = "UnlockSlider";
         public const string LockSlider = "LockSlider";
         public const string UnlockSliderLabel = "UnlockSliderLabel";
+        public const string AGREEMENT_TEXT = "AGREEMENT_TEXT";
     }
 }

@@ -4,7 +4,7 @@
     using System.Xml.Serialization;
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
-    using Lumina.CompChecker;
+    using Lumina;
     using UnityEngine;
   
 
@@ -130,6 +130,9 @@
             get => LuminaLogic.CustomTimeScale;
             set => LuminaLogic.CustomTimeScale = value;
         }
+
+
+
 
         [XmlElement("DisableInscatteringEffects")]
         public bool HazeEnabled = false;

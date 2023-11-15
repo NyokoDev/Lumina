@@ -4,7 +4,10 @@
     using AlgernonCommons.Patching;
     using ICities;
     using UnityEngine;
-
+    using Lumina;
+    using AlgernonCommons.Notifications;
+    using AlgernonCommons.Translation;
+    using ColossalFramework.UI;
 
     /// <summary>
     /// Main loading class: the mod runs from here.
@@ -45,8 +48,15 @@
             LuminaLogic.OnLoad();
 
 
+            if (!ModUtils.IsModEnabled("dynamicresolution")){ 
             var cameraController = GameObject.FindObjectOfType<CameraController>();
             hook = cameraController.gameObject.AddComponent<CameraHook>();
+            }
+            else
+            {
+                CompatibilityDR notification = NotificationBase.ShowNotification<CompatibilityDR>();
+                notification.AddParas("Dynamic Resolution has been detected. For optimal use of Lumina, turn off Dynamic Resolution since both have identical functions. Failure to deactivate Dynamic Resolution might cause unexpected behavior.");
+            }
 
             // Initialize cubemaps.
             CubemapManager.Initialize();
@@ -55,4 +65,37 @@
             _gameObject.AddComponent<CubemapUpdater>();
         }
     }
+    public class CompatibilityDR : ListNotification
+    {
+        internal UIButton _yesButton;
+
+        /// <summary>
+        /// Gets the 'No' button (button 1) instance.
+        /// </summary>
+
+        /// <summary>
+        /// Gets the 'Yes' button (button 2) instance.
+        /// </summary>
+        public UIButton YesButton => _yesButton;
+
+        /// <summary>
+        /// Gets the number of buttons for this panel (for layout).
+        /// </summary>
+        protected override int NumButtons => 1;
+
+
+
+        /// <summary>
+        /// Adds buttons to the message box.
+        /// </summary>
+        public override void AddButtons()
+        {
+
+            // Add yes button.
+            _yesButton = AddButton(1, NumButtons, Translations.Translate("AGREEMENT_TEXT"), Close);
+
+        }
+    }
+
+
 }

@@ -114,6 +114,10 @@
             }
         }
 
+        
+
+
+
         /// <summary>
         /// Gets or sets a value indicating whether classic fog effects are enabled.
         /// </summary>
@@ -337,25 +341,27 @@
             }
         }
 
-        /// <summary>
-        /// Sets the volume fog distance.
-        /// </summary>
-        internal static float VolumeFogDistance
+    
+
+
+        internal static float m_FogDistance
         {
             private get
             {
-                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-                return (renderProperties != null && renderProperties.enabled) ? renderProperties.m_volumeFogDistance : 10f;
+                FogProperties fogproperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                return (fogproperties != null && fogproperties.enabled) ? fogproperties.m_FogDistance : 10f;
             }
             set
             {
-                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-                if (renderProperties != null)
+                FogProperties fogproperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogproperties != null)
                 {
-                    renderProperties.m_volumeFogDistance = Mathf.Clamp(value, -10f, 4800f);
+                    fogproperties.m_FogDistance = Mathf.Clamp(value, -10f, 4800f);
                 }
             }
         }
+
+
 
         /// <summary>
         /// Sets the 3D fog distance.
@@ -378,11 +384,13 @@
             }
         }
 
-        /// <summary>
-        /// Loads current settings and ensure an active instance.
-        /// Must be called prior to use.
-        /// </summary>
-        internal static void OnLoad()
+      
+
+    /// <summary>
+    /// Loads current settings and ensure an active instance.
+    /// Must be called prior to use.
+    /// </summary>
+    internal static void OnLoad()
         {
             // Set instance reference.
             if (s_instance == null)
@@ -844,6 +852,22 @@
                 }
             }
         }
+
+
+        public static float VolumeFogDistance
+        {
+            get
+            {
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                return renderProperties.m_volumeFogDistance;
+            }
+        set
+            {
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                renderProperties.m_volumeFogDistance = value;
+            }
+        }
+
 
         public static float SkyMieScattering
         {

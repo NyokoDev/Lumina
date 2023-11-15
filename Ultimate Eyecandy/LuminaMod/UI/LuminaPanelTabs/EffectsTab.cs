@@ -12,7 +12,7 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
-    using Lumina.CompChecker;
+    using Lumina;
     using System.Drawing;
     using UnityEngine;
     using Color = UnityEngine.Color;
@@ -43,7 +43,8 @@
         private UISlider _colordecaySlider;
         private UILabel _Effects;
         private UIDropDown _cubemapDropDown;
-       
+        private UIDropDown _cubemapDropDownNight;
+
         private int offsetY;
         private UISlider SimSpeed;
         private LuminaLogic LuminaLogic;
@@ -80,15 +81,18 @@
 
             if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("skyboxreplacer")))
             {
-                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
-                currentY += CheckHeight + Margin;
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), 0.5f,  alignment: UIHorizontalAlignment.Center);
+                currentY += 30f;
 
                 _cubemaplabel2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED_CAUSE), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
+                currentY += 30f;
                 _cubemaplabel2.textScale = 0.7f;
             }
             else
             {
-                // Dropdown Cubemap
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_CONTROLLER), panel.width - (Margin * 2f), 0.5f, alignment: UIHorizontalAlignment.Center);
+                currentY += 20f;
+                // Dropdown Cubemap and Daylight reflections
                 _cubemapDropDown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
                 _cubemapDropDown.items = CubemapManager.Instance.DayCubemapDescriptions;
                 _cubemapDropDown.selectedIndex = CubemapManager.Instance.DayCubmapIndex;
@@ -198,6 +202,7 @@
                 {
                     LuminaLogic.FogDistance = value;
                     LuminaLogic.ThreeDFogDistance = value;
+                    LuminaLogic.VolumeFogDistance = value;
                     LuminaLogic.InscatteringExponent = 0f;
                     LuminaLogic.InscatteringStartDistance = 0f;
                     LuminaLogic.InscatteringIntensity = 0f;

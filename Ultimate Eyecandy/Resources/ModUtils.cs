@@ -1,7 +1,8 @@
 ﻿using ColossalFramework.Plugins;
 using System.Reflection;
+using Lumina;
 
-namespace Lumina.CompChecker
+namespace Lumina
 {
     public static class ModUtils
     {

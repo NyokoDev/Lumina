@@ -23,6 +23,9 @@
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
+		<Reference Include="SkyboxReplacer">
+		  <HintPath>..\..\..\..\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RefTextureManager\SkyboxReplacer.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine" />
 	</ItemGroup>
 	<ItemGroup>
