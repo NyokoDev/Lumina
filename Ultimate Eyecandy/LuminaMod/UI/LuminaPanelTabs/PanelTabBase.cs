@@ -82,6 +82,40 @@
             return newSlider;
         }
 
+        protected UISlider AddDynamicSlider(UIComponent panel, string label, float minValue, float maxValue, int index, ref float currentY)
+        {
+            // Title label.
+            UILabel titleLabel = UILabels.AddLabel(panel, Margin, currentY, label, textScale: SliderTextScale);
+
+            // Value label.
+            UILabel newValueLabel = UILabels.AddLabel(panel, ControlWidth, currentY, "0", ValueLabelWidth, SliderTextScale, UIHorizontalAlignment.Right);
+
+            // Add slider.
+            UISlider newSlider = UISliders.AddBudgetSlider(panel, Margin, currentY + SliderTextHeight, ControlWidth, maxValue);
+            newSlider.minValue = minValue;
+            newSlider.stepSize = 0.25f;
+            newSlider.objectUserData = new LuminaSliderData
+            {
+                ValueLabel = newValueLabel,
+                Index = index,
+            };
+
+            // Value display event handler.
+            newSlider.eventValueChanged += (c, value) =>
+            {
+                if (c.objectUserData is LuminaSliderData sliderData)
+                {
+                    sliderData.ValueLabel.text = value.ToString("N4");
+                }
+            };
+
+            // Set initial value to update label.
+            newSlider.value = 1f;
+
+            currentY += SliderHeight;
+            return newSlider;
+        }
+
         /// <summary>
         /// Slider data class.
         /// </summary>

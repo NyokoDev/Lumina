@@ -11,6 +11,7 @@
     using System.Diagnostics.Eventing.Reader;
     using UnityEngine;
     using static Lumina.EffectsTab;
+    using UnifiedUI.Helpers;
 
     /// <summary>
     /// Lumina panel tab for setting lighting options.
@@ -55,12 +56,13 @@
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.LIGHTING_TEXT), tabIndex, out UIButton _);
             float currentY = Margin * 2f;
 
+
             if (!ModUtils.IsModEnabled("DynamicResolution"))
             {
-
+               
                 SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.6f, alignment: UIHorizontalAlignment.Center);
                 currentY += 20f;
-                SSAAConfig = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0f, ShaderStructure.LockedSliderValue, 1, ref currentY);
+                SSAAConfig = AddDynamicSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0.25f, ShaderStructure.LockedSliderValue, 1, ref currentY);
                 SSAAConfig.value = ShaderStructure.ssaaFactor;
                 SSAAButton = UIButtons.AddButton(panel, ControlWidth - 200f, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
                 SSAAButton.horizontalAlignment = UIHorizontalAlignment.Center;

@@ -23,7 +23,7 @@ public class CameraHook : MonoBehaviour
 
     private RenderTexture rt;
 
-    public float userSSAAFactor { get; set; }
+        public float userSSAAFactor = 1f;
         public float currentSSAAFactor { get; set; }
 
         public float sliderMaximum = 3.0f;
