@@ -40,12 +40,13 @@
         /// </summary>
         protected override string PanelTitle => Translations.Translate(LuminaTR.TranslationID.MOD_NAME);
 
+  
 
         Loading Loading;
         /// <summary>
         /// Gets the panel opacity.
         /// </summary>
-        protected override float PanelOpacity => 0.8f;
+        protected override float PanelOpacity => 1f;
 
         /// <summary>
         /// Called by Unity before first display.
@@ -69,7 +70,7 @@
                     new LookUpTableTab(tabStrip, 3);
                 }
 
-                SetIcon(UITextures.LoadSprite("UUI"), "normal");
+                SetIcon(UITextures.LoadSprite("ADV"), "normal");
                 //handler.LoadSettings();
 
                 // Force initial tab selection.

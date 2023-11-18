@@ -12,6 +12,7 @@
     using UnityEngine;
     using static Lumina.EffectsTab;
     using UnifiedUI.Helpers;
+    using System.Reflection;
 
     /// <summary>
     /// Lumina panel tab for setting lighting options.
@@ -42,6 +43,7 @@
         private UICheckBox LowerVRAMUSAGE;
         private UIButton SSAAButton;
         private UICheckBox UnlockSliderCheckbox;
+        private UILabel versionlabel;
 
 
         CameraHook hook;
@@ -60,7 +62,7 @@
             if (!ModUtils.IsModEnabled("DynamicResolution"))
             {
                
-                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.6f, alignment: UIHorizontalAlignment.Center);
+                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.8f, alignment: UIHorizontalAlignment.Center);
                 currentY += 20f;
                 SSAAConfig = AddDynamicSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0.25f, ShaderStructure.LockedSliderValue, 1, ref currentY);
                 SSAAConfig.value = ShaderStructure.ssaaFactor;
@@ -248,7 +250,9 @@
                     _moonLightSlider.value = 0f;
                     _twilightTintSlider.value = 0f;
                 };
-               
+                currentY += 20f;
+
+                UILabel versionlabel = UILabels.AddLabel(panel, Margin, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), panel.width - (Margin * 2f), 0.6f, alignment: UIHorizontalAlignment.Center);
 
                 // Checkboxes.
                 _skyTonemappingCheck = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.ENABLE_SKYTONE_TEXT));

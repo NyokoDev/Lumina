@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.5.4</Version>
+		<Version>1.5.6</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -14,6 +14,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageId>LuminaTest</PackageId>
 		<AssemblyName>Lumina</AssemblyName>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="CitiesHarmony.API" Version="2.2.0" />

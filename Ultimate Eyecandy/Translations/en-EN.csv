@@ -40,7 +40,7 @@ FOGINTENSITY_TEXT,Fog intensity
 LIGHTCOMP_TEXT,Disabled functions due to overlapping mods.
 MOD_CAUSE_TEXT,Render It/Daylight Classic/Relight were detected.
 SAVE_TEXT,Save
-CUBEMAP_TEXT_CONTROLLER,Cubemap Controller
+CUBEMAP_TEXT_CONTROLLER,Skybox Adjustment
 STYLENAME_TEXT,Style Name
 VISUALISMCOMP_TEXT,Shadow and Fog Settings have been disabled.
 VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controller have been detected.

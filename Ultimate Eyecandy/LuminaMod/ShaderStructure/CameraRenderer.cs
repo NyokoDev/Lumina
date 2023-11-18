@@ -6,6 +6,7 @@ using ColossalFramework.UI;
 using ColossalFramework;
 using System.Collections;
 using System.Collections.Generic;
+using ICities;
 
 
 
@@ -17,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Lumina
 {
-
+    
     public class CameraRenderer : MonoBehaviour
     {
         public RenderTexture fullResRT;
