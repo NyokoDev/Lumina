@@ -114,8 +114,11 @@
             }
         }
 
-        
 
+        /// <summary>
+        /// Sets dynamic resolution value true or false.
+        /// </summary>
+        internal static bool DynResEnabled { get; set; }
 
 
         /// <summary>

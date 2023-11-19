@@ -62,3 +62,6 @@ LUT_SLIDER_OPACITY_TEXT,Opacidad
 LUT_SLIDER_HUE_TEXT,Tono
 ADVANCED,Avanzado
 IGNORE,Ignorar advertencia de compatibilidad (Experimental)
+SHADER_CONFIG,Configuración del shader
+RESTART_TEXT,Los ajustes a continuación requieren reiniciar el juego para surtir efecto.
+STATUS_LABEL,Estado de resolución dinámica:

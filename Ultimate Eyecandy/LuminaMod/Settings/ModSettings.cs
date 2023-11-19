@@ -6,7 +6,7 @@
     using AlgernonCommons.XML;
     using Lumina;
     using UnityEngine;
-  
+
 
     /// <summary>
     /// Global mod settings.
@@ -85,6 +85,15 @@
             }
         }
 
+
+
+        [XmlElement("DynamicResolutionState")]
+        public bool DynamicResolutionState
+        {
+            get => LuminaLogic.DynResEnabled; // Get the value from LuminaLogic.DynRes.Enabled
+            set => LuminaLogic.DynResEnabled = value; // Set the value to LuminaLogic.DynRes.Enabled
+        }
+    
 
         [XmlIgnore]
         public string[] PotentialConflicts = { "renderit", "thememixer" };

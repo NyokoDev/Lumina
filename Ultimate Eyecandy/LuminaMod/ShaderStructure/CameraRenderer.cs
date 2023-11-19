@@ -162,7 +162,7 @@ namespace Lumina
             }
             else
             {
-                throw new Exception("DynamicResolution: Unsupported platform!");
+                throw new Exception("[LUMINA] Shader not found. Ensure the shader is located in the mod folder.");
             }
             WWW www = new WWW(assetsUri);
             AssetBundle assetBundle = www.assetBundle;

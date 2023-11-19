@@ -38,3 +38,6 @@ CLASSICFOG_TEXT,클래식 안개
 FOGINTENSITY_TEXT,안개 강도
 LIGHTCOMP_TEXT,Render It!, Relight, Softer Shadows 또는 Daylight Classic이 감지되어 기능이 비활성화되었습니다.
 SAVE_TEXT,저장
+SHADER_CONFIG,셰이더 설정
+RESTART_TEXT,아래 설정을 적용하려면 게임을 재시작해야 합니다.
+STATUS_LABEL,동적 해상도 상태:

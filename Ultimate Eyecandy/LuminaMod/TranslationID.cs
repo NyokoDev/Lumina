@@ -84,5 +84,8 @@ namespace LuminaTR
         public const string LockSlider = "LockSlider";
         public const string UnlockSliderLabel = "UnlockSliderLabel";
         public const string AGREEMENT_TEXT = "AGREEMENT_TEXT";
+        public const string SHADER_CONFIG = "SHADER_CONFIG";
+        public const string RESTART_TEXT = "RESTART_TEXT";
+        public const string STATUS_LABEL = "STATUS_LABEL";
     }
 }

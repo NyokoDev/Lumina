@@ -44,3 +44,6 @@ VISUALISMCOMP_TEXT,影と霧の設定が無効化されています。
 VISUALISM_CAUSE_TEXT,Render It/Daylight Classic/Fog Controllerを検出しました！
 EDGEFOG_TEXT,エッジフォグ
 FOGSETTINGS_TEXT,霧調整 (きりちょうせい, Kiri chōsei)
+SHADER_CONFIG,シェーダー設定
+RESTART_TEXT,下記の設定を有効にするには、ゲームを再起動する必要があります。
+STATUS_LABEL,ダイナミックリゾリューションの状態：

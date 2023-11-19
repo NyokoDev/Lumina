@@ -59,7 +59,7 @@
             float currentY = Margin * 2f;
 
 
-            if (!ModUtils.IsModEnabled("DynamicResolution"))
+            if (LuminaLogic.DynResEnabled)
             {
                
                 SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.8f, alignment: UIHorizontalAlignment.Center);

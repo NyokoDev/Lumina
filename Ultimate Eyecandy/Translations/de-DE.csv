@@ -80,3 +80,6 @@ UnlockSlider,Fortfahren
 UnlockSliderLabel,Schieberegler entsperren
 LockSlider,Zurück gehen
 SSAA_SLIDER_TEXT,Einstellen
+SHADER_CONFIG,Shader-Konfiguration
+RESTART_TEXT,Die untenstehenden Einstellungen erfordern einen Neustart des Spiels, um wirksam zu werden.
+STATUS_LABEL,Dynamischer Auflösungsstatus:

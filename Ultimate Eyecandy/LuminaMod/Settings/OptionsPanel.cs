@@ -6,7 +6,10 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using System.Diagnostics;
+    using System.Drawing;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
+    using UnityEngine;
     using static Lumina.EffectsTab;
 
     /// <summary>
@@ -18,6 +21,8 @@
         private const float Margin = 5f;
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
+        private const float LabelWidth = 40f;
+        private const float TabHeight = 20f;
 
         /// <summary>
         /// Performs on-demand panel setup.
@@ -26,6 +31,10 @@
         {
             autoLayout = false;
             float currentY = Margin;
+            m_BackgroundSprite = "UnlockingPanel";
+
+            UIPanel panel = this;
+           
 
             // Language choice.
             UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(this, LeftMargin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
@@ -40,7 +49,42 @@
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
 
+
+            UILabel miscellanous = UILabels.AddLabel(this, LabelWidth, currentY, "Lumina | Shader Configurations", textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+            currentY += 31f;
+            UILabel miscellanous2 = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("SHADER_CONFIG"), textScale: 0.5f, alignment: UIHorizontalAlignment.Center);
+            currentY += 30f;
+
+            UILabel enable = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
+            currentY += 35f;
+
+            string status = LuminaLogic.DynResEnabled ? "Enabled" : "Disabled";
+
+            UICheckBox enableDRbutton = UICheckBoxes.AddLabelledCheckBox(this, LeftMargin, currentY, Translations.Translate("IGNORECheckbox"), 16, (float)0.8, null);
+            currentY += 35f;
+            enableDRbutton.isChecked = LuminaLogic.DynResEnabled;
+          
+
+            UILabel drstatus = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("STATUS_LABEL") + status, textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
+            drstatus.color = UnityEngine.Color.black;
+          
+            currentY += 50f;
+            enableDRbutton.eventClicked += (sender, args) =>
+            {
+                LuminaLogic.DynResEnabled = !LuminaLogic.DynResEnabled;
+                var value = LuminaLogic.DynResEnabled ? "Enabled" : "Disabled";
+                drstatus.text = Translations.Translate("STATUS_LABEL") + value;
+                ModSettings.Save();
+            };
+
+            UILabel version = UILabels.AddLabel(this, LabelWidth, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
+
+
+
         }
+
+
+
         public class IgnoreWarningNotif : ListNotification
         {
             // Don't Show Again button.

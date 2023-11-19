@@ -48,14 +48,26 @@
             LuminaLogic.OnLoad();
 
 
-            if (!ModUtils.IsModEnabled("dynamicresolution")){ 
-            var cameraController = GameObject.FindObjectOfType<CameraController>();
-            hook = cameraController.gameObject.AddComponent<CameraHook>();
+            if (LuminaLogic.DynResEnabled)
+            {
+                var cameraController = GameObject.FindObjectOfType<CameraController>();
+                hook = cameraController.gameObject.AddComponent<CameraHook>();
             }
             else
             {
+                Debug.Log("[LUMINA] Dynamic Resolution disabled.");
+            }
+        
+
+            if (ModUtils.IsModEnabled("dynamicresolution")) {
+
                 CompatibilityDR notification = NotificationBase.ShowNotification<CompatibilityDR>();
                 notification.AddParas("Dynamic Resolution has been detected. For optimal use of Lumina, turn off Dynamic Resolution since both have identical functions. Failure to deactivate Dynamic Resolution might cause unexpected behavior.");
+            }
+            if (ModUtils.IsModEnabled("skyboxreplacer"))
+            {
+                CompatibilityDR notification = NotificationBase.ShowNotification<CompatibilityDR>();
+                notification.AddParas("Cubemap Replacer has been detected. For optimal use of Lumina, turn off Cubemap Replacer since both have identical functions. Failure to deactivate Cubemap Replacer might cause unexpected behavior.");
             }
 
             // Initialize cubemaps.
