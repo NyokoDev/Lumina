@@ -33,8 +33,28 @@
             float currentY = Margin;
             m_BackgroundSprite = "UnlockingPanel";
 
-            UIPanel panel = this;
-           
+
+            UISprite imageSprite = this.AddUIComponent<UISprite>();
+
+            imageSprite.height = 43f;
+            imageSprite.relativePosition = new Vector3(290f, 10f);
+            imageSprite.width = 114f;
+            imageSprite.atlas = UITextures.LoadSingleSpriteAtlas("..\\Resources\\logo");
+            imageSprite.spriteName = "normal";
+            imageSprite.zOrder = 5;
+
+            UISprite image2Sprite = this.AddUIComponent<UISprite>();
+
+            image2Sprite.height = 1000f;
+            image2Sprite.relativePosition = new Vector3(0f, -50f);
+            image2Sprite.width = 1000f;
+            image2Sprite.atlas = UITextures.LoadSingleSpriteAtlas("..\\Resources\\bck");
+            image2Sprite.spriteName = "normal";
+            image2Sprite.zOrder = 1;
+
+
+
+
 
             // Language choice.
             UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(this, LeftMargin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
@@ -63,11 +83,11 @@
             UICheckBox enableDRbutton = UICheckBoxes.AddLabelledCheckBox(this, LeftMargin, currentY, Translations.Translate("IGNORECheckbox"), 16, (float)0.8, null);
             currentY += 35f;
             enableDRbutton.isChecked = LuminaLogic.DynResEnabled;
-          
+
 
             UILabel drstatus = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("STATUS_LABEL") + status, textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
             drstatus.color = UnityEngine.Color.black;
-          
+
             currentY += 50f;
             enableDRbutton.eventClicked += (sender, args) =>
             {
@@ -76,6 +96,14 @@
                 drstatus.text = Translations.Translate("STATUS_LABEL") + value;
                 ModSettings.Save();
             };
+
+            UIButton supportbutton = UIButtons.AddSmallerButton(this, LabelWidth, currentY, "Support");
+            currentY += 50f;
+            supportbutton.eventClicked += (sender, args) =>
+            {
+                Process.Start("https://discord.gg/gdhyhfcj7A");
+            };
+
 
             UILabel version = UILabels.AddLabel(this, LabelWidth, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
 
