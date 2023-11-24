@@ -48,8 +48,6 @@ EDGEFOG_TEXT,Kanten-Nebel
 FOGSETTINGS_TEXT,Nebel-Anpassung
 FOGVISIBILITY_TEXT,Farbverfall
 NIGHTFOG_TEXT,Klassischen Nebel in der Nacht deaktivieren
-FOGINTENSITY_TEXT,Nebelintensität
-FOGVISIBILITY_TEXT,Nebelsichtbarkeit
 EDGEDISTANCE_TEXT,Kantenabstand
 HORIZONHEIGHT_TEXT,Horizont-Höhe
 FOGHEIGHT_TEXT,Nebelhöhe

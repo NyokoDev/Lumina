@@ -46,8 +46,6 @@ EDGEFOG_TEXT,Niebla en los bordes
 FOGSETTINGS_TEXT,Ajuste de niebla
 FOGVISIBILITY_TEXT,Decadencia del color
 NIGHTFOG_TEXT,Desactivar niebla clásica de noche
-FOGINTENSITY_TEXT,Intensidad de niebla
-FOGVISIBILITY_TEXT,Visibilidad de niebla
 EDGEDISTANCE_TEXT,Distancia de los bordes
 HORIZONHEIGHT_TEXT,Altura del horizonte
 FOGHEIGHT_TEXT,Altura de la niebla
