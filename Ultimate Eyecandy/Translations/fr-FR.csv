@@ -46,8 +46,6 @@ EDGEFOG_TEXT,Brouillard en bordure
 FOGSETTINGS_TEXT,Ajustement du brouillard
 FOGVISIBILITY_TEXT,Décroissance de la couleur
 NIGHTFOG_TEXT,Désactiver le brouillard classique la nuit
-FOGINTENSITY_TEXT,Intensité du brouillard
-FOGVISIBILITY_TEXT,Visibilité du brouillard
 EDGEDISTANCE_TEXT,Distance de bordure
 HORIZONHEIGHT_TEXT,Hauteur de l'horizon
 FOGHEIGHT_TEXT,Hauteur du brouillard
