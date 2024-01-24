@@ -29,8 +29,8 @@ namespace Lumina
             this.state = state;
         }
     }
-    
-    public class CameraRenderer : MonoBehaviour
+
+        public class CameraRenderer : MonoBehaviour
     {
         public RenderTexture fullResRT;
         public RenderTexture halfVerticalResRT;
@@ -237,8 +237,8 @@ namespace Lumina
             pushRedirect(
                 typeof(UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic),
                 typeof(CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic));
-    
-     
+
+
         void OnDestroy()
         {
             revertAllRedirects();
