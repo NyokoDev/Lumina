@@ -228,7 +228,7 @@ namespace Lumina
             undergroundRGBDField = typeof(UndergroundView).GetField("m_undergroundRGBD",
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
-            undergroundCamera = Util.GetPrivate<Camera>(undergroundView, "m_undergroundCamera");
+            undergroundCamera = ShaderStructureUtils.GetPrivate<Camera>(undergroundView, "m_undergroundCamera");
 
             cameraController = FindObjectOfType<CameraController>();
             cachedFreeCameraField = typeof(CameraController)
@@ -238,6 +238,10 @@ namespace Lumina
                 typeof(UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic),
                 typeof(CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic));
 
+            pushRedirect(
+                typeof(CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic),
+                typeof(CameraRenderer).GetMethod("CameraControllerUpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic));
+        }
 
         void OnDestroy()
         {
