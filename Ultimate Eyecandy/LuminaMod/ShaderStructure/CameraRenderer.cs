@@ -238,10 +238,6 @@ namespace Lumina
                 typeof(UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic),
                 typeof(CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic));
 
-            pushRedirect(
-                typeof(CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic),
-                typeof(CameraRenderer).GetMethod("CameraControllerUpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic));
-        }
 
         void OnDestroy()
         {
