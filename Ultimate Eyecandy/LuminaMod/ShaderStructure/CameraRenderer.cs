@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 using ColossalFramework.Plugins;
@@ -18,8 +18,19 @@ using ICities;
 
 namespace Lumina
 {
-    
-    public class CameraRenderer : MonoBehaviour
+    class Redirect
+    {
+        public MethodInfo from;
+        public RedirectCallsState state;
+
+        internal Redirect(MethodInfo from, RedirectCallsState state)
+        {
+            this.from = from;
+            this.state = state;
+        }
+    }
+
+        public class CameraRenderer : MonoBehaviour
     {
         public RenderTexture fullResRT;
         public RenderTexture halfVerticalResRT;
@@ -44,7 +55,21 @@ namespace Lumina
 
         private static string cachedModPath = null;
 
+        private Stack<Redirect> redirectionStack = new Stack<Redirect>();
 
+        private void pushRedirect(MethodInfo from, MethodInfo to)
+        {
+            redirectionStack.Push(new Redirect(from, RedirectionHelper.RedirectCalls(from, to)));
+        }
+
+        private void revertAllRedirects()
+        {
+            while (redirectionStack.Count > 0)
+            {
+                Redirect redirect = redirectionStack.Pop();
+                RedirectionHelper.RevertRedirect(redirect.from, redirect.state);
+            }
+        }
 
         static string modPath
         {
@@ -208,9 +233,20 @@ namespace Lumina
             cameraController = FindObjectOfType<CameraController>();
             cachedFreeCameraField = typeof(CameraController)
                 .GetField("m_cachedFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            pushRedirect(
+                typeof(UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic),
+                typeof(CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic));
+
+            pushRedirect(
+                typeof(CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic),
+                typeof(CameraRenderer).GetMethod("CameraControllerUpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic));
         }
-    
-     
+
+        void OnDestroy()
+        {
+            revertAllRedirects();
+        }
 
         public void Update()
         {
