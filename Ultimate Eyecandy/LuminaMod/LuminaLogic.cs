@@ -193,7 +193,7 @@
                 }
 
                 // Otherwise use active settings.
-                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                RenderProperties fogProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
                 return (fogProperties != null && fogProperties.enabled) ? fogProperties.m_fogHeight : 5000f;
             }
 
@@ -203,6 +203,18 @@
                 if (fogProperties != null)
                 {
                     fogProperties.m_FogHeight = Mathf.Clamp(value, 0f, 5000f);
+                }
+            
+                RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                if (renderProperties != null)
+                {
+                    renderProperties.m_fogHeight = Mathf.Clamp(value, 0f, 5000f);
+                }
+            
+                FogEffect fogEffect = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                if (fogEffect != null)
+                {
+                    fogEffect.m_FogHeight = Mathf.Clamp(value, 0f, 5000f);
                 }
             }
         }
