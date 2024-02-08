@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.6</Version>
+		<Version>1.5.8</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -30,6 +30,7 @@
 		<_Translations Include="$(ProjectDir)/Translations/*.*" />
 		<_TranslationsCore Include="../../AlgernonCommons/Translations/*.csv" />
 		<_Resources Include="$(ProjectDir)/Resources/*.*" />
+		<_Editor Include="$(ProjectDir)/LUT Editor/*.*" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Resources\bck.png" />
@@ -58,6 +59,6 @@
 	</Target>
 	<Import Project="..\..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\Build\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\Shaders\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;&#xD;&#xA;" />
+	  <Exec Command="xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\RelightLUTS\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\Shaders\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;" />
 	</Target>
 </Project>

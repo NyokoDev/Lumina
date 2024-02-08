@@ -78,6 +78,7 @@ namespace LuminaTR
         public const string MIESCATTERING_TEXT = "MIESCATTERING_TEXT";
         public const string SIMULATIONSPEED_TEXT = "SIMULATIONSPEED_TEXT";
         public const string DYNAMICRESOLUTION_TEXT = "DYNAMICRESOLUTION_TEXT";
+        public const string DYNAMICRESOLUTION_TEXT_OPTIONS = "DYNAMICRESOLUTION_TEXT_OPTIONS";
         public const string LOWERVRAMUSAGE = "LOWERVRAMUSAGE";
         public const string DRSLIDERLABEL = "DRSLIDERLABEL";
         public const string UnlockSlider = "UnlockSlider";

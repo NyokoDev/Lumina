@@ -1,10 +1,13 @@
-﻿namespace Lumina
+﻿using AlgernonCommons.UI;
+
+namespace Lumina
 {
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
+    using Lumina.OptionsTabs;
     using System.Diagnostics;
     using System.Drawing;
     using System.Reflection;
@@ -30,7 +33,6 @@
         protected override void Setup()
         {
             autoLayout = false;
-            float currentY = Margin;
             m_BackgroundSprite = "UnlockingPanel";
 
 
@@ -52,60 +54,27 @@
             image2Sprite.spriteName = "normal";
             image2Sprite.zOrder = 1;
 
+            Tabstrip();
+        }
+    
 
+    /// <summary>
+    /// Creates the tabstrips.
+    /// </summary>
+    public void Tabstrip()
+    {
 
+        UITabstrip tabStrip = UITabstrips.AddTabstrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out UITabContainer _);
+        MainTab updatedTab = new Lumina.OptionsTabs.MainTab(tabStrip, 0);
+        LegacyTab legacyTab = new Lumina.OptionsTabs.LegacyTab(tabStrip, 1);
 
+        // Select the first tab.
+        tabStrip.selectedIndex = -1;
+    }
 
-            // Language choice.
-            UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(this, LeftMargin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
-            languageDropDown.eventSelectedIndexChanged += (c, index) =>
-            {
-                Translations.Index = index;
-                OptionsPanelManager<OptionsPanel>.LocaleChanged();
-            };
-            currentY += languageDropDown.parent.height + GroupMargin;
-
-            // Hotkey control.
-            OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(this, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
-            currentY += uuiKeymapping.Panel.height + GroupMargin;
-
-
-            UILabel miscellanous = UILabels.AddLabel(this, LabelWidth, currentY, "Lumina | Shader Configurations", textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
-            currentY += 31f;
-            UILabel miscellanous2 = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("SHADER_CONFIG"), textScale: 0.5f, alignment: UIHorizontalAlignment.Center);
-            currentY += 30f;
-
-            UILabel enable = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
-            currentY += 35f;
-
-            string status = LuminaLogic.DynResEnabled ? "Enabled" : "Disabled";
-
-            UICheckBox enableDRbutton = UICheckBoxes.AddLabelledCheckBox(this, LeftMargin, currentY, Translations.Translate("IGNORECheckbox"), 16, (float)0.8, null);
-            currentY += 35f;
-            enableDRbutton.isChecked = LuminaLogic.DynResEnabled;
-
-
-            UILabel drstatus = UILabels.AddLabel(this, LabelWidth, currentY, Translations.Translate("STATUS_LABEL") + status, textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
-            drstatus.color = UnityEngine.Color.black;
-
-            currentY += 50f;
-            enableDRbutton.eventClicked += (sender, args) =>
-            {
-                LuminaLogic.DynResEnabled = !LuminaLogic.DynResEnabled;
-                var value = LuminaLogic.DynResEnabled ? "Enabled" : "Disabled";
-                drstatus.text = Translations.Translate("STATUS_LABEL") + value;
-                ModSettings.Save();
-            };
-
-            UIButton supportbutton = UIButtons.AddSmallerButton(this, LabelWidth, currentY, "Support");
-            currentY += 50f;
-            supportbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://discord.gg/gdhyhfcj7A");
-            };
-
-
-            UILabel version = UILabels.AddLabel(this, LabelWidth, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
+            
+        
+    
 
 
 
@@ -149,4 +118,4 @@
             }
         }
     }
-}
+

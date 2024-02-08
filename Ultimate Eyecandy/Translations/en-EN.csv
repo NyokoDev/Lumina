@@ -81,3 +81,4 @@ SSAA_SLIDER_TEXT,Set
 SHADER_CONFIG,Shader configuration
 RESTART_TEXT,The settings below require a game restart to take effect.
 STATUS_LABEL,Dynamic resolution status:
+DYNAMICRESOLUTION_TEXT_OPTIONS,Scale

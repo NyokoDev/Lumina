@@ -66,6 +66,7 @@
                 currentY += 20f;
                 SSAAConfig = AddDynamicSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0.25f, ShaderStructure.LockedSliderValue, 1, ref currentY);
                 SSAAConfig.value = ShaderStructure.ssaaFactor;
+ 
                 SSAAButton = UIButtons.AddButton(panel, ControlWidth - 200f, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
                 SSAAButton.horizontalAlignment = UIHorizontalAlignment.Center;
                 currentY += 32f;

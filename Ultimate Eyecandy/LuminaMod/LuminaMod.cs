@@ -23,6 +23,9 @@ namespace Lumina
         EffectsTab VisualismHandler;
 
 
+        /// <summary>
+        /// Mod name.
+        /// </summary>
         public override string BaseName => "Lumina";
 
         /// <summary>
