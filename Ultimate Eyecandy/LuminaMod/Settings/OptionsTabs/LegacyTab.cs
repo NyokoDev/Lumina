@@ -33,6 +33,8 @@ namespace Lumina.OptionsTabs
         public UICheckBox LowerVRAMUSAGE;
         public UICheckBox UnlockSliderCheckbox;
 
+        public UISlider AOSlider;
+
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
 
@@ -52,6 +54,13 @@ namespace Lumina.OptionsTabs
             {
                 Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
             };
+
+            UILabel TitleAO = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Ambient Occlusion | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+            currentY += 40f;
+
+            AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 730f, 4f);
+            AOSlider.value = LuminaLogic.AOIntensity;
+            currentY += 20f;
 
             UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Dynamic Resolution | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
             currentY += 40f;

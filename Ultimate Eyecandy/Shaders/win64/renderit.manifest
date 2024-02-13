@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 1385799379
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 69b44697c2555f90705cfda9422a1596
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cd130a68ad438331990654058a90f6e1
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 72
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Shaders/DepthOfField.shader
+- Assets/Resources/Shaders/MotionBlur.cginc
+- Assets/Resources/Shaders/Fog.shader
+- Assets/Resources/Shaders/LutGen.shader
+- Assets/Resources/Shaders/ScreenSpaceReflection.shader
+- Assets/Resources/Shaders/ACES.cginc
+- Assets/Resources/Shaders/UberSecondPass.cginc
+- Assets/Resources/Shaders/Tonemapping.cginc
+- Assets/Resources/Shaders/Uber.shader
+- Assets/Resources/Shaders/Blit.shader
+- Assets/Resources/Shaders/FXAA3.cginc
+- Assets/Resources/Shaders/MotionBlur.shader
+- Assets/Resources/Shaders/AmbientOcclusion.shader
+- Assets/Resources/Shaders/BuiltinDebugViews.shader
+- Assets/Resources/Shaders/Common.cginc
+- Assets/Resources/Shaders/Bloom.cginc
+- Assets/Resources/Shaders/TAA.shader
+- Assets/Resources/Shaders/EyeHistogram.compute
+- Assets/Resources/Shaders/TAA.cginc
+- Assets/Resources/Shaders/EyeAdaptation.cginc
+- Assets/Resources/Shaders/GrainGen.shader
+- Assets/Resources/Shaders/FXAA.shader
+- Assets/Resources/Shaders/DiskKernels.cginc
+- Assets/Resources/Shaders/DepthOfField.cginc
+- Assets/Resources/Shaders/ScreenSpaceRaytrace.cginc
+- Assets/Resources/Shaders/Bloom.shader
+- Assets/Resources/Shaders/EyeAdaptation.shader
+- Assets/Resources/Shaders/ColorGrading.cginc
+- Assets/Resources/Shaders/AmbientOcclusion.cginc
+Dependencies: []

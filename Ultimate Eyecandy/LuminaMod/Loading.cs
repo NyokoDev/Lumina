@@ -8,6 +8,8 @@
     using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using ColossalFramework.UI;
+    using Lumina.Shaders.AO;
+    using UnityEngine.PostProcessing;
 
     /// <summary>
     /// Main loading class: the mod runs from here.
@@ -19,6 +21,11 @@
         /// </summary>
         /// 
         public ColorCorrectionManager colorCorrectionManager;
+
+        /// <summary>
+        /// Initialize Ambient Occlusion instance.
+        /// </summary>
+        AO AO = new AO();
       
         protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
 
@@ -46,7 +53,7 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
-
+        
 
             if (LuminaLogic.DynResEnabled)
             {
@@ -75,6 +82,7 @@
 
             _gameObject = new UnityEngine.GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
+            AO.Start();
         }
     }
     public class CompatibilityDR : ListNotification

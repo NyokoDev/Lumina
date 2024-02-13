@@ -24,6 +24,9 @@
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
+		<Reference Include="PostProcessing">
+		  <HintPath>..\..\..\..\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\PostProcessing.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine" />
 	</ItemGroup>
 	<ItemGroup>

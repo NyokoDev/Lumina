@@ -11,6 +11,7 @@
     using AlgernonCommons.UI;
     using ColossalFramework;
     using ColossalFramework.UI;
+    using Lumina.Shaders.AO;
     using UnifiedUI.Helpers;
     using UnityEngine;
 
@@ -436,6 +437,7 @@
             StyleManager.ApplySettings();
             s_instance.ApplyShadowSmoothing();
             s_instance.UpdateShadowSettings();
+      
 
             // Apply any loaded fog values and then clear reference.
             ApplyFogValues();
@@ -970,6 +972,9 @@
             get { return HazeProperties.m_inscatteringStartDistance; }
             set { HazeProperties.m_inscatteringStartDistance = value; }
         }
+
+        public static float AOIntensity { get; set; }
+        public static float AORadius { get; internal set; }
 
 
         /// <summary>
