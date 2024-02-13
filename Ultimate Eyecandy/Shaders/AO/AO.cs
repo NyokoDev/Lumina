@@ -9,7 +9,9 @@ namespace Lumina.Shaders.AO
 {
     internal class AO : MonoBehaviour
     {
-        private AmbientOcclusionModel _ambientOcclusionModel;
+       
+
+public AmbientOcclusionModel _ambientOcclusionModel;
         
 
         public void Start()
@@ -23,6 +25,23 @@ namespace Lumina.Shaders.AO
             settings.radius = LuminaLogic.AOIntensity;
             UnityEngine.Debug.Log("[LUMINA] Ambient Occlusion enabled.");
         }
+
+        // Singleton pattern to ensure only one instance of AO exists.
+        private static AO instance;
+        public static AO Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new AO();
+                }
+                return instance;
+            }
+
+
+        }
+
     }
 }
 

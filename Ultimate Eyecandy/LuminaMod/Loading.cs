@@ -25,7 +25,7 @@
         /// <summary>
         /// Initialize Ambient Occlusion instance.
         /// </summary>
-        AO AO = new AO();
+       
       
         protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
 
@@ -82,13 +82,13 @@
 
             _gameObject = new UnityEngine.GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
-            AO.Start();
+            AO.Instance.Start();
         }
     }
     public class CompatibilityDR : ListNotification
     {
         internal UIButton _yesButton;
-
+        
         /// <summary>
         /// Gets the 'No' button (button 1) instance.
         /// </summary>

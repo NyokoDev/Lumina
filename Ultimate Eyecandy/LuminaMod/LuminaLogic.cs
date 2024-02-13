@@ -14,6 +14,7 @@
     using Lumina.Shaders.AO;
     using UnifiedUI.Helpers;
     using UnityEngine;
+    using UnityEngine.PostProcessing;
 
     /// <summary>
     /// Lumina logic class.
@@ -973,8 +974,38 @@
             set { HazeProperties.m_inscatteringStartDistance = value; }
         }
 
-        public static float AOIntensity { get; set; }
+        /// <summary>
+        /// Ambient occlusion intensity.
+        /// </summary>
+        public static float AOIntensity
+        {
+            get
+            {
+                if (AO.Instance != null && AO.Instance._ambientOcclusionModel != null)
+                {
+                    return AO.Instance._ambientOcclusionModel.settings.intensity;
+                }
+                else
+                {
+                    // Provide a default value if AO.Instance or _ambientOcclusionModel is null
+                    return defaultValue;
+                }
+            }
+            set
+            {
+                if (AO.Instance != null && AO.Instance._ambientOcclusionModel != null)
+                {
+                    var currentSettings = AO.Instance._ambientOcclusionModel.settings;
+                    currentSettings.intensity = value;
+                }
+         
+            }
+        }
+
+
+
         public static float AORadius { get; internal set; }
+        public static float defaultValue { get; private set; }
 
 
         /// <summary>
