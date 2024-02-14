@@ -34,6 +34,7 @@ namespace Lumina.OptionsTabs
         public UICheckBox UnlockSliderCheckbox;
 
         public UISlider AOSlider;
+        public UISlider AOSliderRadius;
 
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
@@ -58,9 +59,16 @@ namespace Lumina.OptionsTabs
             UILabel TitleAO = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Ambient Occlusion | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
             currentY += 40f;
 
-            AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 730f, 4f);
+            AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 500f, 4f);
             AOSlider.value = LuminaLogic.AOIntensity;
+            AOSlider.eventValueChanged += (sender, value) => LuminaLogic.AOIntensity = value;
             currentY += 20f;
+
+            AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 500f, 8f);
+            AOSliderRadius.value = LuminaLogic.AORadius;
+            AOSliderRadius.eventValueChanged += (sender, value) => LuminaLogic.AORadius= value;
+            currentY += 20f;
+
 
             UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Dynamic Resolution | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
             currentY += 40f;

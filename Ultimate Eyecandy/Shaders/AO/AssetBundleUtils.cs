@@ -6,16 +6,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 namespace Lumina.Shaders.AO
 {
- 
+
+    
     /// <summary>
     /// AssetBundleUtils class derived from 'Render It' mod.
     /// </summary>
-        public static class AssetBundleUtils
+    public static class AssetBundleUtils
         {
-            public static Dictionary<string, string> NameToFile = new Dictionary<string, string>()
+        public static Dictionary<string, string> NameToFile = new Dictionary<string, string>()
         {
             { "Hidden/Post FX/Ambient Occlusion", "AmbientOcclusion.shader" },
             { "Hidden/Post FX/Blit", "Blit.shader" },
@@ -33,11 +35,12 @@ namespace Lumina.Shaders.AO
             { "Hidden/Post FX/Uber Shader", "Uber.shader" }
         };
 
-            public static AssetBundle LoadAssetBundle(string name)
+        public static AssetBundle LoadAssetBundle(string name)
             {
                 try
                 {
                     string modPath = Singleton<PluginManager>.instance.FindPluginInfo(Assembly.GetAssembly(typeof(LuminaMod))).modPath;
+                    UnityEngine.Debug.Log("Lumina Mod Path " + modPath);
                     string platform = string.Empty;
 
                     switch (Application.platform)
@@ -77,6 +80,8 @@ namespace Lumina.Shaders.AO
                     Debug.Log("[Render It!] AssetBundleUtils:UnloadAndDestroyAssetBundle -> Exception: " + e.Message);
                 }
             }
+
+
 
             public static Shader Find(AssetBundle assetBundle, string name)
             {

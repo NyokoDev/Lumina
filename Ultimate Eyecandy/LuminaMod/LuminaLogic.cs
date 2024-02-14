@@ -358,7 +358,7 @@
             }
         }
 
-    
+
 
 
         internal static float m_FogDistance
@@ -401,13 +401,13 @@
             }
         }
 
-      
 
-    /// <summary>
-    /// Loads current settings and ensure an active instance.
-    /// Must be called prior to use.
-    /// </summary>
-    internal static void OnLoad()
+
+        /// <summary>
+        /// Loads current settings and ensure an active instance.
+        /// Must be called prior to use.
+        /// </summary>
+        internal static void OnLoad()
         {
             // Set instance reference.
             if (s_instance == null)
@@ -438,7 +438,7 @@
             StyleManager.ApplySettings();
             s_instance.ApplyShadowSmoothing();
             s_instance.UpdateShadowSettings();
-      
+
 
             // Apply any loaded fog values and then clear reference.
             ApplyFogValues();
@@ -833,7 +833,7 @@
             }
         }
 
-     
+
 
         public static float m_Exposure
         {
@@ -879,7 +879,7 @@
                 RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
                 return renderProperties.m_volumeFogDistance;
             }
-        set
+            set
             {
                 RenderProperties renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
                 renderProperties.m_volumeFogDistance = value;
@@ -977,34 +977,12 @@
         /// <summary>
         /// Ambient occlusion intensity.
         /// </summary>
-        public static float AOIntensity
-        {
-            get
-            {
-                if (AO.Instance != null && AO.Instance._ambientOcclusionModel != null)
-                {
-                    return AO.Instance._ambientOcclusionModel.settings.intensity;
-                }
-                else
-                {
-                    // Provide a default value if AO.Instance or _ambientOcclusionModel is null
-                    return defaultValue;
-                }
-            }
-            set
-            {
-                if (AO.Instance != null && AO.Instance._ambientOcclusionModel != null)
-                {
-                    var currentSettings = AO.Instance._ambientOcclusionModel.settings;
-                    currentSettings.intensity = value;
-                }
-         
-            }
-        }
+        public static float AOIntensity { get; set; }
 
 
 
-        public static float AORadius { get; internal set; }
+
+        public static float AORadius { get; set; }
         public static float defaultValue { get; private set; }
 
 

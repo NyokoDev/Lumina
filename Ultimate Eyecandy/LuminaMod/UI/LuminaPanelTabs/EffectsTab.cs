@@ -44,19 +44,19 @@
         private UILabel _Effects;
         private UIDropDown _cubemapDropDown;
         private UIDropDown _cubemapDropDownNight;
+        public UISlider AOSlider;
+        public UISlider AOSliderRadius;
 
         private int offsetY;
-        private UISlider SimSpeed;
+     
         private LuminaLogic LuminaLogic;
         Loading Loading;
         private UISlider EdgeDistanceSlider;
         private UISlider HorizonHeight;
         private UISlider FogHeight;
-        private UISlider sunIntensitySlider;
+
         private UIDropDown _colorcorrectiondropdown;
-        private UISlider ExposureSlider;
-        private UISlider SkyRayleighScattering;
-        private UISlider SkyMieScattering;
+     
         private UIButton SSAAApplyButton;
         private UIButton SSAAResetButton;
         private UILabel ssaaLabel;
@@ -209,36 +209,7 @@
                     LuminaLogic.InscatteringIntensity = 0f;
                 };
 
-                SimSpeed = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0f, 2f, 0, ref currentY);
-                SimSpeed.value = LuminaLogic.CustomTimeScale;
-                SimSpeed.eventValueChanged += (c, value) =>
-                {
-
-                    LuminaLogic.CustomTimeScale = value;
-                };  // Set Sim Speed value
-
-                sunIntensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SUNINTENSITY_TEXT), 0f, 8f, 0, ref currentY);
-                sunIntensitySlider.value = LuminaLogic.DayNightSunIntensity;
-                sunIntensitySlider.eventValueChanged += (c, value) => { LuminaLogic.DayNightSunIntensity = value; };  // Set Sun Intensity value
-                currentY += 2f; // Add space
-
-                // Exposure Slider
-                ExposureSlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.EXPOSURESLIDER_TEXT), 0f, 5f, 0, ref currentY);
-                ExposureSlider.value = LuminaLogic.m_Exposure;
-                ExposureSlider.eventValueChanged += (c, value) => { LuminaLogic.m_Exposure = value; };  // Set Exposure value
-                currentY += 0.5f; // Add space
-
-                // Sky Rayleigh Scattering
-                SkyRayleighScattering = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAYSCATTERING_TEXT), 0f, 5f, 0, ref currentY);
-                SkyRayleighScattering.value = LuminaLogic.SkyRayleighScattering;
-                SkyRayleighScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyRayleighScattering = value; };  // Set Sky Rayleigh value
-                currentY += 0.5f; // Add space
-
-                // Sky Mie Scattering
-                SkyMieScattering = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.MIESCATTERING_TEXT), 0f, 5f, 0, ref currentY);
-                SkyMieScattering.value = LuminaLogic.SkyMieScattering;
-                SkyMieScattering.eventValueChanged += (c, value) => { LuminaLogic.SkyMieScattering = value; };// Set Sky Mie value
-
+               
                 // Assuming you have an event handler for when the checkbox state changes
        
                 HazeCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.BLUEHAZE));
@@ -250,6 +221,29 @@
                         BlueHaze();
                     }
                 };
+                currentY += 40f;
+
+
+                /// Ambient Occlusion
+
+                UILabel TitleAO = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Ambient Occlusion"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                currentY += 40f;
+
+                UILabel TitleAO2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Intensity"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                currentY += 30f;
+
+                AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 4f);
+                AOSlider.value = LuminaLogic.AOIntensity;
+                AOSlider.eventValueChanged += (sender, value) => LuminaLogic.AOIntensity = value;
+                currentY += 20f;
+
+                UILabel TitleAO3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                currentY += 30f;
+
+                AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 8f);
+                AOSliderRadius.value = LuminaLogic.AORadius;
+                AOSliderRadius.eventValueChanged += (sender, value) => LuminaLogic.AORadius = value;
+                currentY += 20f;
 
 
 
@@ -274,11 +268,7 @@
                         HorizonHeight.value = 0f;
                         _fogCheckBox.isChecked = false;
                         _edgefogCheckbox.isChecked = false;
-                        SimSpeed.value = 1f;
-                        sunIntensitySlider.value = 1f;
-                        ExposureSlider.value = 1f;
-                        SkyRayleighScattering.value = 1f;
-                        SkyMieScattering.value = 1f;
+                       
 
                         notification.Close();
                     };

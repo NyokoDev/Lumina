@@ -44,7 +44,7 @@
         private UIButton SSAAButton;
         private UICheckBox UnlockSliderCheckbox;
         private UILabel versionlabel;
-
+  
 
         CameraHook hook;
         /// <summary>
@@ -221,10 +221,7 @@
 
 
 
-
-
-
-
+                
 
 
 
@@ -250,6 +247,11 @@
                     _moonTintSlider.value = 0f;
                     _moonLightSlider.value = 0f;
                     _twilightTintSlider.value = 0f;
+                    StylesTab.SimSpeed.value = 1f;
+                    StylesTab.sunIntensitySlider.value = 1f;
+                    StylesTab.ExposureSlider.value = 1f;
+                    StylesTab.SkyRayleighScattering.value = 1f;
+                    StylesTab.SkyMieScattering.value = 1f;
                 };
                 currentY += 20f;
 

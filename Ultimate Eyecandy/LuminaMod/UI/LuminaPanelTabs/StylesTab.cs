@@ -19,6 +19,11 @@
         UIButton _saveButton;
         UIButton _deleteButton;
         UIButton _loadButton;
+        public static UISlider ExposureSlider;
+        public static UISlider SkyRayleighScattering;
+        public static UISlider SkyMieScattering;
+        public static UISlider SimSpeed;
+        public static UISlider sunIntensitySlider;
 
         // Selection.
         private LuminaStyle _selectedItem;
@@ -132,12 +137,57 @@
                             Logging.LogException(e, "exception creating new style");
                         }
                     }
+
+                    
+
+
                 }
+
+
             };
 
             // Load styles and populate initial list.
             StyleManager.LoadStyles();
             RefreshDisplayList();
+            currentY += 40f;
+
+            float spaceBetweenSliders = 2f; // Adjust this value to change the space between sliders
+            float GlobalWidth = 300f;
+
+            // Sun Intensity Slider
+            sunIntensitySlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SUNINTENSITY_TEXT), 0f, 8f, 0, ref currentY);
+            sunIntensitySlider.value = LuminaLogic.DayNightSunIntensity;
+            sunIntensitySlider.width = GlobalWidth;
+            sunIntensitySlider.eventValueChanged += (_, value) => { LuminaLogic.DayNightSunIntensity = value; };
+            currentY += spaceBetweenSliders; // Move to the next row
+
+            // Exposure Slider
+            ExposureSlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.EXPOSURESLIDER_TEXT), 0f, 5f, 0, ref currentY);
+            ExposureSlider.width = GlobalWidth;
+            ExposureSlider.value = LuminaLogic.m_Exposure;
+            ExposureSlider.eventValueChanged += (_, value) => { LuminaLogic.m_Exposure = value; };
+            currentY += spaceBetweenSliders; // Move to the next row
+
+            // Sky Rayleigh Scattering Slider
+            SkyRayleighScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAYSCATTERING_TEXT), 0f, 5f, 0, ref currentY);
+            SkyRayleighScattering.width = GlobalWidth;
+            SkyRayleighScattering.value = LuminaLogic.SkyRayleighScattering;
+            SkyRayleighScattering.eventValueChanged += (_, value) => { LuminaLogic.SkyRayleighScattering = value; };
+            currentY += spaceBetweenSliders; // Move to the next row
+
+            // Sky Mie Scattering Slider
+            SkyMieScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.MIESCATTERING_TEXT), 0f, 5f, 0, ref currentY);
+            SkyMieScattering.width = GlobalWidth;
+            SkyMieScattering.value = LuminaLogic.SkyMieScattering;
+            SkyMieScattering.eventValueChanged += (_, value) => { LuminaLogic.SkyMieScattering = value; };
+
+            SimSpeed = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0f, 2f, 0, ref currentY);
+            SimSpeed.value = LuminaLogic.CustomTimeScale;
+            SimSpeed.eventValueChanged += (_, value) =>
+            {
+
+                LuminaLogic.CustomTimeScale = value;
+            };  // Set Sim Speed value
         }
 
         /// <summary>

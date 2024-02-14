@@ -144,9 +144,12 @@
         public float AOIntensity
         {
             get => LuminaLogic.AOIntensity;
-            set => LuminaLogic.AOIntensity = value;
-
+            set
+            {
+                LuminaLogic.AOIntensity = value;
+            }
         }
+
 
 
 

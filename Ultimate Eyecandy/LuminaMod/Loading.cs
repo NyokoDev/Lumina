@@ -41,7 +41,7 @@
         }
 
         public static CameraHook hook = null;
-
+        private GameObject _modManagerGameObject;
         private UnityEngine.GameObject _gameObject;
         /// <summary>
         /// Performs any actions upon successful level loading completion.
@@ -82,7 +82,9 @@
 
             _gameObject = new UnityEngine.GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
-            AO.Instance.Start();
+
+            _modManagerGameObject = new GameObject("LuminaShaderControl");
+            _modManagerGameObject.AddComponent<AO>();
         }
     }
     public class CompatibilityDR : ListNotification
