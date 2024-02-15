@@ -226,23 +226,40 @@
 
                 /// Ambient Occlusion
 
-                UILabel TitleAO = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Ambient Occlusion"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                UILabel TitleAO = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Ambient Occlusion"), textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
                 currentY += 40f;
 
-                UILabel TitleAO2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Intensity"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                UILabel TitleAO2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Intensity"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center); // Untouched
                 currentY += 30f;
 
-                AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 4f);
+                UILabel AOIntensityTitleLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("IntensityValue"));
+                currentY += 30f;
+                AOIntensityTitleLabel.text = LuminaLogic.AOIntensity.ToString();
+
+                AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 15f);
                 AOSlider.value = LuminaLogic.AOIntensity;
-                AOSlider.eventValueChanged += (sender, value) => LuminaLogic.AOIntensity = value;
+                AOSlider.eventValueChanged += (sender, value) =>
+                {
+
+                    LuminaLogic.AOIntensity = value;
+                    AOIntensityTitleLabel.text = value.ToString();
+
+                };
                 currentY += 20f;
 
-                UILabel TitleAO3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+                UILabel TitleAO3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center); // Untouched
                 currentY += 30f;
 
-                AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 8f);
+                UILabel AORadiusTitleLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"));
+                currentY += 30f;
+                AORadiusTitleLabel.text = LuminaLogic.AORadius.ToString();
+                AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 15f);
                 AOSliderRadius.value = LuminaLogic.AORadius;
-                AOSliderRadius.eventValueChanged += (sender, value) => LuminaLogic.AORadius = value;
+                AOSliderRadius.eventValueChanged += (sender, value) =>
+                {
+                    LuminaLogic.AORadius = value;
+                    AORadiusTitleLabel.text = value.ToString();
+                };
                 currentY += 20f;
 
 

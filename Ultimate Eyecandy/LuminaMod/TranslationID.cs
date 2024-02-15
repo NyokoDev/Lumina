@@ -88,5 +88,7 @@ namespace LuminaTR
         public const string SHADER_CONFIG = "SHADER_CONFIG";
         public const string RESTART_TEXT = "RESTART_TEXT";
         public const string STATUS_LABEL = "STATUS_LABEL";
+
+        public const string UISTYLE = "UISTYLE";
     }
 }

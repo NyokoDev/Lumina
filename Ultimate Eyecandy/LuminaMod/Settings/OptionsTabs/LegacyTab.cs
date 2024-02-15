@@ -36,6 +36,9 @@ namespace Lumina.OptionsTabs
         public UISlider AOSlider;
         public UISlider AOSliderRadius;
 
+        public UILabel AORadiusTitleLabel;
+        public UILabel AOIntensityTitleLabel;
+
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
 
@@ -59,15 +62,46 @@ namespace Lumina.OptionsTabs
             UILabel TitleAO = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Ambient Occlusion | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
             currentY += 40f;
 
-            AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 500f, 4f);
-            AOSlider.value = LuminaLogic.AOIntensity;
-            AOSlider.eventValueChanged += (sender, value) => LuminaLogic.AOIntensity = value;
-            currentY += 20f;
 
-            AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 500f, 8f);
-            AOSliderRadius.value = LuminaLogic.AORadius;
-            AOSliderRadius.eventValueChanged += (sender, value) => LuminaLogic.AORadius= value;
+            float labelWidth = panel.width - (Margin * 3f); // Adjust as needed
+            float labelHeight = 0.8f; // Adjust as needed
+
+            AOIntensityTitleLabel = UILabels.AddLabel(panel, 80f, currentY, Translations.Translate("Intensity"), labelWidth, labelHeight);
+            UILabel AOIntensityLabel = UILabels.AddLabel(panel, LeftMargin, currentY, "AOINTENSITY", panel.width - (Margin * 2f), 0.9f);
             currentY += 20f;
+            AOSlider = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, 15f);
+            currentY += 50f;
+            AOSlider.value = LuminaLogic.AOIntensity;
+            AOIntensityLabel.text = AOSlider.value.ToString();
+
+            AOSlider.eventValueChanged += (sender, value) =>
+            {
+
+                LuminaLogic.AOIntensity = value;
+                AOIntensityLabel.text = value.ToString();
+            };
+
+
+        
+
+            AORadiusTitleLabel = UILabels.AddLabel(panel, 80f, currentY, Translations.Translate("Radius"), labelWidth, labelHeight);
+            UILabel AORadiusLabel = UILabels.AddLabel(panel, LeftMargin, currentY, "AORADIUS", panel.width - (Margin * 2f), 0.9f);
+
+
+            currentY += 20f;
+            AOSliderRadius = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, 15f);
+            currentY += 50f;
+            AOSliderRadius.value = LuminaLogic.AORadius;
+            AORadiusLabel.text = AOSliderRadius.value.ToString();
+            AOSliderRadius.eventValueChanged += (sender, value) =>
+            {
+
+                LuminaLogic.AORadius = value;
+                AORadiusLabel.text = value.ToString();
+            };
+
+
+
 
 
             UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Dynamic Resolution | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
@@ -76,7 +110,7 @@ namespace Lumina.OptionsTabs
             UILabel enable = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
             currentY += 50f;
 
-            UIButton enableDRbutton = UIButtons.AddSmallerButton(panel, 50f, currentY, Translations.Translate("Activate"));
+            UIButton enableDRbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, Translations.Translate("Activate"));
             currentY += 50f;
 
             enableDRbutton.eventClicked += (sender, args) =>
@@ -102,11 +136,11 @@ namespace Lumina.OptionsTabs
                 enableDRbutton.text = "Deactivate";
                 enableDRbutton.height = 30f;
 
-                SSAALabel = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f), 0.8f, alignment: UIHorizontalAlignment.Center);
+                SSAALabel = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f), 0.8f);
                 currentY += 20f;
 
 
-                SSAAConfig = UISliders.AddBudgetSlider(panel, 2f, currentY, 730f, ShaderStructure.LockedSliderValue); // Main DR Slider.
+                SSAAConfig = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, ShaderStructure.LockedSliderValue); // Main DR Slider.
                 SSAAConfig.value = ShaderStructure.ssaaFactor;
                 currentY += 20f;
 
@@ -115,7 +149,7 @@ namespace Lumina.OptionsTabs
                 {
                     SSAALabel2.text = SSAAConfig.value.ToString();
                 };
-                SSAALabel2 = UILabels.AddLabel(panel, LeftMargin, currentY, SSAAConfig.value.ToString(), panel.width - (Margin * 2f), 0.9f, alignment: UIHorizontalAlignment.Center) ;
+                SSAALabel2 = UILabels.AddLabel(panel, LeftMargin, currentY, SSAAConfig.value.ToString(), panel.width - (Margin * 2f), 0.9f) ;
                 currentY += 15f;
             
                 SSAAButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));

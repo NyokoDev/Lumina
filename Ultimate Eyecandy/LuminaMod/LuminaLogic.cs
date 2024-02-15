@@ -984,6 +984,7 @@
 
         public static float AORadius { get; set; }
         public static float defaultValue { get; private set; }
+        public static string BackgroundStyle { get; set; }
 
 
         /// <summary>

@@ -150,6 +150,28 @@
             }
         }
 
+        [XmlElement("AORadius")]
+        public float AORadius
+        {
+            get => LuminaLogic.AORadius;
+            set
+            {
+                LuminaLogic.AORadius = value;
+            }
+        }
+
+        [XmlElement("BackgroundStyle")]
+        public string BackgroundStyle
+        {
+            get => LuminaLogic.BackgroundStyle;
+            set
+            {
+                LuminaLogic.BackgroundStyle = value;
+            }
+        }
+
+
+
 
 
 

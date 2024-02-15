@@ -21,11 +21,14 @@ namespace Lumina.OptionsTabs
         private const float LabelWidth = 40f;
         private const float TabHeight = 20f;
         public static UIPanel panel;
+        string[] UIStyles = new string[] { "Transparent", "Normal" };
+
 
 
         internal MainTab(UITabstrip tabStrip, int tabIndex)
         {
-           
+
+
             panel = UITabstrips.AddTextTab(tabStrip, "Main", tabIndex, out UIButton _, autoLayout: false);
             float currentY = Margin;
             // Language choice.
@@ -37,9 +40,37 @@ namespace Lumina.OptionsTabs
             };
             currentY += languageDropDown.parent.height + GroupMargin;
 
+   
+
             // Hotkey control.
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(panel, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
+
+   
+
+            UIDropDown UIStyleDropdown = UIDropDowns.AddPlainDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE), UIStyles);
+            currentY += 80f;
+            if (LuminaLogic.BackgroundStyle == "LuminaNormal")
+            {
+                UIStyleDropdown.selectedValue = "Transparent";
+            }
+            else if (LuminaLogic.BackgroundStyle == "UnlockingItemBackground")
+            {
+                UIStyleDropdown.selectedValue = "Normal";
+            }
+            UIStyleDropdown.eventSelectedIndexChanged += (component, value) =>
+            {
+                int index = UIStyleDropdown.selectedIndex;
+                if (UIStyles[index] == "Transparent")
+                {
+                    LuminaLogic.BackgroundStyle = "LuminaNormal";
+                }
+                else if (UIStyles[index] == "Normal")
+                {
+                    LuminaLogic.BackgroundStyle = "UnlockingItemBackground";
+                }
+            };
+
 
             UIButton supportbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Support");
             currentY += 50f;
@@ -56,7 +87,22 @@ namespace Lumina.OptionsTabs
             };
 
 
+            UILabel TitleAO = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("MORE_STYLES"), textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
+            currentY += 40f;
 
+            UIButton WorkshopButton = UIButtons.AddIconButton(panel, LeftMargin, currentY, 50f, UITextures.InGameAtlas, "Workshop");
+
+            WorkshopButton.normalBgSprite = "WorkshopButton";
+            WorkshopButton.hoveredBgSprite = "WorkshopButtonHovered";
+            WorkshopButton.pressedBgSprite = "WorkshopButtonPressed";
+            WorkshopButton.eventClicked += (sender, args) =>
+            {
+                Process.Start("https://steamcommunity.com/workshop/browse/?appid=255710&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=lumina%20style");
+            };
+
+
+
+            currentY += 60f;
             UILabel version = UILabels.AddLabel(panel, LabelWidth, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
         }
     }
