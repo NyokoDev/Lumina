@@ -90,5 +90,6 @@ namespace LuminaTR
         public const string STATUS_LABEL = "STATUS_LABEL";
 
         public const string UISTYLE = "UISTYLE";
+        public const string VISIBILITY_STATUS = "VISIBILITY_STATUS";
     }
 }

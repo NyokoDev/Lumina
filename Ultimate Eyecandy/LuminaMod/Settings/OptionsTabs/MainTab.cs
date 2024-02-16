@@ -23,7 +23,7 @@ namespace Lumina.OptionsTabs
         public static UIPanel panel;
         string[] UIStyles = new string[] { "Transparent", "Normal" };
 
-
+        public string[] VisibilityStatus = new string[] { "Both", "Only UUI" };
 
         internal MainTab(UITabstrip tabStrip, int tabIndex)
         {
@@ -46,9 +46,10 @@ namespace Lumina.OptionsTabs
             OptionsKeymapping uuiKeymapping = OptionsKeymapping.AddKeymapping(panel, LeftMargin, currentY, Translations.Translate("HOTKEY"), ModSettings.ToggleKey.Keybinding);
             currentY += uuiKeymapping.Panel.height + GroupMargin;
 
-   
 
-            UIDropDown UIStyleDropdown = UIDropDowns.AddPlainDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE), UIStyles);
+
+            UIDropDown UIStyleDropdown = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE) );
+            UIStyleDropdown.items = UIStyles;
             currentY += 80f;
             if (LuminaLogic.BackgroundStyle == "LuminaNormal")
             {
@@ -64,12 +65,43 @@ namespace Lumina.OptionsTabs
                 if (UIStyles[index] == "Transparent")
                 {
                     LuminaLogic.BackgroundStyle = "LuminaNormal";
+                    ModSettings.Save();
                 }
                 else if (UIStyles[index] == "Normal")
                 {
                     LuminaLogic.BackgroundStyle = "UnlockingItemBackground";
+                    ModSettings.Save();
                 }
             };
+            currentY += 30f;
+
+
+            /// Button Visibility Status dropdown
+            UIDropDown ButtonVisibleToggle = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.VISIBILITY_STATUS));
+            ButtonVisibleToggle.items = VisibilityStatus;
+            if (LuminaLogic.ShowButton == false)
+            {
+                ButtonVisibleToggle.selectedValue = "Only UUI";
+            }
+            else if (LuminaLogic.ShowButton == true)
+            {
+                ButtonVisibleToggle.selectedValue = "Both";
+            }
+            ButtonVisibleToggle.eventSelectedIndexChanged += (component, value) =>
+            {
+                int index = ButtonVisibleToggle.selectedIndex;
+                if (VisibilityStatus[index] == "Only UUI")
+                {
+                    LuminaLogic.ShowButton = false;
+                    ModSettings.Save();
+                }
+                else if (VisibilityStatus[index] == "Both")
+                {
+                    LuminaLogic.ShowButton = true;
+                    ModSettings.Save();
+                }
+            };
+            currentY += 50f;
 
 
             UIButton supportbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Support");

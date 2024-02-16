@@ -985,6 +985,9 @@
         public static float AORadius { get; set; }
         public static float defaultValue { get; private set; }
         public static string BackgroundStyle { get; set; }
+        public static float ButtonPositionY { get; set; }
+        public static float ButtonPositionX { get; set; }
+        public static bool ShowButton { get; set; }
 
 
         /// <summary>

@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.7.1</Version>
+		<Version>1.7.2</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -35,6 +35,7 @@
 		<_Resources Include="$(ProjectDir)/Resources/*.*" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Resources\ADV.png" />
 	  <None Remove="Resources\bck.png" />
 	  <None Remove="Resources\UUI.png" />
 	</ItemGroup>
@@ -49,6 +50,9 @@
 	<ItemGroup>
 	  <Content Include="Resources\bck.png" />
 	  <Content Include="Resources\UUI.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\ADV.png" />
 	</ItemGroup>
 	<Target Name="DeployToModDirectory" AfterTargets="Build">
 		<PropertyGroup>

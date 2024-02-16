@@ -18,7 +18,7 @@ namespace Lumina.Patches
     {
         public static bool Prefix(Dictionary<string, Material> ___m_Materials, ref Material __result, string shaderName)
         {
-            UnityEngine.Debug.Log("Started MaterialFactory patch.");
+ 
             try
             {
                 if (!___m_Materials.TryGetValue(shaderName, out var value))

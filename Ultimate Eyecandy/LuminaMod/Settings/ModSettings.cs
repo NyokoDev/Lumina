@@ -227,6 +227,39 @@
             get { return ShaderStructure.sliderMaximumIndex; }
             set { ShaderStructure.sliderMaximumIndex = value; }
         }
+            
+
+        /// <summary>
+        /// In-game button visible.
+        /// </summary>
+        [XmlElement("ShowButton")]
+        public bool ShowButton
+        {
+            get { return LuminaLogic.ShowButton; }
+            set { LuminaLogic.ShowButton = value; }
+        }
+
+        /// <summary>
+        /// X position of the button.
+        /// </summary>
+        [XmlElement("ButtonPositionX")]
+        public float ButtonPositionX
+        {
+            get { return LuminaLogic.ButtonPositionX; }
+            set { LuminaLogic.ButtonPositionX = value; }
+        }
+
+
+        /// <summary>
+        /// X position of the button.
+        /// </summary>
+        [XmlElement("ButtonPositionY")]
+        public float ButtonPositionY
+        {
+            get { return LuminaLogic.ButtonPositionY; }
+            set { LuminaLogic.ButtonPositionY = value; }
+        }
+
 
 
         /// <summary>
