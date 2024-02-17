@@ -43,6 +43,7 @@
         public static CameraHook hook = null;
         private GameObject _modManagerGameObject;
         private UnityEngine.GameObject _gameObject;
+
         /// <summary>
         /// Performs any actions upon successful level loading completion.
         /// </summary>
@@ -53,8 +54,7 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
-        
-
+           
             if (LuminaLogic.DynResEnabled)
             {
                 var cameraController = GameObject.FindObjectOfType<CameraController>();
@@ -64,7 +64,8 @@
             {
                 Debug.Log("[LUMINA] Dynamic Resolution disabled.");
             }
-        
+
+
 
             if (ModUtils.IsModEnabled("dynamicresolution")) {
 

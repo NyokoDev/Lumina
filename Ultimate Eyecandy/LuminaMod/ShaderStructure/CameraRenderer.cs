@@ -18,7 +18,24 @@ using ICities;
 
 namespace Lumina
 {
-    
+    /// <summary>
+    /// Redirect class.
+    /// </summary>
+    class Redirect
+    {
+        public MethodInfo from;
+        public RedirectCallsState state;
+
+        internal Redirect(MethodInfo from, RedirectCallsState state)
+        {
+            this.from = from;
+            this.state = state;
+        }
+    }
+
+    /// <summary>
+    /// Renderer class responsible for misalignment fix plus rendering the Dynamic Resolution method.
+    /// </summary>
     public class CameraRenderer : MonoBehaviour
     {
         public RenderTexture fullResRT;
@@ -43,7 +60,21 @@ namespace Lumina
         private static FieldInfo cachedFreeCameraField;
 
         private static string cachedModPath = null;
+        private Stack<Redirect> redirectionStack = new Stack<Redirect>();
 
+        private void pushRedirect(MethodInfo from, MethodInfo to)
+        {
+            redirectionStack.Push(new Redirect(from, RedirectionHelper.RedirectCalls(from, to)));
+        }
+
+        private void revertAllRedirects()
+        {
+            while (redirectionStack.Count > 0)
+            {
+                Redirect redirect = redirectionStack.Pop();
+                RedirectionHelper.RevertRedirect(redirect.from, redirect.state);
+            }
+        }
 
 
         static string modPath
@@ -191,27 +222,13 @@ namespace Lumina
             assetBundle.Unload(false);
         }
 
-        public void Awake()
-        {
-            camera = GetComponent<Camera>();
 
-            unitRect = new Rect(0f, 0f, 1f, 1f);
 
-            LoadShaders();
+       
+       
 
-            undergroundView = FindObjectOfType<UndergroundView>();
-            undergroundRGBDField = typeof(UndergroundView).GetField("m_undergroundRGBD",
-                BindingFlags.Instance | BindingFlags.NonPublic);
 
-            undergroundCamera = ShaderStructureUtils.GetPrivate<Camera>(undergroundView, "m_undergroundCamera");
-
-            cameraController = FindObjectOfType<CameraController>();
-            cachedFreeCameraField = typeof(CameraController)
-                .GetField("m_cachedFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
-        }
-    
      
-
         public void Update()
         {
             camera.fieldOfView = mainCamera.fieldOfView;
@@ -222,7 +239,10 @@ namespace Lumina
             camera.rect = mainCamera.rect;
         }
 
-        void UndegroundViewLateUpdate()
+        /// <summary>
+        /// Underground View lateupdate modification part of the fix for misalignment.
+        /// </summary>
+        void UndergroundViewLateUpdate()
         {
             var undergroundRGBD = ShaderStructureUtils.GetFieldValue<RenderTexture>(undergroundRGBDField, undergroundView);
 
@@ -259,6 +279,9 @@ namespace Lumina
             }
         }
 
+        /// <summary>
+        /// Method to ensure alignment Free Camera.
+        /// </summary>
         void CameraControllerUpdateFreeCamera()
         {
             bool m_cachedFreeCamera = ShaderStructureUtils.GetFieldValue<bool>(cachedFreeCameraField, cameraController);
@@ -281,6 +304,73 @@ namespace Lumina
             ShaderStructureUtils.GetPrivate<Camera>(cameraController, "m_camera").rect = new Rect(0f, 0f, 1f, 1f);
         }
 
+        /// <summary>
+        /// Awakes the MonoBehaviour class and loads the shaders plus applies misalignment fixes.
+        /// </summary>
+        public void Awake()
+        {
+            camera = GetComponent<Camera>();
+
+            unitRect = new Rect(0f, 0f, 1f, 1f);
+
+            LoadShaders();
+
+            /// Initializes the instances.
+            undergroundView = FindObjectOfType<UndergroundView>();
+            undergroundRGBDField = typeof(UndergroundView).GetField("m_undergroundRGBD",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            undergroundCamera = ShaderStructureUtils.GetPrivate<Camera>(undergroundView, "m_undergroundCamera");
+            cameraController = FindObjectOfType<CameraController>();
+            cachedFreeCameraField = typeof(CameraController)
+                .GetField("m_cachedFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
+
+
+            var undergroundViewLateUpdateMethod = typeof(UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+            var cameraRendererUndergroundViewLateUpdateMethod = typeof(CameraRenderer).GetMethod("UndergroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (undergroundViewLateUpdateMethod != null)
+            {
+                if (cameraRendererUndergroundViewLateUpdateMethod != null)
+                {
+                    pushRedirect(undergroundViewLateUpdateMethod, cameraRendererUndergroundViewLateUpdateMethod);
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("CameraRenderer UndergroundViewLateUpdate method not found.");
+                }
+            }
+            else
+            {
+                UnityEngine.Debug.Log("UndergroundView LateUpdate method not found.");
+            }
+
+            var updateFreeCameraMethod = typeof(CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
+            var cameraRendererUpdateFreeCameraMethod = typeof(CameraRenderer).GetMethod("CameraControllerUpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (updateFreeCameraMethod != null)
+            {
+                if (cameraRendererUpdateFreeCameraMethod != null)
+                {
+                    pushRedirect(updateFreeCameraMethod, cameraRendererUpdateFreeCameraMethod);
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("CameraRenderer CameraControllerUpdateFreeCamera method not found.");
+                }
+            }
+            else
+            {
+                UnityEngine.Debug.Log("CameraController UpdateFreeCamera method not found.");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Renders the image.
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
         public void OnRenderImage(RenderTexture src, RenderTexture dst)
         {
             if (fullResRT == null)
