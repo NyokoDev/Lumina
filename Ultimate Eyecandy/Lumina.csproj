@@ -24,32 +24,18 @@
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
-		<Reference Include="PostProcessing">
-		  <HintPath>..\..\..\..\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\PostProcessing.dll</HintPath>
-		</Reference>
 		<Reference Include="UnityEngine" />
+		<Reference Include="PostProcessing" />
 	</ItemGroup>
 	<ItemGroup>
 		<_Translations Include="$(ProjectDir)/Translations/*.*" />
 		<_TranslationsCore Include="../../AlgernonCommons/Translations/*.csv" />
 		<_Resources Include="$(ProjectDir)/Resources/*.*" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Resources\ADV.png" />
-	  <None Remove="Resources\bck.png" />
-	  <None Remove="Resources\UUI.png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <_Resources Remove="Resources\CompatibilityHelper.cs" />
-	  <_Resources Remove="Resources\ModUtils.cs" />
-	  <_Resources Remove="Resources\UUI.png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <_Translations Remove="Translations\no-nb.csv" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="Resources\bck.png" />
-	  <Content Include="Resources\UUI.png" />
+		<_Shaders Include="$(ProjectDir)/Shaders/*.*" />
+		<_LinShaders Include="$(ProjectDir)/Shaders/lin64/*.*" />
+		<_WinShaders Include="$(ProjectDir)/Shaders/win64/*.*" />
+		<_MacShaders Include="$(ProjectDir)/Shaders/osx64/*.*" />
+		<_LUTs Include="$(ProjectDir)/Build/*.*" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\ADV.png" />
@@ -64,10 +50,12 @@
 		<Copy SourceFiles="@(_Translations)" DestinationFolder="$(DeployDir)/Translations" />
 		<Copy SourceFiles="@(_TranslationsCore)" DestinationFolder="$(DeployDir)/Translations/Core" />
 		<Copy SourceFiles="@(_Resources)" DestinationFolder="$(DeployDir)/Resources" />
+		<Copy SourceFiles="@(_Shaders)" DestinationFolder="$(DeployDir)/Resources/Shaders" />
+		<Copy SourceFiles="@(_LinShaders)" DestinationFolder="$(DeployDir)/Resources/Shaders/lin64" />
+		<Copy SourceFiles="@(_WinShaders)" DestinationFolder="$(DeployDir)/Resources/Shaders/win64" />
+		<Copy SourceFiles="@(_MacShaders)" DestinationFolder="$(DeployDir)/Resources/Shaders/osx64" />
+		<Copy SourceFiles="@(_LUTs)" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="@(_Editor)" DestinationFolder="$(DeployDir)/LUT Editor" />
 	</Target>
 	<Import Project="..\..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\Build\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;xcopy /Y /S /I &quot;C:\Users\Nyoko\source\repos\Lumina\Ultimate Eyecandy\Shaders\*.*&quot; &quot;C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\Lumina\&quot;&#xD;&#xA;&#xD;&#xA;" />
-	</Target>
 </Project>
