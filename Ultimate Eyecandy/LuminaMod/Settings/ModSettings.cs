@@ -170,11 +170,6 @@
             }
         }
 
-
-
-
-
-
         [XmlElement("DisableInscatteringEffects")]
         public bool HazeEnabled = false;
 
@@ -184,50 +179,29 @@
             get => LuminaLogic.CompatibilityDisabled; 
             set => LuminaLogic.CompatibilityDisabled = value; }
 
-
-        [XmlElement("LockedSliderValue")]
-        public float LockedSliderValue
-        {
-            get { return ShaderStructure.LockedSliderValue; }
-            set { ShaderStructure.LockedSliderValue = value; }
-        }
-
-        [XmlElement("SSAAFactor")]
-        public float SsaaFactor
-        {
-            get { return ShaderStructure.ssaaFactor; }
-            set { ShaderStructure.ssaaFactor = value; }
-        }
-
-        [XmlElement("UnlockSlider")]
-        public bool UnlockSlider
-        {
-            get { return ShaderStructure.unlockSlider; }
-            set { ShaderStructure.unlockSlider = value; }
-        }
-
-
-        [XmlElement("SsaoState")]
-        public bool SsaoState
-        {
-            get { return ShaderStructure.ssaoState; }
-            set { ShaderStructure.ssaoState = value; }
-        }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether VRAM usage should be reduced by eliminating the half-height render texture.
+        /// </summary>
         [XmlElement("LowerVRAMUsage")]
-        public bool LowerVRAMUsage
-        {
-            get { return ShaderStructure.lowerVRAMUsage; }
-            set { ShaderStructure.lowerVRAMUsage = value; }
-        }
+        public bool LowerVRAMUsage { get => DynamicResolutionManager.LowerVRAMUsage; set => DynamicResolutionManager.LowerVRAMUsage = value; }
 
-        [XmlElement("SliderMaximumIndex")]
-        public int SliderMaximumIndex
-        {
-            get { return ShaderStructure.sliderMaximumIndex; }
-            set { ShaderStructure.sliderMaximumIndex = value; }
-        }
-            
+        /// <summary>
+        /// Gets or sets the active anti-aliasing factor.
+        /// </summary>
+        [XmlElement("SSAAFactor")]
+        public float AliasingFactor { get => DynamicResolutionCamera.AliasingFactor; set => DynamicResolutionCamera.AliasingFactor = value; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the resolution slider should be unlocked.
+        /// </summary>
+        [XmlElement("UnlockSlider")]
+        public bool UnlockSlider { get => DynamicResolutionManager.UnlockSlider; set => DynamicResolutionManager.UnlockSlider = value; }
+
+        /// <summary>
+        /// Gets or sets the maximum limit for the dynamic resolution slider.
+        /// </summary>
+        [XmlElement("LockedSliderValue")]
+        public float MaximumDRValue { get => DynamicResolutionManager.MaximumDRValue; set => DynamicResolutionManager.MaximumDRValue = value; }
 
         /// <summary>
         /// In-game button visible.
