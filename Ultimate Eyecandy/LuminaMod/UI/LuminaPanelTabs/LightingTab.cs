@@ -5,13 +5,7 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
-    using Lumina;
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Eventing.Reader;
-    using UnityEngine;
-    using static Lumina.EffectsTab;
-    using UnifiedUI.Helpers;
     using System.Reflection;
 
     /// <summary>
@@ -43,10 +37,6 @@
         private UICheckBox LowerVRAMUSAGE;
         private UIButton SSAAButton;
         private UICheckBox UnlockSliderCheckbox;
-        private UILabel versionlabel;
-  
-
-        CameraHook hook;
         /// <summary>
         /// Initializes a new instance of the <see cref="LightingTab"/> class.
         /// </summary>
@@ -61,12 +51,12 @@
 
             if (LuminaLogic.DynResEnabled)
             {
-               
-                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f),0.8f, alignment: UIHorizontalAlignment.Center);
+
+                SSAALabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f), 0.8f, alignment: UIHorizontalAlignment.Center);
                 currentY += 20f;
-                SSAAConfig = AddDynamicSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0.25f, ShaderStructure.LockedSliderValue, 1, ref currentY);
-                SSAAConfig.value = ShaderStructure.ssaaFactor;
- 
+                SSAAConfig = AddDynamicSlider(panel, Translations.Translate(LuminaTR.TranslationID.DRSLIDERLABEL), 0.25f, DynamicResolutionManager.MaximumDRValue, 1, ref currentY);
+                SSAAConfig.value = DynamicResolutionCamera.AliasingFactor;
+
                 SSAAButton = UIButtons.AddButton(panel, ControlWidth - 200f, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
                 SSAAButton.horizontalAlignment = UIHorizontalAlignment.Center;
                 currentY += 32f;
@@ -75,19 +65,18 @@
 
                 LowerVRAMUSAGE = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LOWERVRAMUSAGE));
                 currentY += 30f;
-                LowerVRAMUSAGE.isChecked = ShaderStructure.lowerVRAMUsage;
+                LowerVRAMUSAGE.isChecked = DynamicResolutionManager.LowerVRAMUsage;
                 LowerVRAMUSAGE.eventCheckChanged += (c, isChecked) =>
                 {
-                    if (isChecked != ShaderStructure.lowerVRAMUsage)
+                    if (isChecked != DynamicResolutionManager.LowerVRAMUsage)
                     {
-                        ShaderStructure.lowerVRAMUsage = isChecked;
-                        CameraHook.instance.SaveConfig();
+                        DynamicResolutionManager.LowerVRAMUsage = isChecked;
                     }
                 };
 
                 UnlockSliderCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.UnlockSliderLabel));
                 currentY += 25f;
-                UnlockSliderCheckbox.isChecked = ShaderStructure.unlockSlider;
+                UnlockSliderCheckbox.isChecked = DynamicResolutionManager.UnlockSlider;
                 UnlockSliderCheckbox.eventCheckChanged += (c, isChecked) =>
                 {
 
@@ -95,17 +84,17 @@
                     notification.AddParas("Unlocking the Dynamic Resolution slider comes with a cautionary note, as it may lead to potential instability within the game. Before proceeding, we would like to bring to your attention the possibility of encountering issues related to game stability, including potential implications for your GPU performance. Could you confirm your decision to unlock the Dynamic Resolution slider?");
                     notification._yesButton.eventClicked += (sender, args) =>
                     {
-                        ShaderStructure.LockedSliderValue = 10f;
+                        DynamicResolutionManager.MaximumDRValue = 10f;
                         UnlockSliderCheckbox.isChecked = true;
-             
+
 
 
                     };
                     notification._noButton.eventClicked += (sender, args) =>
                     {
                         UnlockSliderCheckbox.isChecked = false;
-                        ShaderStructure.LockedSliderValue = 4f;
-                     
+                        DynamicResolutionManager.MaximumDRValue = 4f;
+
                     };
 
                 };
@@ -183,7 +172,7 @@
 
 
 
-        
+
 
             if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
             {
@@ -218,16 +207,6 @@
                 _moonTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.MOONTINT_TEXT), LuminaStyle.ValueIndex.MoonTint, ref currentY);
                 _moonLightSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.MOONLIGHT_TEXT), LuminaStyle.ValueIndex.MoonLight, ref currentY);
                 _twilightTintSlider = AddLightingSlider(panel, Translations.Translate(LuminaTR.TranslationID.TWILIGHTTINT_TEXT), LuminaStyle.ValueIndex.TwilightTint, ref currentY);
-
-
-
-                
-
-
-
-
-
-
 
                 // Reset button.
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
@@ -269,13 +248,10 @@
             }
         }
 
-
         private void HandleButtonClick(float value)
         {
-            Loading.hook.SetSSAAFactor(value, ShaderStructure.lowerVRAMUsage);
-            RefreshCameraHook();
+            Loading.ActiveDRManager?.SetSSAAFactor(value);
         }
-
 
         /// <summary>
         /// Adds a Lumina exposure slider to the given UIComponent.
@@ -302,27 +278,15 @@
             return newSlider;
         }
 
-
-
-        private void RefreshCameraHook()
-        {
-            if (Loading.hook != null)
-            {
-                Loading.hook.SaveConfig();
-            }
-        
-    }
-
-
-    /// <summary>
-    /// Adds a Lumina lighting slider to the given UIComponent.
-    /// </summary>
-    /// <param name="panel">Parent component.</param>
-    /// <param name="label">Slider text label.</param>
-    /// <param name="index">Slider setting index.</param>
-    /// <param name="currentY">Relative Y position reference.</param>
-    /// <returns>New UISlider.</returns>
-    private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
+        /// <summary>
+        /// Adds a Lumina lighting slider to the given UIComponent.
+        /// </summary>
+        /// <param name="panel">Parent component.</param>
+        /// <param name="label">Slider text label.</param>
+        /// <param name="index">Slider setting index.</param>
+        /// <param name="currentY">Relative Y position reference.</param>
+        /// <returns>New UISlider.</returns>
+        private UISlider AddLightingSlider(UIComponent panel, string label, LuminaStyle.ValueIndex index, ref float currentY)
         {
             UISlider newSlider = AddSlider(panel, label, -1f, 1f, (int)index, ref currentY);
             newSlider.value = StyleManager.ActiveSettings[(int)index];
@@ -347,6 +311,5 @@
             };
             return newSlider;
         }
-
     }
 }

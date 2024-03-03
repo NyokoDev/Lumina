@@ -1,32 +1,32 @@
 ﻿namespace Lumina
 {
     using System.Collections.Generic;
-    using AlgernonCommons.Patching;
-    using ICities;
-    using UnityEngine;
-    using Lumina;
+    using AlgernonCommons;
     using AlgernonCommons.Notifications;
+    using AlgernonCommons.Patching;
     using AlgernonCommons.Translation;
     using ColossalFramework.UI;
+    using ICities;
     using Lumina.Shaders.AO;
-    using UnityEngine.PostProcessing;
+    using UnityEngine;
 
     /// <summary>
     /// Main loading class: the mod runs from here.
     /// </summary>
     public sealed class Loading : PatcherLoadingBase<OptionsPanel, PatcherBase>
     {
+        private static DynamicResolutionManager s_dynamicResolutionManager = null;
+        private GameObject _modManagerGameObject;
+        private GameObject _gameObject;
+
+        /// <summary>
+        /// Gets the active dynamic resolution manager.
+        /// </summary>
+        internal static DynamicResolutionManager ActiveDRManager => s_dynamicResolutionManager;
+
         /// <summary>
         /// Gets a list of permitted loading modes.
         /// </summary>
-        /// 
-        public ColorCorrectionManager colorCorrectionManager;
-
-        /// <summary>
-        /// Initialize Ambient Occlusion instance.
-        /// </summary>
-       
-      
         protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
 
         /// <summary>
@@ -36,13 +36,13 @@
         {
             base.OnLevelUnloading();
 
+            // Disable dynamic resolution.
+            DynamicResolutionManager.Destroy();
+            s_dynamicResolutionManager = null;
+
             // Destroy any existing Lumina logic.
             LuminaLogic.Destroy();
         }
-
-        public static CameraHook hook = null;
-        private GameObject _modManagerGameObject;
-        private UnityEngine.GameObject _gameObject;
 
         /// <summary>
         /// Performs any actions upon successful level loading completion.
@@ -55,23 +55,22 @@
             // Create logic instance.
             LuminaLogic.OnLoad();
            
+            // Enavble dynamic resolution.
             if (LuminaLogic.DynResEnabled)
             {
-                var cameraController = GameObject.FindObjectOfType<CameraController>();
-                hook = cameraController.gameObject.AddComponent<CameraHook>();
+                s_dynamicResolutionManager = new DynamicResolutionManager();
             }
             else
             {
-                Debug.Log("[LUMINA] Dynamic Resolution disabled.");
+                Logging.Message("Dynamic Resolution disabled");
             }
 
-
-
-            if (ModUtils.IsModEnabled("dynamicresolution")) {
-
+            if (ModUtils.IsModEnabled("dynamicresolution"))
+            {
                 CompatibilityDR notification = NotificationBase.ShowNotification<CompatibilityDR>();
                 notification.AddParas("Dynamic Resolution has been detected. For optimal use of Lumina, turn off Dynamic Resolution since both have identical functions. Failure to deactivate Dynamic Resolution might cause unexpected behavior.");
             }
+
             if (ModUtils.IsModEnabled("skyboxreplacer"))
             {
                 CompatibilityDR notification = NotificationBase.ShowNotification<CompatibilityDR>();
@@ -81,21 +80,18 @@
             // Initialize cubemaps.
             CubemapManager.Initialize();
 
-            _gameObject = new UnityEngine.GameObject("CubemapReplacerRedux");
+            _gameObject = new GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
 
             _modManagerGameObject = new GameObject("LuminaShaderControl");
             _modManagerGameObject.AddComponent<AO>();
         }
     }
+
     public class CompatibilityDR : ListNotification
     {
         internal UIButton _yesButton;
         
-        /// <summary>
-        /// Gets the 'No' button (button 1) instance.
-        /// </summary>
-
         /// <summary>
         /// Gets the 'Yes' button (button 2) instance.
         /// </summary>
@@ -106,19 +102,13 @@
         /// </summary>
         protected override int NumButtons => 1;
 
-
-
         /// <summary>
         /// Adds buttons to the message box.
         /// </summary>
         public override void AddButtons()
         {
-
             // Add yes button.
             _yesButton = AddButton(1, NumButtons, Translations.Translate("AGREEMENT_TEXT"), Close);
-
         }
     }
-
-
 }

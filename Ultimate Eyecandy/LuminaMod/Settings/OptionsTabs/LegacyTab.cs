@@ -1,12 +1,11 @@
-﻿using AlgernonCommons.Notifications;
-using AlgernonCommons.Translation;
-using AlgernonCommons.UI;
-using ColossalFramework.UI;
-using System;
-using System.Diagnostics;
-
-namespace Lumina.OptionsTabs
+﻿namespace Lumina.OptionsTabs
 {
+    using AlgernonCommons.Notifications;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using ColossalFramework.UI;
+    using System.Diagnostics;
+
     /// <summary>
     /// LegacyTab class.
     /// </summary>
@@ -82,7 +81,7 @@ namespace Lumina.OptionsTabs
             };
 
 
-        
+
 
             AORadiusTitleLabel = UILabels.AddLabel(panel, 80f, currentY, Translations.Translate("Radius"), labelWidth, labelHeight);
             UILabel AORadiusLabel = UILabels.AddLabel(panel, LeftMargin, currentY, "AORADIUS", panel.width - (Margin * 2f), 0.9f);
@@ -126,8 +125,7 @@ namespace Lumina.OptionsTabs
             ///
             void HandleButtonClick(float value)
             {
-                Loading.hook.SetSSAAFactor(value, ShaderStructure.lowerVRAMUsage);
-                RefreshCameraHook();
+                Loading.ActiveDRManager?.SetSSAAFactor(value);
             }
 
 
@@ -140,8 +138,8 @@ namespace Lumina.OptionsTabs
                 currentY += 20f;
 
 
-                SSAAConfig = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, ShaderStructure.LockedSliderValue); // Main DR Slider.
-                SSAAConfig.value = ShaderStructure.ssaaFactor;
+                SSAAConfig = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, DynamicResolutionManager.MaximumDRValue); // Main DR Slider.
+                SSAAConfig.value = DynamicResolutionCamera.AliasingFactor;
                 currentY += 20f;
 
 
@@ -149,9 +147,9 @@ namespace Lumina.OptionsTabs
                 {
                     SSAALabel2.text = SSAAConfig.value.ToString();
                 };
-                SSAALabel2 = UILabels.AddLabel(panel, LeftMargin, currentY, SSAAConfig.value.ToString(), panel.width - (Margin * 2f), 0.9f) ;
+                SSAALabel2 = UILabels.AddLabel(panel, LeftMargin, currentY, SSAAConfig.value.ToString(), panel.width - (Margin * 2f), 0.9f);
                 currentY += 15f;
-            
+
                 SSAAButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
                 SSAAButton.horizontalAlignment = UIHorizontalAlignment.Center;
                 currentY += 35f;
@@ -159,19 +157,18 @@ namespace Lumina.OptionsTabs
 
                 LowerVRAMUSAGE = UICheckBoxes.AddLabelledCheckBox(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.LOWERVRAMUSAGE));
                 currentY += 30f;
-                LowerVRAMUSAGE.isChecked = ShaderStructure.lowerVRAMUsage;
+                LowerVRAMUSAGE.isChecked = DynamicResolutionManager.LowerVRAMUsage;
                 LowerVRAMUSAGE.eventCheckChanged += (c, isChecked) =>
                 {
-                    if (isChecked != ShaderStructure.lowerVRAMUsage)
+                    if (isChecked != DynamicResolutionManager.LowerVRAMUsage)
                     {
-                        ShaderStructure.lowerVRAMUsage = isChecked;
-                        CameraHook.instance.SaveConfig();
+                        DynamicResolutionManager.LowerVRAMUsage = isChecked;
                     }
                 };
 
                 UnlockSliderCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UnlockSliderLabel));
                 currentY += 25f;
-                UnlockSliderCheckbox.isChecked = ShaderStructure.unlockSlider;
+                UnlockSliderCheckbox.isChecked = DynamicResolutionManager.UnlockSlider;
                 UnlockSliderCheckbox.eventCheckChanged += (c, isChecked) =>
                 {
 
@@ -179,37 +176,20 @@ namespace Lumina.OptionsTabs
                     notification.AddParas("Unlocking the Dynamic Resolution slider comes with a cautionary note, as it may lead to potential instability within the game. Before proceeding, we would like to bring to your attention the possibility of encountering issues related to game stability, including potential implications for your GPU performance. Could you confirm your decision to unlock the Dynamic Resolution slider?");
                     notification._yesButton.eventClicked += (sender, args) =>
                     {
-                        ShaderStructure.LockedSliderValue = 10f;
+                        DynamicResolutionManager.MaximumDRValue = 10f;
                         UnlockSliderCheckbox.isChecked = true;
-
-
-
                     };
                     notification._noButton.eventClicked += (sender, args) =>
                     {
                         UnlockSliderCheckbox.isChecked = false;
-                        ShaderStructure.LockedSliderValue = 4f;
-
+                        DynamicResolutionManager.MaximumDRValue = 4f;
                     };
 
                 };
-            
-
-
-
-
-        }
+            }
             else
             {
                 enableDRbutton.text = "Activate";
-            }
-        }
-
-        private void RefreshCameraHook()
-        {
-            if (Loading.hook != null)
-            {
-                Loading.hook.SaveConfig();
             }
         }
     }
