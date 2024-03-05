@@ -36,9 +36,12 @@
         {
             base.OnLevelUnloading();
 
-            // Disable dynamic resolution.
-            DynamicResolutionManager.Destroy();
-            s_dynamicResolutionManager = null;
+            // Disable dynamic resolution, if it was enabled.
+            if (s_dynamicResolutionManager != null)
+            {
+                DynamicResolutionManager.Destroy();
+                s_dynamicResolutionManager = null;
+            }
 
             // Destroy any existing Lumina logic.
             LuminaLogic.Destroy();
