@@ -38,6 +38,12 @@ namespace Lumina
         private static int s_renderWidth;
         private static int s_renderHeight;
 
+        // Harmony patching.
+        MethodInfo _undergroundViewTarget;
+        MethodInfo _undergroundViewPatch;
+        MethodInfo _freeCameraTarget;
+        MethodInfo _freeCameraPatch;
+
         // Reference items.
         private static Camera _mainCamera;
         private readonly Rect _unitRect = new Rect(0f, 0f, 1f, 1f);
@@ -93,7 +99,6 @@ namespace Lumina
             set => _halfResolutionRenderTexture = value;
         }
 
-
         /// <summary>
         /// Called by Unity every update.
         /// Used to update the dynamic resolution camera values to mirror the main game camera.
@@ -129,24 +134,24 @@ namespace Lumina
 
             // Apply Harmony patches.
             Harmony harmony = new Harmony(LuminaMod.Instance.HarmonyID);
-            MethodInfo undergroundViewTarget = AccessTools.Method(typeof(UndergroundView), "LateUpdate") ?? AccessTools.Method(typeof(UndergroundView), "FpsBoosterLateUpdate");
-            MethodInfo undergroundViewPatch = AccessTools.Method(typeof(DynamicResolutionCamera), nameof(UndergroundViewDynamicResolution));
+            _undergroundViewTarget = AccessTools.Method(typeof(UndergroundView), "LateUpdate") ?? AccessTools.Method(typeof(UndergroundView), "FpsBoosterLateUpdate");
+            _undergroundViewPatch = AccessTools.Method(typeof(DynamicResolutionCamera), nameof(UndergroundViewDynamicResolution));
 
-            if (undergroundViewTarget != null && undergroundViewPatch != null)
+            if (_undergroundViewTarget != null && _undergroundViewPatch != null)
             {
-                harmony.Patch(undergroundViewTarget, prefix: new HarmonyMethod(undergroundViewPatch));
+                harmony.Patch(_undergroundViewTarget, prefix: new HarmonyMethod(_undergroundViewPatch));
             }
             else
             {
                 Logging.Error("Underground view dynamic resolution patch method(s) not found: dyanamic resolution won't be available for underground mode.");
             }
 
-            MethodInfo freeCameraTarget = AccessTools.Method(typeof(CameraController), "UpdateFreeCamera");
-            MethodInfo freeCameraPatch = AccessTools.Method(typeof(DynamicResolutionCamera), nameof(FreeCameraDynamicResolution));
+            _freeCameraTarget = AccessTools.Method(typeof(CameraController), "UpdateFreeCamera");
+            _freeCameraPatch = AccessTools.Method(typeof(DynamicResolutionCamera), nameof(FreeCameraDynamicResolution));
 
-            if (freeCameraTarget != null && freeCameraPatch != null)
+            if (_freeCameraTarget != null && _freeCameraPatch != null)
             {
-                harmony.Patch(freeCameraTarget, prefix: new HarmonyMethod(freeCameraPatch));
+                harmony.Patch(_freeCameraTarget, prefix: new HarmonyMethod(_freeCameraPatch));
             }
             else
             {
@@ -192,6 +197,24 @@ namespace Lumina
             {
                 // No downsampling required (aliasing is 1) - just do direct copy.
                 Graphics.Blit(_fullResolutionRenderTexture, destination);
+            }
+        }
+
+        /// <summary>
+        /// Called by Unity when the object is destroyed.
+        /// </summary>
+        public void OnDestroy()
+        {
+            // Remove Harmony patches.
+            Harmony harmony = new Harmony(LuminaMod.Instance.HarmonyID);
+            if (_undergroundViewTarget != null && _undergroundViewPatch != null)
+            {
+                harmony.Unpatch(_undergroundViewTarget, _undergroundViewPatch);
+            }
+
+            if (_freeCameraTarget != null && _freeCameraPatch != null)
+            {
+                harmony.Unpatch(_freeCameraTarget, _freeCameraPatch);
             }
         }
 
