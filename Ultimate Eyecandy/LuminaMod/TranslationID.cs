@@ -91,5 +91,8 @@ namespace LuminaTR
 
         public const string UISTYLE = "UISTYLE";
         public const string VISIBILITY_STATUS = "VISIBILITY_STATUS";
+
+        public const string DAYLIGHTHOUR_TEXT = "DAYLIGHTHOUR_TEXT";
+        public const string RAININTENSITY_TEXT = "RAININTENSITY_TEXT";
     }
 }

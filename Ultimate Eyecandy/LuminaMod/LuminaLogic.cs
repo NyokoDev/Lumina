@@ -988,6 +988,9 @@
         public static float ButtonPositionY { get; set; }
         public static float ButtonPositionX { get; set; }
         public static bool ShowButton { get; set; }
+        public static float RainIntensity { get; set; }
+
+        public static float TimeOfDay { get; set; }
 
 
         /// <summary>

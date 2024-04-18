@@ -69,8 +69,8 @@ namespace Lumina.Shaders.AO
                 AmbientOcclusionModel.Settings settings = _ambientOcclusionModel.settings;
 
                 // Adjusting Ambient Occlusion intensity and radius
-                settings.intensity = 4f;
-                settings.radius = 0.3f;
+                settings.intensity = LuminaLogic.AOIntensity;
+                settings.radius = LuminaLogic.AORadius;
                 settings.sampleCount = SampleCount.Medium;
                 settings.downsampling = true;
                 settings.forceForwardCompatibility = false;
@@ -248,6 +248,7 @@ namespace Lumina.Shaders.AO
             {
                 if (Initialized)
                 UpdateAmbientOcclusion();
+                StylesTab.RefreshTimeOfDay();
             }
             catch (Exception e)
             {

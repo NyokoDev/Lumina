@@ -93,7 +93,7 @@
             get => LuminaLogic.DynResEnabled; // Get the value from LuminaLogic.DynRes.Enabled
             set => LuminaLogic.DynResEnabled = value; // Set the value to LuminaLogic.DynRes.Enabled
         }
-    
+
 
         [XmlIgnore]
         public string[] PotentialConflicts = { "renderit", "thememixer" };
@@ -175,8 +175,8 @@
 
         [XmlElement("CompatibilityHelper")]
         public bool Compatibility {
-            
-            get => LuminaLogic.CompatibilityDisabled; 
+
+            get => LuminaLogic.CompatibilityDisabled;
             set => LuminaLogic.CompatibilityDisabled = value; }
 
         /// <summary>
@@ -233,6 +233,14 @@
             get { return LuminaLogic.ButtonPositionY; }
             set { LuminaLogic.ButtonPositionY = value; }
         }
+
+        [XmlElement("RainIntensity")]
+        public float RainIntensity
+        {
+            get { return LuminaLogic.RainIntensity; }
+            set { LuminaLogic.RainIntensity = value; }
+        }
+    
 
 
 

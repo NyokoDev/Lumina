@@ -1,12 +1,15 @@
 ﻿namespace Lumina
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework;
     using ColossalFramework.UI;
+    using Lumina.Helpers;
+    using UnityEngine;
 
     /// <summary>
     /// Lumina panel tab for setting shadow options.
@@ -24,7 +27,10 @@
         public static UISlider SkyMieScattering;
         public static UISlider SimSpeed;
         public static UISlider sunIntensitySlider;
-
+        public static UISlider DaylightTimeHourSlider;
+        public static UISlider RainIntensity;
+        public static UILabel DaylightTimeHourSliderLabel;
+        WeatherManager _weatherManager = Singleton<WeatherManager>.instance;
         // Selection.
         private LuminaStyle _selectedItem;
 
@@ -138,7 +144,7 @@
                         }
                     }
 
-                    
+
 
 
                 }
@@ -180,6 +186,7 @@
             SkyMieScattering.width = GlobalWidth;
             SkyMieScattering.value = LuminaLogic.SkyMieScattering;
             SkyMieScattering.eventValueChanged += (_, value) => { LuminaLogic.SkyMieScattering = value; };
+            currentY += spaceBetweenSliders;
 
             SimSpeed = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0f, 2f, 0, ref currentY);
             SimSpeed.value = LuminaLogic.CustomTimeScale;
@@ -188,6 +195,50 @@
 
                 LuminaLogic.CustomTimeScale = value;
             };  // Set Sim Speed value
+            currentY += spaceBetweenSliders;
+
+            DaylightTimeHourSlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.DAYLIGHTHOUR_TEXT), 23.99f, 12f, 0, ref currentY) ;
+            DaylightTimeHourSlider.value = TimeManager.Instance.DayTimeHour;
+            currentY += spaceBetweenSliders;
+            DaylightTimeHourSliderLabel = UILabels.AddLabel(panel, 0, currentY, "", GlobalWidth, 1,UIHorizontalAlignment.Center);
+
+            DaylightTimeHourSlider.eventValueChanged += (_, value) =>
+            {
+                if (Mathf.Abs(TimeManager.Instance.DayTimeHour - value) > 0.1f)
+                {
+                    TimeManager.Instance.DayTimeHour = value;
+                }
+                RefreshTimeOfDay();
+                DaylightTimeHourSliderLabel.text = TimeManager.FormatTimeOfDay(TimeManager.Instance.DayTimeHour == 0, value);
+            };
+            currentY += spaceBetweenSliders;
+
+            RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0f, 10f, 0, ref currentY);
+            RainIntensity.value = _weatherManager.m_currentRain;
+            RainIntensity.eventValueChanged += (_, value) =>
+            {
+                _weatherManager.m_targetRain = value;
+                _weatherManager.m_currentRain = value;
+
+            };
+
+
+        }
+
+            public static void RefreshTimeOfDay()
+            {
+                try
+                {
+                    if (DaylightTimeHourSlider.value != TimeManager.Instance.DayTimeHour)
+                    {
+                    DaylightTimeHourSlider.value = TimeManager.Instance.DayTimeHour;
+                    }
+                }
+                catch (Exception e)
+                {
+                UnityEngine.Debug.Log("[LUMINA] Exception: " + e.Message);
+                }
+            
         }
 
         /// <summary>

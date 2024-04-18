@@ -63,3 +63,5 @@ IGNORE,Ignorer l'avertissement de compatibilité (Expérimental)
 SHADER_CONFIG,Configuration du shader
 RESTART_TEXT,Les paramètres ci-dessous nécessitent un redémarrage du jeu pour prendre effet.
 STATUS_LABEL,Statut de la résolution dynamique :
+DAYLIGHTHOUR_TEXT,Heure du jour
+RAININTENSITY_TEXT,Intensité de la pluie

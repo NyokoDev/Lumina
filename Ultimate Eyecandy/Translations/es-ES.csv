@@ -84,3 +84,5 @@ STATUS_LABEL,Estado de resolución dinámica:
 DYNAMICRESOLUTION_TEXT_OPTIONS,Escala
 MORE_STYLES,¡Obtener más estilos!
 UISTYLE,Seleccionar estilo de UI
+DAYLIGHTHOUR_TEXT,Hora del Día
+RAININTENSITY_TEXT,Intensidad de Lluvia
