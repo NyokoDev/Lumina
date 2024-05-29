@@ -32,6 +32,7 @@
         public static UISlider RainIntensity;
         public static UILabel DaylightTimeHourSliderLabel;
         WeatherManager _weatherManager = Singleton<WeatherManager>.instance;
+
         // Selection.
         private LuminaStyle _selectedItem;
 
@@ -202,6 +203,7 @@
             RainIntensity.value = _weatherManager.m_currentRain;
             RainIntensity.eventValueChanged += (_, value) =>
             {
+
                 _weatherManager.m_currentFog = value;
                 _weatherManager.m_targetFog = value; // Fog aswell
                 _weatherManager.m_targetRain = value;

@@ -16,6 +16,7 @@
     using System.Drawing;
     using UnityEngine;
     using Color = UnityEngine.Color;
+    using ColossalFramework;
 
     [XmlRoot("VisualismTabSettings")]
     public class VisualismTabSettings
@@ -63,6 +64,7 @@
         private int defaultScreenWidth;
         private int defaultScreenHeight;
         private UISlider FogDistanceSlider;
+        FogEffect _FogEffect = Singleton<FogEffect>.instance;
 
         private float CurrentSlider = 8f;
 
@@ -178,12 +180,22 @@
                 FogDistanceSlider.value = LuminaLogic.FogDistance;
                 FogDistanceSlider.eventValueChanged += (c, value) =>
                 {
+                    // Temporary
+                    _FogEffect.m_3DFogDistance = value;
+                    _FogEffect.m_NoiseGain = value;
+                    _FogEffect.m_NoiseContrast = value;
+                    _FogEffect.m_3DFogAmount = value;
+                    _FogEffect.m_3DNoiseStepSize = value;
+                    _FogEffect.m_3DNoiseScale = value;
+                    _FogEffect.m_PollutionIntensity = value;
+                    _FogEffect.m_InscateringExponent = value;
+                    _FogEffect.m_InscatteringIntensity = value;
+                    _FogEffect.m_InscatteringStartDistance = value;
+                    // Temporary
+
                     LuminaLogic.FogDistance = value;
                     LuminaLogic.ThreeDFogDistance = value;
                     LuminaLogic.VolumeFogDistance = value;
-                    LuminaLogic.InscatteringExponent = 0f;
-                    LuminaLogic.InscatteringStartDistance = 0f;
-                    LuminaLogic.InscatteringIntensity = 0f;
                 };
 
                
