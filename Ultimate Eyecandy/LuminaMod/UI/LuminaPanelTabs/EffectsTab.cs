@@ -79,41 +79,6 @@
             UIScrollbars.AddScrollbar(panel);
             ModSettings instance = new ModSettings();
 
-            if (LuminaLogic.CompatibilityDisabled == false && (ModUtils.IsModEnabled("skyboxreplacer")))
-            {
-                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED), panel.width - (Margin * 2f), 0.8f,  alignment: UIHorizontalAlignment.Center);
-                currentY += 30f;
-
-                _cubemaplabel2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_DISABLED_CAUSE), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
-                currentY += 30f;
-                _cubemaplabel2.textScale = 0.7f;
-            }
-            else
-            {
-                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_CONTROLLER), panel.width - (Margin * 2f), 0.5f, alignment: UIHorizontalAlignment.Center);
-                currentY += 20f;
-                // Dropdown Cubemap and Daylight reflections
-                _cubemapDropDown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
-                _cubemapDropDown.items = CubemapManager.Instance.DayCubemapDescriptions;
-                _cubemapDropDown.selectedIndex = CubemapManager.Instance.DayCubmapIndex;
-                _cubemapDropDown.eventSelectedIndexChanged += (c, index) => CubemapManager.Instance.SetDayReplacment(index);
-
-                currentY += 30f;
-            }
-
-            // Check if Renderit mod or fog manipulating mods are enabled
-            if (ModUtils.IsModEnabled("renderit") || CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
-
-            {
-                _modlabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.VISUALISMCOMP_TEXT));
-                _modlabel2 = UILabels.AddLabel(panel, Margin, currentY + _modlabel.height + Margin, Translations.Translate(LuminaTR.TranslationID.VISUALISM_CAUSE_TEXT));
-                _modlabel2.textScale = 0.7f;
-                _modlabel.autoSize = true;
-                _modlabel.width = panel.width - (2 * Margin);
-                _modlabel.textAlignment = UIHorizontalAlignment.Center;
-                currentY += HeaderHeight + _modlabel.height + Margin;
-            }
-            else
             {
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);

@@ -11,7 +11,7 @@
     using AlgernonCommons.UI;
     using ColossalFramework;
     using ColossalFramework.UI;
-
+    using Lumina.Helpers;
     using UnifiedUI.Helpers;
     using UnityEngine;
 
@@ -409,6 +409,8 @@
         /// </summary>
         internal static void OnLoad()
         {
+            // Check for all incompatibilities.
+            CompatibilityAssistant.CheckAll();
             // Set instance reference.
             if (s_instance == null)
             {

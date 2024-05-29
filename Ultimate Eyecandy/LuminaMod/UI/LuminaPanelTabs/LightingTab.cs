@@ -102,16 +102,7 @@
             }
 
 
-            string[] potentialConflicts = { "renderit", "thememixer" };
-            if (ModUtils.IsAnyModsEnabled(potentialConflicts))
-            {
-                Logger.Log("Several incompatibilities with other mods found. Any unexpected behavior is caused by these mods: Render it or Theme Mixer 2/2.5");
-                CompatibilityAssistant.ShowLightColorsNotification();
-                UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.COLORDISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
-                currentY += 30f;
-
-            }
-
+        
             
 
 
@@ -174,13 +165,6 @@
 
 
 
-
-
-            if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
-            {
-                CompatibilityAssistant.ShowLightColorsNotification();
-                Logger.Log("Several incompatibilities have been found for Light Colors Manipulating Mods: Relight-Daylight Classic.");
-            }
 
                 // Exposure control.
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.EXPOSURECONTROL_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);

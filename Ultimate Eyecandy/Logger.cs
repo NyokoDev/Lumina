@@ -21,12 +21,13 @@ namespace Lumina
             logFilePath = Path.Combine(modPath, "Lumina.LogFile");
         }
 
-        
+
 
         public static void Log(object message)
         {
             try
             {
+
                 string logMessage;
 
                 if (message is Exception)
@@ -44,10 +45,17 @@ namespace Lumina
                 // Append the log message to the log file
                 File.AppendAllText(logFilePath, logMessage + Environment.NewLine);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle sharing violation error
+                Debug.Log($"[LUMINA]: Unauthorized access occurred: {ex.Message}");
+                throw; // Re-throw the exception
+            }
             catch (Exception ex)
             {
                 // If an error occurs while logging, print the exception message to the console
-                Debug.Log($"Failed to write to log file: {ex.Message}");
+                Debug.Log($"[LUMINA]: Failed to write to log file: {ex.Message}");
+                throw new IOException("[LUMINA] Failed to write to log file. Restart the game or verify the existence of the logging file.");
             }
         }
 

@@ -56,6 +56,7 @@
 
             // Create logic instance.
             LuminaLogic.OnLoad();
+            Logger.Log("On load called.");
            
             // Enavble dynamic resolution.
             if (LuminaLogic.DynResEnabled)
