@@ -140,26 +140,6 @@
             set => LuminaLogic.CustomTimeScale = value;
         }
 
-        [XmlElement("AOIntensity")]
-        public float AOIntensity
-        {
-            get => LuminaLogic.AOIntensity;
-            set
-            {
-                LuminaLogic.AOIntensity = value;
-            }
-        }
-
-        [XmlElement("AORadius")]
-        public float AORadius
-        {
-            get => LuminaLogic.AORadius;
-            set
-            {
-                LuminaLogic.AORadius = value;
-            }
-        }
-
         [XmlElement("BackgroundStyle")]
         public string BackgroundStyle
         {

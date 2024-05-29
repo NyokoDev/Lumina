@@ -224,46 +224,6 @@
                 currentY += 40f;
 
 
-                /// Ambient Occlusion
-
-                UILabel TitleAO = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Ambient Occlusion"), textScale: 0.8f, alignment: UIHorizontalAlignment.Center);
-                currentY += 40f;
-
-                UILabel TitleAO2 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Intensity"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center); // Untouched
-                currentY += 30f;
-
-                UILabel AOIntensityTitleLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("IntensityValue"));
-                currentY += 30f;
-                AOIntensityTitleLabel.text = LuminaLogic.AOIntensity.ToString();
-
-                AOSlider = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 15f);
-                AOSlider.value = LuminaLogic.AOIntensity;
-                AOSlider.eventValueChanged += (sender, value) =>
-                {
-
-                    LuminaLogic.AOIntensity = value;
-                    AOIntensityTitleLabel.text = value.ToString();
-
-                };
-                currentY += 20f;
-
-                UILabel TitleAO3 = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center); // Untouched
-                currentY += 30f;
-
-                UILabel AORadiusTitleLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate("Radius"));
-                currentY += 30f;
-                AORadiusTitleLabel.text = LuminaLogic.AORadius.ToString();
-                AOSliderRadius = UISliders.AddBudgetSlider(panel, 2f, currentY, 400f, 15f);
-                AOSliderRadius.value = LuminaLogic.AORadius;
-                AOSliderRadius.eventValueChanged += (sender, value) =>
-                {
-                    LuminaLogic.AORadius = value;
-                    AORadiusTitleLabel.text = value.ToString();
-                };
-                currentY += 20f;
-
-
-
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
                 resetButton.eventClicked += (c, p) =>

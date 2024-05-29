@@ -7,7 +7,6 @@
     using AlgernonCommons.Translation;
     using ColossalFramework.UI;
     using ICities;
-    using Lumina.Shaders.AO;
     using UnityEngine;
 
     /// <summary>
@@ -85,9 +84,6 @@
 
             _gameObject = new GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
-
-            _modManagerGameObject = new GameObject("LuminaShaderControl");
-            _modManagerGameObject.AddComponent<AO>();
         }
     }
 

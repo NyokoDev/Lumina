@@ -11,10 +11,10 @@
     using AlgernonCommons.UI;
     using ColossalFramework;
     using ColossalFramework.UI;
-    using Lumina.Shaders.AO;
+
     using UnifiedUI.Helpers;
     using UnityEngine;
-    using UnityEngine.PostProcessing;
+
 
     /// <summary>
     /// Lumina logic class.
@@ -747,10 +747,10 @@
             }
             catch
             {
-                UnityEngine.Debug.Log("Lumina error");
+                Logger.Log("Lumina error");
                 if (UnityEngine.Object.FindObjectOfType<DayNightProperties>() == null)
                 {
-                    UnityEngine.Debug.Log("DayNightProperties null");
+                    Logger.Log("DayNightProperties null");
                 }
 
             }
@@ -814,7 +814,7 @@
             }
             catch (Exception e)
             {
-                Debug.Log("[LUMINA] Exception" + e.Message);
+                Logger.Log("[LUMINA] Exception" + e.StackTrace);
             }
         }
 
@@ -828,7 +828,7 @@
             }
             catch (Exception e)
             {
-                Debug.Log("LUMINA IndexOf failed" + e.Message);
+                Logger.Log("LUMINA IndexOf failed" + e.StackTrace);
                 return 0;
             }
         }
@@ -974,15 +974,6 @@
             set { HazeProperties.m_inscatteringStartDistance = value; }
         }
 
-        /// <summary>
-        /// Ambient occlusion intensity.
-        /// </summary>
-        public static float AOIntensity { get; set; }
-
-
-
-
-        public static float AORadius { get; set; }
         public static float defaultValue { get; private set; }
         public static string BackgroundStyle { get; set; }
         public static float ButtonPositionY { get; set; }

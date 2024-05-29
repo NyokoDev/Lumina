@@ -197,22 +197,6 @@
             };  // Set Sim Speed value
             currentY += spaceBetweenSliders;
 
-            DaylightTimeHourSlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.DAYLIGHTHOUR_TEXT), 23.99f, 12f, 0, ref currentY) ;
-            DaylightTimeHourSlider.value = TimeManager.Instance.DayTimeHour;
-            currentY += spaceBetweenSliders;
-            DaylightTimeHourSliderLabel = UILabels.AddLabel(panel, 0, currentY, "", GlobalWidth, 1,UIHorizontalAlignment.Center);
-
-            DaylightTimeHourSlider.eventValueChanged += (_, value) =>
-            {
-                if (Mathf.Abs(TimeManager.Instance.DayTimeHour - value) > 0.1f)
-                {
-                    TimeManager.Instance.DayTimeHour = value;
-                }
-                RefreshTimeOfDay();
-                DaylightTimeHourSliderLabel.text = TimeManager.FormatTimeOfDay(TimeManager.Instance.DayTimeHour == 0, value);
-            };
-            currentY += spaceBetweenSliders;
-
             RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0f, 10f, 0, ref currentY);
             RainIntensity.value = _weatherManager.m_currentRain;
             RainIntensity.eventValueChanged += (_, value) =>
@@ -223,22 +207,6 @@
             };
 
 
-        }
-
-            public static void RefreshTimeOfDay()
-            {
-                try
-                {
-                    if (DaylightTimeHourSlider.value != TimeManager.Instance.DayTimeHour)
-                    {
-                    DaylightTimeHourSlider.value = TimeManager.Instance.DayTimeHour;
-                    }
-                }
-                catch (Exception e)
-                {
-                UnityEngine.Debug.Log("[LUMINA] Exception: " + e.Message);
-                }
-            
         }
 
         /// <summary>

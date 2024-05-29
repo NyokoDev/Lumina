@@ -94,5 +94,9 @@ namespace LuminaTR
 
         public const string DAYLIGHTHOUR_TEXT = "DAYLIGHTHOUR_TEXT";
         public const string RAININTENSITY_TEXT = "RAININTENSITY_TEXT";
+
+        public const string DYNAMICRESOLUTION_ONBOARDING = "DYNAMICRESOLUTION_ONBOARDING";
+        public const string DYNAMICRESOLUTION_ACTIVATE = "DYNAMICRESOLUTION_ACTIVATE";
     }
+
 }

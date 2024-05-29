@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.8.1</Version>
+		<Version>1.8.2</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -25,7 +25,6 @@
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
 		<Reference Include="UnityEngine" />
-		<Reference Include="PostProcessing" />
 	</ItemGroup>
 	<ItemGroup>
 		<_Translations Include="$(ProjectDir)/Translations/*.*" />
@@ -45,7 +44,6 @@
 			<DeployDir>$(LOCALAPPDATA)/Colossal Order/Cities_Skylines/Addons/Mods/$(SolutionName)/</DeployDir>
 		</PropertyGroup>
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DeployDir)" />
-		<Copy SourceFiles="$(TargetDir)/PostProcessing.dll" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="$(TargetDir)/CitiesHarmony.API.dll" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="$(TargetDir)/UnifiedUILib.dll" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="@(_Translations)" DestinationFolder="$(DeployDir)/Translations" />

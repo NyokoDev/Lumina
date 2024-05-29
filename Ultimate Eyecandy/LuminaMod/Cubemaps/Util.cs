@@ -52,7 +52,7 @@ namespace Lumina
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException(e);
+                Logger.Log(e);
                 return null;
             }
         }

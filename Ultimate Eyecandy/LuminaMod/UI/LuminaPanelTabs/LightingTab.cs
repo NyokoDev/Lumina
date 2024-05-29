@@ -5,6 +5,7 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
+    using Lumina.Helpers;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -104,13 +105,14 @@
             string[] potentialConflicts = { "renderit", "thememixer" };
             if (ModUtils.IsAnyModsEnabled(potentialConflicts))
             {
-
+                Logger.Log("Several incompatibilities with other mods found. Any unexpected behavior is caused by these mods: Render it or Theme Mixer 2/2.5");
+                CompatibilityAssistant.ShowLightColorsNotification();
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.COLORDISABLED), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += 30f;
 
             }
-            else
-            {
+
+            
 
 
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
@@ -167,7 +169,7 @@
                 _lutdropdown.selectedIndex = ColorCorrectionManager.instance.lastSelection;
                 _lutdropdown.eventSelectedIndexChanged += LuminaLogic.Instance.OnSelectedIndexChanged;
                 _lutdropdown.localeID = LocaleID.BUILTIN_COLORCORRECTION;
-            }
+            
 
 
 
@@ -176,16 +178,10 @@
 
             if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
             {
-                _disabledLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LIGHTCOMP_TEXT));
-                _causeLabel = UILabels.AddLabel(panel, Margin, currentY + _disabledLabel.height + Margin, Translations.Translate(LuminaTR.TranslationID.MOD_CAUSE_TEXT));
-                _causeLabel.textScale = 0.7f;
-                _disabledLabel.autoSize = true;
-                _disabledLabel.width = panel.width - (2 * Margin);
-                _disabledLabel.textAlignment = UIHorizontalAlignment.Center;
-                currentY += HeaderHeight + _disabledLabel.height + Margin;
+                CompatibilityAssistant.ShowLightColorsNotification();
+                Logger.Log("Several incompatibilities have been found for Light Colors Manipulating Mods: Relight-Daylight Classic.");
             }
-            else
-            {
+
                 // Exposure control.
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.EXPOSURECONTROL_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += HeaderHeight;
@@ -245,7 +241,7 @@
                     StyleManager.EnableSkyTonemapping = isChecked;
                     LuminaLogic.SkyTonemapping(isChecked);
                 };
-            }
+            
         }
 
         private void HandleButtonClick(float value)

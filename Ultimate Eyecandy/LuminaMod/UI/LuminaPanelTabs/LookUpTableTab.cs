@@ -24,7 +24,7 @@ namespace Lumina
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(LuminaTR.TranslationID.LUT_MOD_NAME), tabIndex, out UIButton _);
             float currentY = Margin;
             string pluginname = "LUT CREATOR";
-            Debug.Log("[LUMINA] Plugins:" + pluginname);
+            Logger.Log("[LUMINA] Plugins:" + pluginname);
 
             lutLabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_MOD_NAME), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
 

@@ -87,3 +87,5 @@ UISTYLE,Select UI Style
 VISIBILITY_STATUS,Choose button visibility
 DAYLIGHTHOUR_TEXT,Time of Day
 RAININTENSITY_TEXT,Rain Intensity
+DYNAMICRESOLUTION_ONBOARDING,Dynamic Resolution Global Configuration
+DYNAMICRESOLUTION_ACTIVATE,Activate

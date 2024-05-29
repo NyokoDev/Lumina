@@ -58,58 +58,17 @@
                 Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
             };
 
-            UILabel TitleAO = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Ambient Occlusion | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
-            currentY += 40f;
-
-
-            float labelWidth = panel.width - (Margin * 3f); // Adjust as needed
-            float labelHeight = 0.8f; // Adjust as needed
-
-            AOIntensityTitleLabel = UILabels.AddLabel(panel, 80f, currentY, Translations.Translate("Intensity"), labelWidth, labelHeight);
-            UILabel AOIntensityLabel = UILabels.AddLabel(panel, LeftMargin, currentY, "AOINTENSITY", panel.width - (Margin * 2f), 0.9f);
-            currentY += 20f;
-            AOSlider = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, 15f);
-            currentY += 50f;
-            AOSlider.value = LuminaLogic.AOIntensity;
-            AOIntensityLabel.text = AOSlider.value.ToString();
-
-            AOSlider.eventValueChanged += (sender, value) =>
-            {
-
-                LuminaLogic.AOIntensity = value;
-                AOIntensityLabel.text = value.ToString();
-            };
 
 
 
 
-            AORadiusTitleLabel = UILabels.AddLabel(panel, 80f, currentY, Translations.Translate("Radius"), labelWidth, labelHeight);
-            UILabel AORadiusLabel = UILabels.AddLabel(panel, LeftMargin, currentY, "AORADIUS", panel.width - (Margin * 2f), 0.9f);
-
-
-            currentY += 20f;
-            AOSliderRadius = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, 15f);
-            currentY += 50f;
-            AOSliderRadius.value = LuminaLogic.AORadius;
-            AORadiusLabel.text = AOSliderRadius.value.ToString();
-            AOSliderRadius.eventValueChanged += (sender, value) =>
-            {
-
-                LuminaLogic.AORadius = value;
-                AORadiusLabel.text = value.ToString();
-            };
-
-
-
-
-
-            UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("Dynamic Resolution | Global Configuration"), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+            UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ONBOARDING), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
             currentY += 40f;
 
             UILabel enable = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
             currentY += 50f;
 
-            UIButton enableDRbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, Translations.Translate("Activate"));
+            UIButton enableDRbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ACTIVATE));
             currentY += 50f;
 
             enableDRbutton.eventClicked += (sender, args) =>

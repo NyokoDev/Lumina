@@ -66,7 +66,7 @@
 
                 if (ModUtils.IsModEnabled("lutcreator"))
                 {
-                    Debug.Log("[LUMINA] LUT Creator plugin enabled.");
+                    Logger.Log("[LUMINA] LUT Creator plugin enabled.");
                     new LookUpTableTab(tabStrip, 3);
                 }
 

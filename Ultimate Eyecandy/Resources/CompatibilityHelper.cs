@@ -4,7 +4,7 @@ namespace Lumina.CompatibilityPolice
 {
     public static class CompatibilityHelper
     {
-        public static readonly string[] LIGHT_COLORS_MANIPULATING_MODS = { "lightingrebalance", "daylightclassic", "softershadows", "renderit" };
+        public static readonly string[] LIGHT_COLORS_MANIPULATING_MODS = { "naturallighting", "lightingrebalance", "daylightclassic", "softershadows", "renderit" };
 
         public static readonly string[] SKY_MANIPULATING_MODS = { "thememixer" };
 
