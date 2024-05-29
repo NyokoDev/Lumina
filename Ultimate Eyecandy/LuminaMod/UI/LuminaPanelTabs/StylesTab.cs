@@ -10,6 +10,7 @@
     using ColossalFramework.UI;
     using Lumina.Helpers;
     using UnityEngine;
+    using static RenderManager;
 
     /// <summary>
     /// Lumina panel tab for setting shadow options.
@@ -197,10 +198,12 @@
             };  // Set Sim Speed value
             currentY += spaceBetweenSliders;
 
-            RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0f, 10f, 0, ref currentY);
+            RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0f, 5f, 0, ref currentY);
             RainIntensity.value = _weatherManager.m_currentRain;
             RainIntensity.eventValueChanged += (_, value) =>
             {
+                _weatherManager.m_currentFog = value;
+                _weatherManager.m_targetFog = value; // Fog aswell
                 _weatherManager.m_targetRain = value;
                 _weatherManager.m_currentRain = value;
 

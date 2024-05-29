@@ -17,10 +17,6 @@
         /// </summary>
         internal const float ContentWidth = 500f;
 
-
-    
-        EffectsTab VisualismHandler;
-
         // Layout constants - private.
         private const float TitleHeight = 40f;
         private const float ContainerHeight = 930f;

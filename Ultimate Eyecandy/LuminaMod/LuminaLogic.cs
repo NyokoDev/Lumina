@@ -411,6 +411,7 @@
         {
             // Check for all incompatibilities.
             CompatibilityAssistant.CheckAll();
+
             // Set instance reference.
             if (s_instance == null)
             {

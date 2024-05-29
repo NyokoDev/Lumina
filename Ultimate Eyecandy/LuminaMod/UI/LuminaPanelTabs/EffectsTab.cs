@@ -81,7 +81,7 @@
 
             {
 
-                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_CONTROLLER), panel.width - (Margin * 2f), 0.5f, alignment: UIHorizontalAlignment.Center);
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_CONTROLLER), panel.width - (Margin * 2f), 1f, alignment: UIHorizontalAlignment.Center);
                 currentY += 20f;
                 // Dropdown Cubemap and Daylight reflections
                 _cubemapDropDown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));

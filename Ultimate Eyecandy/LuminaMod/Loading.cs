@@ -15,7 +15,6 @@
     public sealed class Loading : PatcherLoadingBase<OptionsPanel, PatcherBase>
     {
         private static DynamicResolutionManager s_dynamicResolutionManager = null;
-        private GameObject _modManagerGameObject;
         private GameObject _gameObject;
 
         /// <summary>
