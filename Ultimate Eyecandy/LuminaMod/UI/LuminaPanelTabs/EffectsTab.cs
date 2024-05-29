@@ -80,6 +80,18 @@
             ModSettings instance = new ModSettings();
 
             {
+
+                _cubemaplabel = UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT_CONTROLLER), panel.width - (Margin * 2f), 0.5f, alignment: UIHorizontalAlignment.Center);
+                currentY += 20f;
+                // Dropdown Cubemap and Daylight reflections
+                _cubemapDropDown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.CUBEMAP_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                _cubemapDropDown.items = CubemapManager.Instance.DayCubemapDescriptions;
+                _cubemapDropDown.selectedIndex = CubemapManager.Instance.DayCubmapIndex;
+                _cubemapDropDown.eventSelectedIndexChanged += (c, index) => CubemapManager.Instance.SetDayReplacment(index);
+
+                currentY += 30f;
+
+
                 // Slider 1: Intensity Slider
                 _intensitySlider = AddSlider(panel, Translations.Translate(LuminaTR.TranslationID.SHADOWINT_TEXT), 0f, 1f, -1, ref currentY);
                 _intensitySlider.value = LuminaLogic.ShadowIntensity;
