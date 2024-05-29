@@ -14,7 +14,6 @@ namespace Lumina.Helpers
         {
             LightColorsNotification notification = NotificationBase.ShowNotification <LightColorsNotification>();
             notification.AddParas("Several incompatible mods have been detected. For optimal use of Lumina, turn off the conflicting mods since both have identical functions. This message will stop appearing once all incompatibilities have been resolved, otherwise proceed with your action. Check Lumina.LogFile for more information.");
-
         }
 
     }
