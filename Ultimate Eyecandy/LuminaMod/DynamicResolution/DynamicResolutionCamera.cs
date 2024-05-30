@@ -143,7 +143,9 @@ namespace Lumina
             }
             else
             {
-                Logging.Error("Underground view dynamic resolution patch method(s) not found: dyanamic resolution won't be available for underground mode.");
+                string message = "Underground view dynamic resolution patch method(s) not found: dyanamic resolution won't be available for underground mode.";
+                Logger.Log(message);
+                Logging.Error(message);
             }
 
             _freeCameraTarget = AccessTools.Method(typeof(CameraController), "UpdateFreeCamera");
@@ -155,7 +157,9 @@ namespace Lumina
             }
             else
             {
-                Logging.Error("Free camera dynamic resolution patch method(s) not found: dyanamic resolution won't be available for free camera.");
+                string message = "Free camera dynamic resolution patch method(s) not found: dynamic resolution won't be available for free camera.";
+                Logging.Error(message);
+                Logger.Log(message);
             }
         }
 

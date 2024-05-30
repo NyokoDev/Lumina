@@ -6,6 +6,8 @@ namespace Lumina
 {
     public static class ModUtils
     {
+     
+        
         public static bool IsAnyModsEnabled(string[] names)
         {
             foreach (string name in names)
@@ -19,6 +21,11 @@ namespace Lumina
             return false;
         }
 
+        /// <summary>
+        /// Helper method to check for enabled mods.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static bool IsModEnabled(string name)
         {
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())

@@ -977,6 +977,8 @@
             set { HazeProperties.m_inscatteringStartDistance = value; }
         }
 
+        public static bool DisableAtNightFog { get; set; }
+
         public static float defaultValue { get; private set; }
         public static string BackgroundStyle { get; set; }
         public static float ButtonPositionY { get; set; }
@@ -985,6 +987,7 @@
         public static float RainIntensity { get; set; }
 
         public static float TimeOfDay { get; set; }
+
 
 
         /// <summary>

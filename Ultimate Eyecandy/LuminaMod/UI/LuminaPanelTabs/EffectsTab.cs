@@ -17,6 +17,7 @@
     using UnityEngine;
     using Color = UnityEngine.Color;
     using ColossalFramework;
+    using System.Diagnostics.Eventing.Reader;
 
     [XmlRoot("VisualismTabSettings")]
     public class VisualismTabSettings
@@ -136,8 +137,12 @@
 
                 // Checkbox: Night Fog
                 _nightfog = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.NIGHTFOG_TEXT));
-                _nightfog.isChecked = LuminaLogic.FogEffectEnabled;
-                _nightfog.eventCheckChanged += (c, isChecked) => LuminaLogic.FogEffectEnabled = isChecked;
+                _nightfog.isChecked = LuminaLogic.DisableAtNightFog;
+                _nightfog.eventCheckChanged += (c, isChecked) =>
+                {
+                    LuminaLogic.DisableAtNightFog = isChecked;
+                };
+
                 currentY += CheckHeight + Margin;
 
                 // Slider 3: Fog Intensity Slider
@@ -253,6 +258,25 @@
                 float advbuttonX = resetButton.relativePosition.x - 120f;
             }
         }
+
+        /// <summary>
+        /// Helper method to disable Classic fog at night.
+        /// </summary>
+        public static void UpdateNightFog()
+        {
+            if (LuminaLogic.DisableAtNightFog)
+            {
+                if (SimulationManager.instance.m_isNightTime)
+                {
+                    LuminaLogic.FogEffectEnabled = false;
+                }
+                else
+                {
+                    LuminaLogic.FogEffectEnabled = true;
+                }
+            }
+        }
+
 
 
         public bool BlueHaze()

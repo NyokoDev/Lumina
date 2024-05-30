@@ -56,6 +56,12 @@
         public bool EdgeFogEnabled { get; set; } = LuminaLogic.EdgeFogEnabled;
 
         /// <summary>
+        /// Gets or sets a value indicating whether fog effects are enabled at night.
+        /// </summary>
+        [XmlElement("DisableFogAtNight")]
+        public bool DisableAtNightFog { get; set; } = LuminaLogic.DisableAtNightFog;
+
+        /// <summary>
         /// Gets or sets edge fog distance.
         /// </summary>
         [XmlElement("EdgeFogDistance")]

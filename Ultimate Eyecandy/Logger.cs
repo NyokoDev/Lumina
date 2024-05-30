@@ -12,18 +12,30 @@ namespace Lumina
 {
     public static class Logger
     {
-        private static readonly string logFilePath;
+        private static string logFilePath;
 
         static Logger()
         {
             // Set the log file path to the Mods folder
-            string modPath = Singleton<PluginManager>.instance.FindPluginInfo(Assembly.GetAssembly(typeof(LuminaMod))).modPath;
-            logFilePath = Path.Combine(modPath, "Lumina.LogFile");
+            CheckForDirectory();
         }
 
+        private static void CheckForDirectory()
+        {
+            string modPath = Singleton<PluginManager>.instance.FindPluginInfo(Assembly.GetAssembly(typeof(LuminaMod))).modPath;
+            string logsPath = Path.Combine(modPath, "Logs");
 
+            // Check if the Logs directory exists, and create it if it doesn't
+            if (!Directory.Exists(logsPath))
+            {
+                Directory.CreateDirectory(logsPath);
+            }
 
-        public static void Log(object message)
+            logFilePath = Path.Combine(logsPath, "Lumina.LogFile");
+        
+    }
+
+    public static void Log(object message)
         {
             try
             {
@@ -44,6 +56,9 @@ namespace Lumina
 
                 // Append the log message to the log file
                 File.AppendAllText(logFilePath, logMessage + Environment.NewLine);
+
+                // Also log the main Unity log.
+                Debug.Log(logMessage);
             }
             catch (UnauthorizedAccessException ex)
             {

@@ -50,6 +50,7 @@ namespace Lumina.OptionsTabs
 
             UIDropDown UIStyleDropdown = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE) );
             UIStyleDropdown.items = UIStyles;
+            UIStyleDropdown.selectedValue = LuminaLogic.BackgroundStyle;
             currentY += 80f;
             if (LuminaLogic.BackgroundStyle == "LuminaNormal")
             {

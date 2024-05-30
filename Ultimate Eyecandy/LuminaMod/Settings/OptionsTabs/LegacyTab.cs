@@ -40,7 +40,6 @@
 
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
-
             panel = UITabstrips.AddTextTab(tabStrip, "Miscellanous", tabIndex, out UIButton _, autoLayout: false);
 
             float currentY = Margin;
