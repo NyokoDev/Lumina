@@ -13,6 +13,7 @@ namespace Lumina
     public static class Logger
     {
         private static string logFilePath;
+        public static string logsPath;
 
         static Logger()
         {
@@ -23,7 +24,7 @@ namespace Lumina
         private static void CheckForDirectory()
         {
             string modPath = Singleton<PluginManager>.instance.FindPluginInfo(Assembly.GetAssembly(typeof(LuminaMod))).modPath;
-            string logsPath = Path.Combine(modPath, "Logs");
+            logsPath = Path.Combine(modPath, "Logs");
 
             // Check if the Logs directory exists, and create it if it doesn't
             if (!Directory.Exists(logsPath))
@@ -32,10 +33,10 @@ namespace Lumina
             }
 
             logFilePath = Path.Combine(logsPath, "Lumina.LogFile");
-        
-    }
 
-    public static void Log(object message)
+        }
+
+        public static void Log(object message)
         {
             try
             {
@@ -70,20 +71,8 @@ namespace Lumina
             {
                 // If an error occurs while logging, print the exception message to the console
                 Debug.Log($"[LUMINA]: Failed to write to log file: {ex.Message}");
-                throw new IOException("[LUMINA] Failed to write to log file. Restart the game or verify the existence of the logging file.");
-            }
-        }
-
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                Logger.Log("This is a test log message.");
-                Logger.Log("Logging another message.");
-
-                Console.WriteLine("Log messages written to desktop log file.");
+                throw new IOException("[LUMINA] Failed to write to log file. Restart the game or reach Support Center");
             }
         }
     }
 }
-

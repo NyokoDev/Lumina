@@ -3,8 +3,13 @@
     using AlgernonCommons.Notifications;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using ColossalFramework.Plugins;
+    using ColossalFramework;
     using ColossalFramework.UI;
+    using System;
     using System.Diagnostics;
+    using System.Reflection;
+    using System.IO;
 
     /// <summary>
     /// LegacyTab class.
@@ -17,6 +22,7 @@
         private const float GroupMargin = 40f;
         private const float LabelWidth = 0f;
         private const float TabHeight = 20f;
+        public float currentY = Margin;
 
         /// <summary>
         /// Main panel to call from.
@@ -32,51 +38,27 @@
         public UICheckBox LowerVRAMUSAGE;
         public UICheckBox UnlockSliderCheckbox;
 
+
+
         public UISlider AOSlider;
         public UISlider AOSliderRadius;
 
         public UILabel AORadiusTitleLabel;
         public UILabel AOIntensityTitleLabel;
 
+        public UIButton enableDRbutton;
+
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
             panel = UITabstrips.AddTextTab(tabStrip, "Miscellanous", tabIndex, out UIButton _, autoLayout: false);
 
-            float currentY = Margin;
-            UIButton supportbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Support");
-            currentY += 50f;
-            supportbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://discord.gg/gdhyhfcj7A");
-            };
 
-            UIButton guidesbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Guides & Help");
-            currentY += 50f;
-            guidesbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
-            };
+            CreateSupportButton();
+            CreateGuidesButton();
+            CreateOpenLogsButton();
+            CreateDynamicResolutionText();
+            CreateDynamicResolutionButton();
 
-
-
-
-
-            UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ONBOARDING), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
-            currentY += 40f;
-
-            UILabel enable = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
-            currentY += 50f;
-
-            UIButton enableDRbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ACTIVATE));
-            currentY += 50f;
-
-            enableDRbutton.eventClicked += (sender, args) =>
-            {
-                LuminaLogic.DynResEnabled = !LuminaLogic.DynResEnabled;
-                var value = LuminaLogic.DynResEnabled ? "Enabled" : "Disabled";
-                ModSettings.Save();
-            }
-            ;
 
             ///
             /// Options if Dynamic Resolution is enabled.
@@ -150,8 +132,102 @@
                 enableDRbutton.text = "Activate";
             }
         }
+
+        private void CreateGuidesButton()
+        {
+            UIButton guidesbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Guides & Help");
+            currentY += 50f;
+            guidesbutton.eventClicked += (sender, args) =>
+            {
+                Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
+            };
+        }
+
+        private void CreateSupportButton()
+        {
+            UIButton supportbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Support");
+            currentY += 50f;
+            supportbutton.eventClicked += (sender, args) =>
+            {
+                Process.Start("https://discord.gg/gdhyhfcj7A");
+            };
+
+        }
+
+        private void CreateDynamicResolutionText()
+        {
+            UILabel TitleLabel1 = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ONBOARDING), textScale: 0.9f, alignment: UIHorizontalAlignment.Center);
+            currentY += 40f;
+
+            UILabel enable = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate("RESTART_TEXT"), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
+            currentY += 50f;
+        }
+
+        private void CreateDynamicResolutionButton()
+        {
+            try
+            {
+                enableDRbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_ACTIVATE));
+                currentY += 50f;
+
+                enableDRbutton.eventClicked += (sender, args) =>
+                {
+                    try
+                    {
+                        // Toggle Dynamic Resolution setting
+                        LuminaLogic.DynResEnabled = !LuminaLogic.DynResEnabled;
+
+                        // Save settings
+                        ModSettings.Save();
+
+                        // Force plugins to refresh
+                        Singleton<PluginManager>.instance.ForcePluginsChanged();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log($"Error while toggling dynamic resolution or refreshing plugins: {ex.Message}");
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"Error while creating dynamic resolution button: {ex.Message}");
+            }
+        }
+
+
+
+        private void CreateOpenLogsButton()
+        {
+            UIButton openLogsButton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Open Logs Folder");
+            currentY += 50f;
+
+            if (openLogsButton != null)
+            {
+                openLogsButton.eventClicked += (sender, args) =>
+                {
+                    if (string.IsNullOrEmpty(Logger.logsPath))
+                    {
+                        string modPath = Singleton<PluginManager>.instance.FindPluginInfo(Assembly.GetAssembly(typeof(LuminaMod))).modPath;
+                        Logger.logsPath = Path.Combine(modPath, "Logs");
+                    }
+
+                    try
+                    {
+                        Process.Start(Logger.logsPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log($"Failed to open logs folder: {ex.Message}");
+                    }
+                };
+            }
+            else
+            {
+                Logger.Log("Failed to create the Open Logs button.");
+            }
+        }
     }
 }
-
         
-       
+            
