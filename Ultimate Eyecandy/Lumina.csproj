@@ -37,7 +37,11 @@
 		<_LUTs Include="$(ProjectDir)/Build/*.*" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Resources\PreviewImage.png" />
+	</ItemGroup>
+	<ItemGroup>
 	  <EmbeddedResource Include="Resources\ADV.png" />
+	  <EmbeddedResource Include="Resources\PreviewImage.png" />
 	</ItemGroup>
 	<Target Name="DeployToModDirectory" AfterTargets="Build">
 		<PropertyGroup>

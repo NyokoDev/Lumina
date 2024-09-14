@@ -1,12 +1,15 @@
 ﻿namespace Lumina
 {
     using System;
+    using System.ComponentModel;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using AlgernonCommons;
     using ColossalFramework.IO;
     using ColossalFramework.Plugins;
+    using Epic.OnlineServices.TitleStorage;
     using UnityEngine;
 
     /// <summary>
@@ -14,6 +17,9 @@
     /// </summary>
     public sealed class LuminaStyle
     {
+        private string DLLPath;
+        private string kDLL = ".dll";
+
         /// <summary>
         /// Gets or sets the style's name.
         /// </summary>
@@ -174,7 +180,7 @@
                         Directory.CreateDirectory(localModPath);
                     }
 
-                    DirectoryPath = Path.Combine(localModPath, "Lumina_ " + sanitizedName);
+                    DirectoryPath = Path.Combine(localModPath, "Lumina_" + sanitizedName);
 
                     if (!Directory.Exists(DirectoryPath))
                     {
@@ -190,7 +196,7 @@
                     }
                 }
                 catch (Exception e)
-                { 
+                {
                     Logging.LogException(e, "exception with directory handling when saving Lumina style ", StyleName);
                     return;
                 }
@@ -231,34 +237,45 @@
         }
 
         /// <summary>
-        /// Creates dummy mod sourcecode for the style.
+        /// Creates dummy mod source code for the style.
         /// </summary>
         /// <param name="sanitizedName">Sanitized style name.</param>
         public void CreateSourceCode(string sanitizedName)
         {
             StringBuilder sourceText = new StringBuilder();
+
+            // Check if the main DirectoryPath exists
             if (!Directory.Exists(DirectoryPath))
             {
-                Logging.Error("attempting to create Lumina style mod whith invalid directory");
+                Logger.Log($"Attempting to create Lumina style mod with an invalid directory. DirectoryPath: {DirectoryPath} does not exist.");
                 return;
             }
 
-            // Create source directory.
+            // Create the source directory path
             string sourceDirectory = Path.Combine(DirectoryPath, "Source");
+            Logger.Log($"Creating source directory at: {sourceDirectory}");
+
+            // Ensure the source directory exists or attempt to create it
             if (!Directory.Exists(sourceDirectory))
             {
                 try
                 {
                     Directory.CreateDirectory(sourceDirectory);
+                    Logger.Log($"Successfully created source directory: {sourceDirectory}");
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException(e, "exception creating source directory ", sourceDirectory, " for Lumina style ", StyleName);
+                    Logging.LogException(e, $"Exception occurred while creating the source directory {sourceDirectory} for Lumina style {StyleName}.");
                     return;
                 }
             }
+            else
+            {
+                Logger.Log($"Source directory already exists: {sourceDirectory}");
+            }
 
-            // Build source.
+            // Build the source code text
+            Logger.Log($"Building source code for: {sanitizedName}");
             sourceText.AppendLine("using ICities;");
             sourceText.AppendLine($"namespace {SanitizedFileName}");
             sourceText.AppendLine("{");
@@ -276,34 +293,57 @@
             sourceText.AppendLine("        }");
             sourceText.AppendLine("    }");
             sourceText.AppendLine("}");
+
             string code = sourceText.ToString();
 
+            // Try writing the source code to a file
             try
             {
-                File.WriteAllText(Path.Combine(sourceDirectory, sanitizedName + ".cs"), code);
+                string sourceFilePath = Path.Combine(sourceDirectory, sanitizedName + ".cs");
+                File.WriteAllText(sourceFilePath, code);
+                Logger.Log($"Source code successfully written to {sourceFilePath}");
             }
             catch (Exception e)
             {
-                Logging.LogException(e, "exception writing Lumina style source code for Lumina style ", StyleName);
+                Logging.LogException(e, $"Exception occurred while writing the source code for Lumina style {StyleName}");
+                return;
             }
 
-            // Force manual compilation of source at controlled time.
-            // Only specify ICities.dll as additional assembly to avoid 'file not found' errors with m_additionalAssembly empty strings.
+            // Force manual compilation of source
             if (Application.platform != RuntimePlatform.OSXPlayer)
             {
-                PluginManager.CompileSourceInFolder(sourceDirectory, DirectoryPath, new string[] { typeof(ICities.IUserMod).Assembly.Location });
+                Logger.Log("Initiating manual compilation of the source.");
+                try
+                {
+                    try
+                    {
+                        // Assuming CompileSourceInFolder is synchronous; if not, you need to handle asynchronous completion
+                        PluginManager.CompileSourceInFolder(sourceDirectory, DirectoryPath, new string[] { typeof(ICities.IUserMod).Assembly.Location });
+                        DLLPath = Path.Combine(sourceDirectory, DirectoryPath + kDLL);
+                        Logger.Log(DLLPath);
+                        // Check if the DLL file exists before attempting to set attributes
+                        if (File.Exists(DLLPath))
+                        {
+                            // Set the DLL attributes to read-only
+                            File.SetAttributes(DLLPath, FileAttributes.ReadOnly);
+                            Logger.Log("File attributes set to ReadOnly.");
+                        }
+                        Logger.Log("Source code compilation successfully completed.");
+                    }
+                    catch (Exception compileEx)
+                    {
+                        Logging.LogException(compileEx, "Exception occurred during source code compilation for Lumina style");
+                        return;  // Prevent further execution if compilation fails
+                    }
+                }
+                catch (Exception innerEx)
+                {
+                    Logging.LogException(innerEx, "Unexpected exception during manual compilation initiation.");
+                    return;
+                }
             }
 
-            // Delete source once we've compiled; this prevents redundant (and error-prone) re-compiliation attempts on future game loads.
-            try
-            {
-                Directory.Delete(sourceDirectory, true);
-            }
-            catch (Exception e)
-            {
-                Logging.LogException(e, "exception deleting source code for Lumina style ", StyleName);
-            }
-
+        
         }
     }
 }

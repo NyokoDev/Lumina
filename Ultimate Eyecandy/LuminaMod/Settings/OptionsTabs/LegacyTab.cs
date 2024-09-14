@@ -52,9 +52,6 @@
         {
             panel = UITabstrips.AddTextTab(tabStrip, "Miscellanous", tabIndex, out UIButton _, autoLayout: false);
 
-
-            CreateSupportButton();
-            CreateGuidesButton();
             CreateOpenLogsButton();
             CreateDynamicResolutionText();
             CreateDynamicResolutionButton();
@@ -179,9 +176,6 @@
 
                         // Save settings
                         ModSettings.Save();
-
-                        // Force plugins to refresh
-                        Singleton<PluginManager>.instance.ForcePluginsChanged();
                     }
                     catch (Exception ex)
                     {
