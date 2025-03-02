@@ -22,6 +22,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp" />
+		<Reference Include="Assembly-CSharp-firstpass">
+		  <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+		</Reference>
 		<Reference Include="ColossalManaged" />
 		<Reference Include="ICities" />
 		<Reference Include="UnityEngine" />

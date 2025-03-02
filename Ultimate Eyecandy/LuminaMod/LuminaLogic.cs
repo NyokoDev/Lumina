@@ -15,6 +15,7 @@
     using ColossalFramework.IO;
     using ColossalFramework.UI;
     using Lumina.Helpers;
+    using Lumina;
     using UnifiedUI.Helpers;
     using UnityEngine;
 
@@ -336,7 +337,7 @@
         /// <summary>
         /// Gets or sets the horizon height.
         /// </summary>
-        internal static float HorizonHeight
+        public static float HorizonHeight
         {
             get
             {
@@ -364,7 +365,7 @@
 
 
 
-        internal static float m_FogDistance
+        public static float m_FogDistance
         {
             private get
             {
@@ -386,7 +387,7 @@
         /// <summary>
         /// Sets the 3D fog distance.
         /// </summary>
-        internal static float ThreeDFogDistance
+        public static float ThreeDFogDistance
         {
             private get
             {
@@ -410,7 +411,7 @@
         /// Loads current settings and ensure an active instance.
         /// Must be called prior to use.
         /// </summary>
-        internal static void OnLoad()
+        public static void OnLoad()
         {
             // Check for all incompatibilities.
             CompatibilityAssistant.CheckAll();
@@ -968,6 +969,8 @@
             }
         }
 
+
+
         public static float InscatteringIntensity
         {
             get { return HazeProperties.m_inscatteringIntensity; }
@@ -990,6 +993,7 @@
         public static float RainIntensity { get; set; }
 
         public static float TimeOfDay { get; set; }
+        public static bool HazeEnabled { get; set; }
 
 
 
@@ -1003,6 +1007,7 @@
             {
                 FogEffectEnabled = LoadedFogData.FogEffectEnabled;
                 ClassicFogEnabled = LoadedFogData.ClassicFogEnabled;
+                DisableAtNightFog = LoadedFogData.DisableAtNightFog;
                 FogIntensity = LoadedFogData.FogIntensity;
                 FogHeight = LoadedFogData.FogHeight;
                 FogDistance = LoadedFogData.FogDistance;
@@ -1010,6 +1015,8 @@
                 EdgeFogEnabled = LoadedFogData.EdgeFogEnabled;
                 EdgeFogDistance = LoadedFogData.EdgeFogDistance;
                 HorizonHeight = LoadedFogData.HorizonHeight;
+                HazeEnabled = LoadedFogData.HazeEnabled;
+               
             }
         }
     }

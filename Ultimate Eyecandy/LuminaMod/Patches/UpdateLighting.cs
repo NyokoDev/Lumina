@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets or sets the shadow bias multiplier.
         /// </summary>
-        internal static float BiasMultiplier{ get => s_biasMult; set => s_biasMult = Mathf.Clamp(value, 0f, 2f); }
+        public static float BiasMultiplier{ get => s_biasMult; set => s_biasMult = Mathf.Clamp(value, 0f, 2f); }
 
         public static void Postfix()
         {

@@ -3,7 +3,6 @@
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
-    using Lumina;
     using UnityEngine;
 
 

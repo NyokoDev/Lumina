@@ -12,12 +12,12 @@
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using Lumina.CompatibilityPolice;
-    using Lumina;
     using System.Drawing;
     using UnityEngine;
     using Color = UnityEngine.Color;
     using ColossalFramework;
     using System.Diagnostics.Eventing.Reader;
+    using static StatisticMilestone;
 
     [XmlRoot("VisualismTabSettings")]
     public class VisualismTabSettings
@@ -80,7 +80,6 @@
 
             float currentY = Margin;
             UIScrollbars.AddScrollbar(panel);
-            ModSettings instance = new ModSettings();
 
             {
 
@@ -203,61 +202,98 @@
                     LuminaLogic.VolumeFogDistance = value;
                 };
 
-               
+
                 // Assuming you have an event handler for when the checkbox state changes
-       
+
                 HazeCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.BLUEHAZE));
-                HazeCheckbox.isChecked = instance.HazeEnabled;
+                HazeCheckbox.isChecked = LuminaLogic.HazeEnabled;
                 HazeCheckbox.eventCheckChanged += (c, isChecked) =>
                 {
                     if (isChecked)
                     {
-                        BlueHaze();
+                        ToggleBlueHaze();
                     }
                 };
                 currentY += 40f;
-
-
                 // Reset Button
                 UIButton resetButton = UIButtons.AddSmallerButton(panel, ControlWidth - 120f, currentY, Translations.Translate(LuminaTR.TranslationID.RESET_TEXT), 120f);
                 resetButton.eventClicked += (c, p) =>
                 {
                     // Show a confirmation popup
                     ConfirmNotification notification = NotificationBase.ShowNotification<ConfirmNotification>();
-                    notification.AddParas("Reset all Lumina settings? Action can't be undone.");
+                    notification.AddParas("Are you sure you want to reset all Lumina settings? This will reset everything except the Lighting tab settings. To reset the Lighting tab, please visit the Lighting tab. This action cannot be undone.");
 
                     notification._yesButton.eventClicked += (sender, args) =>
                     {
-                        // Reset all settings
-                        _intensitySlider.value = 1f;
-                        _biasSlider.value = 0f;
-                        _fogIntensitySlider.value = 0f;
-                        _colordecaySlider.value = 1f;
-                        _nightfog.isChecked = false;
-                        _shadowSmoothCheck.isChecked = false;
-                        _minShadOffsetCheck.isChecked = false;
-                        HorizonHeight.value = 0f;
-                        _fogCheckBox.isChecked = false;
-                        _edgefogCheckbox.isChecked = false;
-                       
+                        Reset();
+      
+                        // Log reset completion
+                        Logger.Log("All specified settings have been reset to default values.");
 
+                        // Close notification
                         notification.Close();
                     };
                 };
-
-
-
-
-
-
-
-
-
-
-                // Calculate the X-coordinate for reset2Button based on resetButton's position and width
-                float advbuttonX = resetButton.relativePosition.x - 120f;
             }
         }
+
+        private void Reset()
+        {
+            // Reset properties in EffectsTab
+            LuminaLogic.ShadowIntensity = 1f;
+            Patches.UpdateLighting.BiasMultiplier = 1f;
+            LuminaLogic.DisableSmoothing = false;
+            Patches.UpdateLighting.ForceLowBias = false;
+
+            LuminaLogic.DayNightSunIntensity = 1f;
+            LuminaLogic.m_Exposure = 1f;
+            LuminaLogic.SkyRayleighScattering = 1f;
+            LuminaLogic.SkyMieScattering = 1f;
+            LuminaLogic.CustomTimeScale = 1f;
+            LuminaLogic.RainIntensity = 0f;
+
+            LuminaLogic.ClassicFogEnabled = false;
+            LuminaLogic.EdgeFogEnabled = false;
+            LuminaLogic.DisableAtNightFog = false;
+            LuminaLogic.FogIntensity = 0.05f;
+            LuminaLogic.ColorDecay = 0.2f;
+            LuminaLogic.EdgeFogDistance = 200f;
+            LuminaLogic.HorizonHeight = 0f;
+            LuminaLogic.FogHeight = 200f;
+            LuminaLogic.FogDistance = 10000f;
+            LuminaLogic.ThreeDFogDistance = 10000f;
+            LuminaLogic.VolumeFogDistance = 10000f;
+
+            // Reset all sliders to their default values
+            _intensitySlider.value = LuminaLogic.ShadowIntensity;
+            _biasSlider.value = Patches.UpdateLighting.BiasMultiplier;
+            _fogIntensitySlider.value = LuminaLogic.FogIntensity;
+            _colordecaySlider.value = LuminaLogic.ColorDecay;
+            EdgeDistanceSlider.value = LuminaLogic.EdgeFogDistance;
+            HorizonHeight.value = LuminaLogic.HorizonHeight;
+            FogHeight.value = LuminaLogic.FogHeight;
+            FogDistanceSlider.value = LuminaLogic.FogDistance;
+
+            // Reset checkboxes
+            _shadowSmoothCheck.isChecked = LuminaLogic.DisableSmoothing;
+            _minShadOffsetCheck.isChecked = Patches.UpdateLighting.ForceLowBias;
+            _fogCheckBox.isChecked = LuminaLogic.ClassicFogEnabled;
+            _edgefogCheckbox.isChecked = LuminaLogic.EdgeFogEnabled;
+            _nightfog.isChecked = LuminaLogic.DisableAtNightFog;
+            HazeCheckbox.isChecked = LuminaLogic.HazeEnabled;
+
+            // Reset dropdowns
+            _cubemapDropDown.selectedIndex = CubemapManager.Instance.DayCubmapIndex;
+
+            // Log reset completion
+            Logger.Log("All specified settings have been reset to default values.");
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Helper method to disable Classic fog at night.
@@ -279,23 +315,17 @@
 
 
 
-        public bool BlueHaze()
+        public bool ToggleBlueHaze()
         {
             try
             {
-                LuminaLogic.InscatteringExponent = 0f;
-                LuminaLogic.InscatteringStartDistance = 0f;
-                LuminaLogic.InscatteringIntensity = 0f;
-                LuminaLogic._InScatteringColor = new UnityEngine.Color(0.5f, 0.5f, 0.5f, 1f); // This sets the color to a neutral gray
-                ModSettings instance = new ModSettings();
-                instance.HazeEnabled = true;
+                LuminaLogic.InscatteringExponent = LuminaLogic.InscatteringStartDistance = LuminaLogic.InscatteringIntensity = 0f;
+                LuminaLogic._InScatteringColor = UnityEngine.Color.gray;
+                LuminaLogic.HazeEnabled = !LuminaLogic.HazeEnabled;
                 return true;
-
             }
-            catch (Exception ex)
+            catch
             {
-                ModSettings instance = new ModSettings();
-                instance.HazeEnabled = false;
                 return false;
             }
         }

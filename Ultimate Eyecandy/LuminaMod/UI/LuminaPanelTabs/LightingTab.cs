@@ -15,19 +15,19 @@
     internal sealed class LightingTab : PanelTabBase
     {
         // Panel components.
-        private UISlider _luminositySlider;
-        private UISlider _gammaSlider;
-        private UISlider _contrastSlider;
-        private UISlider _hueSlider;
-        private UISlider _tintSlider;
-        private UISlider _sunTempSlider;
-        private UISlider _sunTintSlider;
-        private UISlider _skyTempSlider;
-        private UISlider _skyTintSlider;
-        private UISlider _moonTempSlider;
-        private UISlider _moonTintSlider;
-        private UISlider _moonLightSlider;
-        private UISlider _twilightTintSlider;
+        public UISlider _luminositySlider;
+        public UISlider _gammaSlider;
+        public UISlider _contrastSlider;
+        public UISlider _hueSlider;
+        public UISlider _tintSlider;
+        public UISlider _sunTempSlider;
+        public UISlider _sunTintSlider;
+        public UISlider _skyTempSlider;
+        public UISlider _skyTintSlider;
+        public UISlider _moonTempSlider;
+        public UISlider _moonTintSlider;
+        public UISlider _moonLightSlider;
+        public UISlider _twilightTintSlider;
         private UICheckBox _skyTonemappingCheck;
         private UILabel _disabledLabel;
         private UILabel _causeLabel;

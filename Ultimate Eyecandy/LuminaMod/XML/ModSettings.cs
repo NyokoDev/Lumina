@@ -150,8 +150,8 @@
             }
         }
 
-        [XmlElement("DisableInscatteringEffects")]
-        public bool HazeEnabled = false;
+     
+
 
         [XmlElement("CompatibilityHelper")]
         public bool Compatibility {

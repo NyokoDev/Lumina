@@ -72,5 +72,13 @@
         /// </summary>
         [XmlElement("HorizonHeight")]
         public float HorizonHeight { get; set; } = LuminaLogic.HorizonHeight;
+
+        [XmlElement("DisableInscatteringEffects")]
+        public bool HazeEnabled
+        {
+
+            get => LuminaLogic.HazeEnabled;
+            set => LuminaLogic.HazeEnabled = value;
+        }
     }
 }
