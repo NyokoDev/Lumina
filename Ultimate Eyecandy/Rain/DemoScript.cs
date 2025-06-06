@@ -74,49 +74,6 @@ namespace DigitalRuby.RainMaker
             }
         }
 
-        private void UpdateMouseLook()
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.M))
-            {
-                MouseLookToggle.isOn = !MouseLookToggle.isOn;
-            }
-
-            if (!MouseLookToggle.isOn)
-            {
-                return;
-            }
-            else if (axes == RotationAxes.MouseXAndY)
-            {
-                // Read the mouse input axis
-                rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-                rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-
-                rotationX = ClampAngle(rotationX, minimumX, maximumX);
-                rotationY = ClampAngle(rotationY, minimumY, maximumY);
-
-                Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-                Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
-
-                transform.localRotation = originalRotation * xQuaternion * yQuaternion;
-            }
-            else if (axes == RotationAxes.MouseX)
-            {
-                rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-                rotationX = ClampAngle(rotationX, minimumX, maximumX);
-
-                Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-                transform.localRotation = originalRotation * xQuaternion;
-            }
-            else
-            {
-                rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-                rotationY = ClampAngle(rotationY, minimumY, maximumY);
-
-                Quaternion yQuaternion = Quaternion.AngleAxis(-rotationY, Vector3.right);
-                transform.localRotation = originalRotation * yQuaternion;
-            }
-        }
-
         public void RainSliderChanged(float val)
         {
             RainScript.RainIntensity = val;
@@ -156,7 +113,6 @@ namespace DigitalRuby.RainMaker
         {
             UpdateRain();
             UpdateMovement();
-            UpdateMouseLook();
         }
 
         public static float ClampAngle(float angle, float min, float max)

@@ -68,14 +68,14 @@ namespace DigitalRuby.RainMaker
         [Tooltip("Whether wind should be enabled.")]
         public bool EnableWind = true;
 
-        protected LoopingAudioSource audioSourceRainLight;
-        protected LoopingAudioSource audioSourceRainMedium;
-        protected LoopingAudioSource audioSourceRainHeavy;
-        protected LoopingAudioSource audioSourceRainCurrent;
-        protected LoopingAudioSource audioSourceWind;
-        protected Material rainMaterial;
-        protected Material rainExplosionMaterial;
-        protected Material rainMistMaterial;
+        public static LoopingAudioSource audioSourceRainLight;
+        public static LoopingAudioSource audioSourceRainMedium;
+        public static LoopingAudioSource audioSourceRainHeavy;
+        public static LoopingAudioSource audioSourceRainCurrent;
+        public static LoopingAudioSource audioSourceWind;
+        public static Material rainMaterial;
+        public static Material rainExplosionMaterial;
+        public static Material rainMistMaterial;
 
         private float lastRainIntensityValue = -1.0f;
         private float nextWindTime;
