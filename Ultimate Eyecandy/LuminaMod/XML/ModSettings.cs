@@ -156,8 +156,8 @@
         [XmlElement("CompatibilityHelper")]
         public bool Compatibility {
 
-            get => LuminaLogic.CompatibilityDisabled;
-            set => LuminaLogic.CompatibilityDisabled = value; }
+            get => LuminaLogic.Compatibility;
+            set => LuminaLogic.Compatibility = value; }
 
         /// <summary>
         /// Gets or sets a value indicating whether VRAM usage should be reduced by eliminating the half-height render texture.

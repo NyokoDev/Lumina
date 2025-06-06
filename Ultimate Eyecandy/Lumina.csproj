@@ -5,7 +5,7 @@
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Copyright>Copyright © 2023</Copyright>
 		<Product>$(Title)</Product>
-		<Version>1.8.6</Version>
+		<Version>1.8.7</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
@@ -21,13 +21,21 @@
 	  <PackageReference Include="UnifiedUILib" Version="2.2.12" />
 	</ItemGroup>
 	<ItemGroup>
-		<Reference Include="Assembly-CSharp" />
-		<Reference Include="Assembly-CSharp-firstpass">
-		  <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+		<Reference Include="Assembly-CSharp">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
 		</Reference>
-		<Reference Include="ColossalManaged" />
-		<Reference Include="ICities" />
-		<Reference Include="UnityEngine" />
+		<Reference Include="Assembly-CSharp-firstpass">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+		</Reference>
+		<Reference Include="ColossalManaged">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
+		</Reference>
+		<Reference Include="ICities">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<_Translations Include="$(ProjectDir)/Translations/*.*" />

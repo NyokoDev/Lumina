@@ -11,45 +11,75 @@ namespace Lumina.Helpers
 {
     internal class CompatibilityAssistant
     {
-        public static void ShowLightColorsNotification()
+        public enum LightColorsConflictType
         {
-            LightColorsNotification notification = NotificationBase.ShowNotification <LightColorsNotification>();
-            notification.AddParas("1 or several incompatible mods have been detected. For optimal use of Lumina, turn off the conflicting mods since both have identical functions. This message will stop appearing once all incompatibilities have been resolved, otherwise proceed with your action. Check Lumina.LogFile for more information.");
+            RenderIt,
+            LightColorMods,
+            CubemapReplacer
+        }
+
+
+        public static void ShowLightColorsNotification(LightColorsConflictType conflictType)
+        {
+            LightColorsNotification notification = NotificationBase.ShowNotification<LightColorsNotification>();
+
+            switch (conflictType)
+            {
+                case LightColorsConflictType.RenderIt:
+                    notification.AddParas("Render It mod detected alongside Lumina. These mods share some similar features, which may overlap.");
+                    break;
+
+                case LightColorsConflictType.LightColorMods:
+                    notification.AddParas("One or more light color modification mods (Relight, Daylight Classic, Natural Lighting) are active. These mods can interfere with Lumina’s lighting adjustments. They can work together, but disable conflicting mods if you notice issues.");
+                    break;
+                case LightColorsConflictType.CubemapReplacer:
+                    notification.AddParas("Incompatibility detected: 'Cubemap Replacer' directly conflicts with Lumina’s Skybox feature and can cause crashes. Please disable or remove this mod.");
+                    break;
+                default:
+                    notification.AddParas("One or more incompatible mods have been detected. For optimal use of Lumina, turn off the conflicting mods since both have identical functions. Check Lumina.LogFile for more information.");
+                    break;
+            }
         }
 
         public static void CheckAll()
         {
+            if (!LuminaLogic.Compatibility)
+            {
+                // Compatibility is false, so skip all checks
+                Logger.Log("Skipped all compatibility checks.");
+                return;
+            }
 
             Logger.Log("You can disregard the compatibility messages if you wish to mix various mods together. Always remember this can cause unexpected behaviour.");
 
-            string[] potentialConflicts = { "renderit", "thememixer" };
+            string[] potentialConflicts = { "renderit" };
             if (ModUtils.IsAnyModsEnabled(potentialConflicts))
             {
-                Logger.Log("Several incompatibilities with other mods found. Any unexpected behavior is caused by these mods: Render it or Theme Mixer 2/2.5");
-                CompatibilityAssistant.ShowLightColorsNotification();
+                Logger.Log("Render It is compatible with Lumina, but some settings may overlap. If you notice unusual visuals, consider disabling one of the mods.");
+                ShowLightColorsNotification(LightColorsConflictType.RenderIt);
             }
 
-                if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
+            if (CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
             {
-                CompatibilityAssistant.ShowLightColorsNotification();
-                Logger.Log("Several incompatibilities have been found for Light Colors Manipulating Mods: Relight-Daylight Classic-NaturalLighting");
+                ShowLightColorsNotification(LightColorsConflictType.LightColorMods);
+                Logger.Log("Light color mods like Relight, Daylight Classic, and Natural Lighting may interfere with Lumina’s lighting adjustments. They can work together, but disable them if you notice inconsistencies.");
             }
 
             if (ModUtils.IsModEnabled("skyboxreplacer"))
             {
-                Logger.Log("1 incompatibility has been found for Skybox replacement: Cubemap Replacer");
-
+                ShowLightColorsNotification(LightColorsConflictType.CubemapReplacer);
+                Logger.Log("Incompatibility detected: 'Cubemap Replacer' conflicts with Lumina’s Skybox replacement. Please remove it to avoid serious issues like crashes.");
             }
         }
 
-    }
 
-    public class LightColorsNotification : ListNotification
-    {
+        public class LightColorsNotification : ListNotification
+        {
 
             // Don't Show Again button.
             internal UIButton _noButton;
             internal UIButton _yesButton;
+
 
             /// <summary>
             /// Gets the 'No' button (button 1) instance.
@@ -73,16 +103,29 @@ namespace Lumina.Helpers
             /// </summary>
             public override void AddButtons()
             {
-
                 // Add yes button.
                 _yesButton = AddButton(1, NumButtons, Translations.Translate("UnlockSlider"), Close);
 
+                // Add no button with SetNoForCompatibility() called before Close().
+                _noButton = AddButton(2, NumButtons, Translations.Translate("LockSlider"), () =>
+                {
+                    SetNoForCompatibility();
+                    Close();
+                });
+            }
 
-                _noButton = AddButton(2, NumButtons, Translations.Translate("LockSlider"), Close);
+            private void SetNoForCompatibility()
+            {
+                LuminaLogic.Compatibility = false;
+
+                // Save settings
+                ModSettings.Save();
 
             }
         }
-
-
     }
+}
+
+
+
 

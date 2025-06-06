@@ -88,7 +88,7 @@
         /// <summary>
         /// Disables compatibility recommendations.
         /// </summary>
-        internal static bool CompatibilityDisabled { get; set; }
+        internal static bool Compatibility { get; set; } = true;
 
 
 
@@ -413,9 +413,6 @@
         /// </summary>
         public static void OnLoad()
         {
-            // Check for all incompatibilities.
-            CompatibilityAssistant.CheckAll();
-
             // Set instance reference.
             if (s_instance == null)
             {

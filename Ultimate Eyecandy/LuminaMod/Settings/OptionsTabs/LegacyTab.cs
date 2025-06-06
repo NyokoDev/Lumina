@@ -176,6 +176,9 @@
 
                         // Save settings
                         ModSettings.Save();
+
+                        // Refresh the panel UI
+                        RefreshTab();
                     }
                     catch (Exception ex)
                     {
@@ -188,6 +191,83 @@
                 Logger.Log($"Error while creating dynamic resolution button: {ex.Message}");
             }
         }
+
+        private void RefreshTab()
+        {
+            if (panel != null)
+            {
+                // Clear all children
+                panel.components.Clear();
+
+                // Reset position tracker
+                currentY = Margin;
+
+                // Rebuild the menu
+                CreateOpenLogsButton();
+                CreateDynamicResolutionText();
+                CreateDynamicResolutionButton();
+
+                if (LuminaLogic.DynResEnabled)
+                {
+                    // Re-add all Dynamic Resolution options
+                    enableDRbutton.text = "Deactivate";
+                    enableDRbutton.height = 30f;
+
+                    SSAALabel = UILabels.AddLabel(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.DYNAMICRESOLUTION_TEXT), panel.width - (Margin * 2f), 0.8f);
+                    currentY += 20f;
+
+                    SSAAConfig = UISliders.AddBudgetSlider(panel, LeftMargin, currentY, 500f, DynamicResolutionManager.MaximumDRValue);
+                    SSAAConfig.value = DynamicResolutionCamera.AliasingFactor;
+                    currentY += 20f;
+
+                    SSAAConfig.eventValueChanged += (c, value) =>
+                    {
+                        SSAALabel2.text = SSAAConfig.value.ToString();
+                    };
+
+                    SSAALabel2 = UILabels.AddLabel(panel, LeftMargin, currentY, SSAAConfig.value.ToString(), panel.width - (Margin * 2f), 0.9f);
+                    currentY += 15f;
+
+                    SSAAButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.SSAA_SLIDER_TEXT));
+                    SSAAButton.horizontalAlignment = UIHorizontalAlignment.Center;
+                    currentY += 35f;
+                    SSAAButton.eventClicked += (c, p) => Loading.ActiveDRManager?.SetSSAAFactor(SSAAConfig.value);
+
+                    LowerVRAMUSAGE = UICheckBoxes.AddLabelledCheckBox(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.LOWERVRAMUSAGE));
+                    currentY += 30f;
+                    LowerVRAMUSAGE.isChecked = DynamicResolutionManager.LowerVRAMUsage;
+                    LowerVRAMUSAGE.eventCheckChanged += (c, isChecked) =>
+                    {
+                        if (isChecked != DynamicResolutionManager.LowerVRAMUsage)
+                            DynamicResolutionManager.LowerVRAMUsage = isChecked;
+                    };
+
+                    UnlockSliderCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UnlockSliderLabel));
+                    currentY += 25f;
+                    UnlockSliderCheckbox.isChecked = DynamicResolutionManager.UnlockSlider;
+                    UnlockSliderCheckbox.eventCheckChanged += (c, isChecked) =>
+                    {
+                        UnlockSliderNotif notification = NotificationBase.ShowNotification<UnlockSliderNotif>();
+                        notification.AddParas("Unlocking the Dynamic Resolution slider comes with a cautionary note...");
+                        notification._yesButton.eventClicked += (sender, args) =>
+                        {
+                            DynamicResolutionManager.MaximumDRValue = 10f;
+                            UnlockSliderCheckbox.isChecked = true;
+                        };
+                        notification._noButton.eventClicked += (sender, args) =>
+                        {
+                            UnlockSliderCheckbox.isChecked = false;
+                            DynamicResolutionManager.MaximumDRValue = 4f;
+                        };
+                    };
+                }
+                else
+                {
+                    enableDRbutton.text = "Activate";
+                }
+            }
+        }
+
 
 
 

@@ -76,7 +76,7 @@ LOWERVRAMUSAGE,Optimize VRAM Usage
 DRSLIDERLABEL,Anti-Aliasing Level
 UnlockSlider,Proceed
 UnlockSliderLabel,Unlock slider
-LockSlider,Go back
+LockSlider,Don't show again
 SSAA_SLIDER_TEXT,Set
 SHADER_CONFIG,Shader configuration
 RESTART_TEXT,The settings below require a game restart to take effect.
