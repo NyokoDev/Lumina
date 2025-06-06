@@ -112,11 +112,11 @@ namespace Lumina.OptionsTabs
                 Process.Start("https://discord.gg/gdhyhfcj7A");
             };
 
-            UIButton guidesbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Guides & Help");
+            UIButton guidesbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Documentation");
             currentY += 50f;
             guidesbutton.eventClicked += (sender, args) =>
             {
-                Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
+                Process.Start("https://skylinx.gitbook.io/lumina-for-cs1");
             };
 
 

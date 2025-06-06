@@ -130,26 +130,6 @@
             }
         }
 
-        private void CreateGuidesButton()
-        {
-            UIButton guidesbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Guides & Help");
-            currentY += 50f;
-            guidesbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://cslmods.wikitide.org/wiki/Guide_for_Lumina");
-            };
-        }
-
-        private void CreateSupportButton()
-        {
-            UIButton supportbutton = UIButtons.AddSmallerButton(panel, LeftMargin, currentY, "Support");
-            currentY += 50f;
-            supportbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://discord.gg/gdhyhfcj7A");
-            };
-
-        }
 
         private void CreateDynamicResolutionText()
         {
