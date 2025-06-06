@@ -101,11 +101,6 @@
                 };
             }
 
-
-        
-            
-
-
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += 30f;
 

@@ -36,6 +36,9 @@
 		<Reference Include="UnityEngine">
 		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
 		</Reference>
+		<Reference Include="UnityEngine.UI">
+		  <HintPath>G:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.UI.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<_Translations Include="$(ProjectDir)/Translations/*.*" />
@@ -46,6 +49,7 @@
 		<_WinShaders Include="$(ProjectDir)/Shaders/win64/*.*" />
 		<_MacShaders Include="$(ProjectDir)/Shaders/osx64/*.*" />
 		<_LUTs Include="$(ProjectDir)/Build/*.*" />
+		<_Assets Include="$(ProjectDir)/Assets/*.*" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Resources\PreviewImage.png" />
@@ -70,6 +74,7 @@
 		<Copy SourceFiles="@(_MacShaders)" DestinationFolder="$(DeployDir)/Resources/Shaders/osx64" />
 		<Copy SourceFiles="@(_LUTs)" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="@(_Editor)" DestinationFolder="$(DeployDir)/LUT Editor" />
-	</Target>
+		<Copy SourceFiles="@(_Assets)" DestinationFolder="$(DeployDir)/Resources/Shaders" />
+ 	</Target>
 	<Import Project="..\..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
 </Project>

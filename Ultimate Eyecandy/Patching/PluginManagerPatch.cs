@@ -3,6 +3,7 @@ using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.Plugins;
 using HarmonyLib;
+using UnityEngine;
 
 namespace Lumina.Patching
 {
@@ -13,6 +14,7 @@ namespace Lumina.Patching
         // Method to run before LoadPlugins
         public static void Prefix()
         {
+            Logger.Log("Running Unity version: " + Application.unityVersion);
             // Log that the patch is running
             Logger.Log("(typeof(MainMenu), \"Awake\")] method is being patched. Running DeleteSourceFolders.");
 

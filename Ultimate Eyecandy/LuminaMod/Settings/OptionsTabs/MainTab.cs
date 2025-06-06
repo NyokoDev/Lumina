@@ -27,8 +27,6 @@ namespace Lumina.OptionsTabs
 
         internal MainTab(UITabstrip tabStrip, int tabIndex)
         {
-
-
             panel = UITabstrips.AddTextTab(tabStrip, "Main", tabIndex, out UIButton _, autoLayout: false);
             float currentY = Margin;
             // Language choice.

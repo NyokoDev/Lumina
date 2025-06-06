@@ -1,15 +1,18 @@
 ﻿namespace Lumina
 {
-    using System;
-    using System.Collections.Generic;
     using AlgernonCommons;
     using AlgernonCommons.Notifications;
     using AlgernonCommons.Patching;
     using AlgernonCommons.Translation;
     using ColossalFramework.UI;
+    using DigitalRuby.RainMaker;
     using ICities;
+    using Lumina.Bundles;
     using Lumina.Helpers;
+    using System;
+    using System.Collections.Generic;
     using UnityEngine;
+
 
     /// <summary>
     /// Main loading class: the mod runs from here.
@@ -19,6 +22,9 @@
         private static DynamicResolutionManager s_dynamicResolutionManager = null;
         private GameObject _gameObject;
         private GameObject _TimeManagerGameObject;
+
+        private GameObject rainInstance;
+        private AssetBundle rainBundle;
 
         /// <summary>
         /// Gets the active dynamic resolution manager.
@@ -62,6 +68,7 @@
 
             // Enable dynamic resolution.
             EnableDynamicResolution();
+            RainPlugin();
             CheckForModConflicts();
             AttachTimeManager();
 
@@ -70,6 +77,13 @@
 
             _gameObject = new GameObject("CubemapReplacerRedux");
             _gameObject.AddComponent<CubemapUpdater>();
+        }
+
+        private void RainPlugin()
+        {
+            rainInstance = new GameObject("LuminaRain");
+            var loader = rainInstance.AddComponent<RainmakerBundleLoader>();
+
         }
 
         private void AttachTimeManager()

@@ -1,0 +1,57 @@
+ManifestFileVersion: 0
+CRC: 2851282759
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 238d137418b5e4f74a5541a8e6b88233
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 13cbad9e1c9d81177f0eb0b07df52237
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 30b85ae89f8f0994a85aa62bf5a0e160, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 340901a9d8d97bd43abdfe247e210193, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6ff5b1f04dece7440b6f0886ee13f147, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 182
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/RainMaker/Prefab/RainMistMaterial.mat
+- Assets/RainMaker/Demo/GrayMaterial.mat
+- Assets/RainMaker/Prefab/rain_light.ogg
+- Assets/RainMaker/Prefab/rain_medium.ogg
+- Assets/RainMaker/Prefab/RainTexturePSD.psd
+- Assets/RainMaker/Prefab/RainShader.shader
+- Assets/RainMaker/Prefab/RainPrefab.prefab
+- Assets/RainMaker/Prefab/RainMistMaterial2D.mat
+- Assets/RainMaker/Prefab/rain_heavy.ogg
+- Assets/RainMaker/Prefab/wind_normal1.ogg
+- Assets/RainMaker/Prefab/RainPrefab2D.prefab
+- Assets/RainMaker/Prefab/RainTexture.png
+- Assets/RainMaker/Prefab/RainExplosionMaterial.mat
+- Assets/RainMaker/Prefab/RainExplosionMaterial2D.mat
+- Assets/RainMaker/Prefab/RainMaterial2D.mat
+- Assets/RainMaker/Prefab/RainMaterial.mat
+Dependencies: []
