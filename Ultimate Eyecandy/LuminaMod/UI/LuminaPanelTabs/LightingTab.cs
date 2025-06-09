@@ -75,31 +75,7 @@
                     }
                 };
 
-                UnlockSliderCheckbox = UICheckBoxes.AddLabelledCheckBox(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.UnlockSliderLabel));
-                currentY += 25f;
-                UnlockSliderCheckbox.isChecked = DynamicResolutionManager.UnlockSlider;
-                UnlockSliderCheckbox.eventCheckChanged += (c, isChecked) =>
-                {
 
-                    UnlockSliderNotif notification = NotificationBase.ShowNotification<UnlockSliderNotif>();
-                    notification.AddParas("Unlocking the Dynamic Resolution slider comes with a cautionary note, as it may lead to potential instability within the game. Before proceeding, we would like to bring to your attention the possibility of encountering issues related to game stability, including potential implications for your GPU performance. Could you confirm your decision to unlock the Dynamic Resolution slider?");
-                    notification._yesButton.eventClicked += (sender, args) =>
-                    {
-                        DynamicResolutionManager.MaximumDRValue = 10f;
-                        UnlockSliderCheckbox.isChecked = true;
-
-
-
-                    };
-                    notification._noButton.eventClicked += (sender, args) =>
-                    {
-                        UnlockSliderCheckbox.isChecked = false;
-                        DynamicResolutionManager.MaximumDRValue = 4f;
-
-                    };
-
-                };
-            }
 
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += 30f;
@@ -155,7 +131,7 @@
                 _lutdropdown.selectedIndex = ColorCorrectionManager.instance.lastSelection;
                 _lutdropdown.eventSelectedIndexChanged += LuminaLogic.Instance.OnSelectedIndexChanged;
                 _lutdropdown.localeID = LocaleID.BUILTIN_COLORCORRECTION;
-            
+
 
 
 
@@ -220,7 +196,8 @@
                     StyleManager.EnableSkyTonemapping = isChecked;
                     LuminaLogic.SkyTonemapping(isChecked);
                 };
-            
+
+            }
         }
 
         private void HandleButtonClick(float value)

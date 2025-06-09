@@ -76,7 +76,7 @@ LOWERVRAMUSAGE,Optimize VRAM Usage
 DRSLIDERLABEL,Anti-Aliasing Level
 UnlockSlider,Proceed
 UnlockSliderLabel,Unlock slider
-LockSlider,Don't show again
+LockSlider,Stay limited
 SSAA_SLIDER_TEXT,Set
 SHADER_CONFIG,Shader configuration
 RESTART_TEXT,The settings below require a game restart to take effect.
@@ -89,3 +89,4 @@ DAYLIGHTHOUR_TEXT,Time of Day
 RAININTENSITY_TEXT,Rain Intensity
 DYNAMICRESOLUTION_ONBOARDING,Dynamic Resolution Global Configuration
 DYNAMICRESOLUTION_ACTIVATE,Activate
+DYNAMICRESOLUTION_DEACTIVATE,Deactivate

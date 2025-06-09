@@ -52,6 +52,31 @@
 
             // Destroy any existing Lumina logic.
             LuminaLogic.Destroy();
+
+            // Dispose of created GameObjects to prevent memory leaks.
+            if (_gameObject != null)
+            {
+                UnityEngine.Object.Destroy(_gameObject);
+                _gameObject = null;
+            }
+
+            if (_TimeManagerGameObject != null)
+            {
+                UnityEngine.Object.Destroy(_TimeManagerGameObject);
+                _TimeManagerGameObject = null;
+            }
+
+            if (rainInstance != null)
+            {
+                UnityEngine.Object.Destroy(rainInstance);
+                rainInstance = null;
+            }
+
+            if (rainBundle != null)
+            {
+                rainBundle.Unload(true);
+                rainBundle = null;
+            }
         }
 
         /// <summary>
@@ -68,7 +93,6 @@
 
             // Enable dynamic resolution.
             EnableDynamicResolution();
-            RainPlugin();
             CheckForModConflicts();
             AttachTimeManager();
 
@@ -100,15 +124,37 @@
 
         private void EnableDynamicResolution()
         {
-            // Enable dynamic resolution.
-            if (LuminaLogic.DynResEnabled)
+            try
             {
-                s_dynamicResolutionManager = new DynamicResolutionManager();
-            }
-            else
-            {
-                Logging.Message("Dynamic Resolution disabled");
+                if (LuminaLogic.DynResEnabled)
+                {
+                    if (s_dynamicResolutionManager != null)
+                    {
+                        Logger.Log("Dynamic Resolution already enabled, destroying previous instance.");
+                        DynamicResolutionManager.Destroy();
+                        s_dynamicResolutionManager = null;
+                    }
 
+                    s_dynamicResolutionManager = new DynamicResolutionManager();
+                    Logger.Log("Dynamic Resolution enabled.");
+                }
+                else
+                {
+                    if (s_dynamicResolutionManager != null)
+                    {
+                        Logger.Log("Dynamic Resolution disabled, destroying existing instance.");
+                        DynamicResolutionManager.Destroy();
+                        s_dynamicResolutionManager = null;
+                    }
+                    else
+                    {
+                        Logger.Log("Dynamic Resolution disabled.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to enable Dynamic Resolution: " + ex);
             }
         }
 
