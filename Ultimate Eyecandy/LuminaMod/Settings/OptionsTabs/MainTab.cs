@@ -46,60 +46,28 @@ namespace Lumina.OptionsTabs
 
 
 
-            UIDropDown UIStyleDropdown = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE) );
-            UIStyleDropdown.items = UIStyles;
-            UIStyleDropdown.selectedValue = LuminaLogic.BackgroundStyle;
+            UIDropDown UIStyleDropdown = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.UISTYLE));
+            UIStyleDropdown.items = new[] { "Transparent", "Normal" };
             currentY += 80f;
-            if (LuminaLogic.BackgroundStyle == "LuminaNormal")
+
+            UIStyleDropdown.selectedValue = LuminaLogic.BackgroundStyle == "UnlockingItemBackground" ? "Normal" : "Transparent";
+
+            UIStyleDropdown.eventSelectedIndexChanged += (_, __) =>
             {
-                UIStyleDropdown.selectedValue = "Transparent";
-            }
-            else if (LuminaLogic.BackgroundStyle == "UnlockingItemBackground")
-            {
-                UIStyleDropdown.selectedValue = "Normal";
-            }
-            UIStyleDropdown.eventSelectedIndexChanged += (component, value) =>
-            {
-                int index = UIStyleDropdown.selectedIndex;
-                if (UIStyles[index] == "Transparent")
-                {
-                    LuminaLogic.BackgroundStyle = "LuminaNormal";
-                    ModSettings.Save();
-                }
-                else if (UIStyles[index] == "Normal")
-                {
-                    LuminaLogic.BackgroundStyle = "UnlockingItemBackground";
-                    ModSettings.Save();
-                }
+                LuminaLogic.BackgroundStyle = UIStyleDropdown.selectedValue == "Normal" ? "UnlockingItemBackground" : "LuminaNormal";
+                ModSettings.Save();
             };
+
+
             currentY += 30f;
 
 
-            /// Button Visibility Status dropdown
+            // Button Visibility Status dropdown (fixed to "Only UUI")
             UIDropDown ButtonVisibleToggle = UIDropDowns.AddLabelledDropDown(panel, LeftMargin, currentY, Translations.Translate(LuminaTR.TranslationID.VISIBILITY_STATUS));
-            ButtonVisibleToggle.items = VisibilityStatus;
-            if (LuminaLogic.ShowButton == false)
-            {
-                ButtonVisibleToggle.selectedValue = "Only UUI";
-            }
-            else if (LuminaLogic.ShowButton == true)
-            {
-                ButtonVisibleToggle.selectedValue = "Both";
-            }
-            ButtonVisibleToggle.eventSelectedIndexChanged += (component, value) =>
-            {
-                int index = ButtonVisibleToggle.selectedIndex;
-                if (VisibilityStatus[index] == "Only UUI")
-                {
-                    LuminaLogic.ShowButton = false;
-                    ModSettings.Save();
-                }
-                else if (VisibilityStatus[index] == "Both")
-                {
-                    LuminaLogic.ShowButton = true;
-                    ModSettings.Save();
-                }
-            };
+            ButtonVisibleToggle.items = new string[] { "Only UUI" };
+            ButtonVisibleToggle.selectedIndex = 0;
+            ButtonVisibleToggle.isInteractive = false; // Makes the dropdown non-clickable
+
             currentY += 50f;
 
 

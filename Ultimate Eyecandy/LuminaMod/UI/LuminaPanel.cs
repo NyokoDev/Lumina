@@ -50,6 +50,7 @@
         {
             base.Start();
 
+            this.backgroundSprite = LuminaLogic.BackgroundStyle;
             Logger.Log("[LuminaPanel] Start: Initializing tabstrip...");
             AutoTabstrip tabStrip = null;
             try

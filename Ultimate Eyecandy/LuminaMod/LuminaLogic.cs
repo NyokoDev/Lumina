@@ -470,7 +470,7 @@
             }
             else
             {
-                Logging.Error("couldn't find directional light");
+                Logging.Error("[LUMINA] Couldn't find directional light");
             }
         }
 
@@ -926,6 +926,7 @@
                 }
             }
         }
+
         // Custom property to control Time.timeScale
         public static float CustomTimeScale
         {

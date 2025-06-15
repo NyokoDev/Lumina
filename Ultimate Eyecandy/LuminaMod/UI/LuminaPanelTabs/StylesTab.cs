@@ -179,15 +179,14 @@
                 new Color32(255, 230, 120, 255)
             );
             WarningLabel.textColor = Color.white; // Set text color to white for better visibility
-
-            // Create dark overlay behind modal for focus
+                                                  // Create dark overlay behind modal for focus
             UIPanel overlay = panel.AddUIComponent<UIPanel>();
             overlay.width = panel.width;
             overlay.height = panel.height;
             overlay.backgroundSprite = "GenericPanel";  // basic plain panel sprite
             overlay.color = new Color32(0, 0, 0, 150);  // semi-transparent black
             overlay.relativePosition = Vector2.zero;
-            overlay.zOrder = 998;
+            overlay.zOrder = -998;
 
             // Small "?" button with clean modern circular background
             UIButton infoBtn = panel.AddUIComponent<UIButton>();
