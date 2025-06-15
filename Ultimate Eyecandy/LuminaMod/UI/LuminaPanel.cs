@@ -3,6 +3,7 @@
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using System;
     using UnityEngine;
 
 
@@ -35,9 +36,8 @@
         /// </summary>
         protected override string PanelTitle => Translations.Translate(LuminaTR.TranslationID.MOD_NAME);
 
-  
-
         Loading Loading;
+
         /// <summary>
         /// Gets the panel opacity.
         /// </summary>
@@ -50,30 +50,82 @@
         {
             base.Start();
 
-            // Add tabstrip.
-            AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, Margin, TitleHeight, ContentWidth, ContainerHeight, out _);
-
-           
-                // Add tabs and panels.
-                new LightingTab(tabStrip, 0);
-                new StylesTab(tabStrip, 1);
-                new EffectsTab(tabStrip, 2);
-
-                if (ModUtils.IsModEnabled("lutcreator"))
+            Logger.Log("[LuminaPanel] Start: Initializing tabstrip...");
+            AutoTabstrip tabStrip = null;
+            try
+            {
+                tabStrip = AutoTabstrip.AddTabstrip(this, Margin, TitleHeight, ContentWidth, ContainerHeight, out _);
+                if (tabStrip == null)
                 {
-                    Logger.Log("[LUMINA] LUT Creator plugin enabled.");
-                    new LookUpTableTab(tabStrip, 3);
+                    Logger.Log("[LuminaPanel] ERROR: tabStrip is null after AddTabstrip.");
+                    return;
                 }
-
-                SetIcon(UITextures.LoadSprite("ADV"), "normal");
-                //handler.LoadSettings();
-
-                // Force initial tab selection.
-                tabStrip.selectedIndex = -1;
-                tabStrip.selectedIndex = 0;
+                Logger.Log("[LuminaPanel] Tabstrip created successfully.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[LuminaPanel] ERROR: Exception while creating tabstrip: {ex}");
+                return;
             }
 
-        
+            try
+            {
+                Logger.Log("[LuminaPanel] Creating LightingTab...");
+                new LightingTab(tabStrip, 0);
+                Logger.Log("[LuminaPanel] Creating StylesTab...");
+                new StylesTab(tabStrip, 1);
+                Logger.Log("[LuminaPanel] Creating EffectsTab...");
+                new EffectsTab(tabStrip, 2);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[LuminaPanel] ERROR: Exception while creating tabs: {ex}");
+                return;
+            }
+
+            try
+            {
+                if (ModUtils.IsModEnabled("lutcreator"))
+                {
+                    Logger.Log("[LuminaPanel] LUT Creator plugin enabled.");
+                    new LookUpTableTab(tabStrip, 3);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[LuminaPanel] ERROR: Exception in LUT Creator check: {ex}");
+            }
+
+            try
+            {
+                Logger.Log("[LuminaPanel] Loading icon sprite...");
+                var sprite = UITextures.LoadSprite("ADV");
+                if (sprite == null)
+                {
+                    Logger.Log("[LuminaPanel] WARNING: Sprite 'ADV' not found.");
+                }
+                else
+                {
+                    SetIcon(sprite, "normal");
+                    Logger.Log("[LuminaPanel] Icon set successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[LuminaPanel] ERROR: Exception while setting icon: {ex}");
+            }
+
+            try
+            {
+                Logger.Log("[LuminaPanel] Setting tabStrip.selectedIndex = 0");
+                tabStrip.selectedIndex = -1;
+                Logger.Log("[LuminaPanel] Tabstrip selectedIndex set to 0.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[LuminaPanel] ERROR: Exception while setting selectedIndex: {ex}");
+            }
+        }
 
         /// <summary>
         /// Performs any actions required before closing the panel and checks that it's safe to do so.
