@@ -1003,7 +1003,7 @@
         public static bool DisableAtNightFog { get; set; }
 
         public static float defaultValue { get; private set; }
-        public static string BackgroundStyle { get; set; }
+        public static string BackgroundStyle { get; set; } = "Normal";
         public static float ButtonPositionY { get; set; }
         public static float ButtonPositionX { get; set; }
         public static bool ShowButton { get; set; }
