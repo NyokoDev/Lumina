@@ -413,41 +413,60 @@
         /// </summary>
         public static void OnLoad()
         {
-            // Set instance reference.
-            if (s_instance == null)
+            try
             {
-                s_instance = new LuminaLogic();
-            }
+                // Ensure instance.
+                s_instance ??= new LuminaLogic();
 
-            // Add UUI button.
-            s_instance._uuiButton = UUIHelpers.RegisterCustomButton(
-                name: LuminaMod.Instance.Name,
-                groupName: null, // default group
-                tooltip: Translations.Translate("MOD_NAME"),
-                icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<LuminaMod>("Resources", "UUI.png")),
-                onToggle: (value) =>
+                // Register UUI button safely.
+                Texture2D icon = null;
+                try
                 {
-                    if (value)
+                    string iconPath = UUIHelpers.GetFullPath<LuminaMod>("Resources", "UUI.png");
+                    icon = UUIHelpers.LoadTexture(iconPath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log($"Failed to load UUI icon: {ex}");
+                }
+
+                s_instance._uuiButton = UUIHelpers.RegisterCustomButton(
+                    name: LuminaMod.Instance?.Name ?? "Lumina",
+                    groupName: null,
+                    tooltip: Translations.Translate("MOD_NAME"),
+                    icon: icon,
+                    onToggle: (value) =>
                     {
-                        StandalonePanelManager<LuminaPanel>.Create();
-                    }
-                    else
-                    {
-                        StandalonePanelManager<LuminaPanel>.Panel?.Close();
-                    }
-                },
-                hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleKey });
+                        if (value)
+                            StandalonePanelManager<LuminaPanel>.Create();
+                        else
+                            StandalonePanelManager<LuminaPanel>.Panel?.Close();
+                    },
+                    hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleKey }
+                );
 
-            // Apply settings.
-            StyleManager.ApplySettings();
-            s_instance.ApplyShadowSmoothing();
-            s_instance.UpdateShadowSettings();
+                // Apply settings.
+                StyleManager.ApplySettings();
+                s_instance.ApplyShadowSmoothing();
+                s_instance.UpdateShadowSettings();
 
-
-            // Apply any loaded fog values and then clear reference.
-            ApplyFogValues();
-            LoadedFogData = null;
+                // Apply any loaded fog values and clear reference.
+                ApplyFogValues();
+                LoadedFogData = null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"Lumina OnLoad failed: {ex}");
+            }
         }
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Destroys the active instance.

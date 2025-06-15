@@ -15,6 +15,7 @@
 		<PackageId>LuminaTest</PackageId>
 		<AssemblyName>Lumina</AssemblyName>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>9.0</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="CitiesHarmony.API" Version="2.2.0" />
