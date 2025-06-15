@@ -106,7 +106,7 @@
                 UILabels.AddLabel(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), panel.width - (Margin * 2f), alignment: UIHorizontalAlignment.Center);
                 currentY += 30f;
 
-                _lutdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), itemTextScale: 0.7f, width: panel.width - (Margin * 2f));
+                _lutdropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(LuminaTR.TranslationID.LUT_TEXT), itemTextScale: 0.7f, width: panel.width - 150f);
                 if (_lutdropdown != null)
                 {
                     _lutdropdown.items = GetLUTDropdownItems();

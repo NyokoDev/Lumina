@@ -2,7 +2,7 @@
   "profiles": {
     "Profile 1": {
       "commandName": "Executable",
-      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Cities_Skylines\\Cities.exe"
+      "executablePath": "G:\\SteamLibrary\\steamapps\\common\\Cities_Skylines\\Cities.exe"
     }
   }
 }

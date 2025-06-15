@@ -159,60 +159,169 @@
             RefreshDisplayList();
             currentY += 40f;
 
-            float spaceBetweenSliders = 2f; // Adjust this value to change the space between sliders
-            float GlobalWidth = 300f;
+            // Modernized Miscellaneous Settings Panel — single label + slider combined
+            const float margin = 15f;
+            const float sliderHeight = 30f;
+            const float spaceBetweenElements = 2f;
+
+            // Load styles and populate initial list.
+            StyleManager.LoadStyles();
+            RefreshDisplayList();
+
+
+
+            // Label
+            UILabel WarningLabel = UILabels.AddLabel(
+                panel, margin, currentY,
+                "Note: The settings below affect visual quality in real-time but are not saved as part of your Style presets.",
+                panel.width - margin * 2f - 16f, 0.85f,
+                UIHorizontalAlignment.Center,
+                new Color32(255, 230, 120, 255)
+            );
+            WarningLabel.textColor = Color.white; // Set text color to white for better visibility
+
+            // Create dark overlay behind modal for focus
+            UIPanel overlay = panel.AddUIComponent<UIPanel>();
+            overlay.width = panel.width;
+            overlay.height = panel.height;
+            overlay.backgroundSprite = "GenericPanel";  // basic plain panel sprite
+            overlay.color = new Color32(0, 0, 0, 150);  // semi-transparent black
+            overlay.relativePosition = Vector2.zero;
+            overlay.zOrder = 998;
+
+            // Small "?" button with clean modern circular background
+            UIButton infoBtn = panel.AddUIComponent<UIButton>();
+            infoBtn.text = "?";
+            infoBtn.width = 24;
+            infoBtn.height = 24;
+            infoBtn.textScale = 0.7f;
+            infoBtn.relativePosition = new Vector3(panel.width - margin - 18f, currentY + 2f);
+            infoBtn.tooltip = "Click for more info.";
+            infoBtn.normalBgSprite = "ButtonMenu"; // modern rounded button sprite
+            infoBtn.hoveredBgSprite = "ButtonMenuHovered";
+            infoBtn.focusedBgSprite = "ButtonMenuFocused";
+            infoBtn.pressedBgSprite = "ButtonMenuPressed";
+            infoBtn.textColor = new Color32(255, 255, 255, 200);
+            infoBtn.hoveredTextColor = new Color32(255, 255, 255, 255);
+            infoBtn.pressedTextColor = new Color32(200, 200, 200, 255);
+
+            // Hover effect: subtle glow
+            infoBtn.eventMouseEnter += (c, e) => infoBtn.textColor = new Color32(255, 255, 255, 255);
+            infoBtn.eventMouseLeave += (c, e) => infoBtn.textColor = new Color32(255, 255, 255, 200);
+
+            infoBtn.eventClicked += (c, e) =>
+            {
+                // Modal panel
+                UIPanel modal = panel.AddUIComponent<UIPanel>();
+                modal.width = 360f;
+                modal.height = 140f;
+                modal.backgroundSprite = "ButtonMenu";  // clean rounded rectangle
+                modal.color = new Color32(30, 30, 30, 240); // dark grey, translucent
+                modal.relativePosition = new Vector2((panel.width - modal.width) / 2f, (panel.height - modal.height) / 2f);
+                modal.zOrder = 999;
+                modal.autoLayout = true;
+                modal.autoLayoutDirection = LayoutDirection.Vertical;
+                modal.autoLayoutPadding = new RectOffset(12, 12, 12, 12);
+                modal.autoLayoutStart = LayoutStart.TopLeft;
+
+                // Label inside modal
+                UILabel label = modal.AddUIComponent<UILabel>();
+                label.text = "Changes here affect visuals in real-time but won't be saved in Style presets. Only settings from the Lighting Tab are saved in presets.";
+                label.wordWrap = true;
+                label.autoSize = false;
+                label.width = modal.width - 24;
+                label.height = 80;
+                label.textScale = 0.9f;
+                label.textAlignment = UIHorizontalAlignment.Center;
+                label.textColor = new Color32(255, 255, 255, 255);
+
+                // Close button
+                UIButton closeBtn = modal.AddUIComponent<UIButton>();
+                closeBtn.text = "Close";
+                closeBtn.width = 80f;
+                closeBtn.height = 28f;
+                closeBtn.textScale = 0.9f;
+                closeBtn.relativePosition = new Vector2((modal.width - closeBtn.width) / 2f, modal.height - 40f);
+                closeBtn.normalBgSprite = "ButtonMenu";
+                closeBtn.hoveredBgSprite = "ButtonMenuHovered";
+                closeBtn.pressedBgSprite = "ButtonMenuPressed";
+                closeBtn.textColor = new Color32(255, 255, 255, 220);
+                closeBtn.hoveredTextColor = new Color32(255, 255, 255, 255);
+                closeBtn.pressedTextColor = new Color32(200, 200, 200, 255);
+
+                closeBtn.eventClicked += (btn, evt) =>
+                {
+                    UnityEngine.Object.Destroy(modal);
+                    UnityEngine.Object.Destroy(overlay);
+                };
+            };
+
+            currentY += WarningLabel.height + 4f;
+
+
+            currentY += 20f;
+
+
+            float spaceBetweenSliders = 2f; 
+            float GlobalWidth = 450f;
 
             // Sun Intensity Slider
-            sunIntensitySlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SUNINTENSITY_TEXT), 0f, 8f, 0, ref currentY);
+            sunIntensitySlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SUNINTENSITY_TEXT), 0.01f, 8f, 0, ref currentY, GlobalWidth);
             sunIntensitySlider.value = LuminaLogic.DayNightSunIntensity;
             sunIntensitySlider.width = GlobalWidth;
             sunIntensitySlider.eventValueChanged += (_, value) => { LuminaLogic.DayNightSunIntensity = value; };
+            sunIntensitySlider.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             currentY += spaceBetweenSliders; // Move to the next row
 
             // Exposure Slider
-            ExposureSlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.EXPOSURESLIDER_TEXT), 0f, 5f, 0, ref currentY);
+            ExposureSlider = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.EXPOSURESLIDER_TEXT), 0.01f, 5f, 0, ref currentY, GlobalWidth);
             ExposureSlider.width = GlobalWidth;
             ExposureSlider.value = LuminaLogic.m_Exposure;
             ExposureSlider.eventValueChanged += (_, value) => { LuminaLogic.m_Exposure = value; };
+            ExposureSlider.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             currentY += spaceBetweenSliders; // Move to the next row
 
             // Sky Rayleigh Scattering Slider
-            SkyRayleighScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAYSCATTERING_TEXT), 0f, 5f, 0, ref currentY);
+            SkyRayleighScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAYSCATTERING_TEXT), 0.01f, 5f, 0, ref currentY, GlobalWidth);
             SkyRayleighScattering.width = GlobalWidth;
             SkyRayleighScattering.value = LuminaLogic.SkyRayleighScattering;
+            SkyRayleighScattering.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             SkyRayleighScattering.eventValueChanged += (_, value) => { LuminaLogic.SkyRayleighScattering = value; };
             currentY += spaceBetweenSliders; // Move to the next row
 
             // Sky Mie Scattering Slider
-            SkyMieScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.MIESCATTERING_TEXT), 0f, 5f, 0, ref currentY);
+            SkyMieScattering = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.MIESCATTERING_TEXT), 0.01f, 5f, 0, ref currentY, GlobalWidth);
             SkyMieScattering.width = GlobalWidth;
             SkyMieScattering.value = LuminaLogic.SkyMieScattering;
+            SkyMieScattering.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             SkyMieScattering.eventValueChanged += (_, value) => { LuminaLogic.SkyMieScattering = value; };
             currentY += spaceBetweenSliders;
 
-            SimSpeed = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0f, 2f, 0, ref currentY);
+            // Sim Speed Slider
+            SimSpeed = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.SIMULATIONSPEED_TEXT), 0.01f, 2f, 0, ref currentY, GlobalWidth);
+            SimSpeed.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             SimSpeed.value = LuminaLogic.CustomTimeScale;
             SimSpeed.eventValueChanged += (_, value) =>
             {
-
                 LuminaLogic.CustomTimeScale = value;
             };  // Set Sim Speed value
             currentY += spaceBetweenSliders;
 
-            RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0f, 5f, 0, ref currentY);
+            // Rain Intensity Slider
+            RainIntensity = AddGlobalSlider(panel, Translations.Translate(LuminaTR.TranslationID.RAININTENSITY_TEXT), 0.01f, 5f, 0, ref currentY, GlobalWidth);
+            RainIntensity.thumbObject.color = new Color32(128, 128, 128, 255); // Grey color for thumb
             RainIntensity.value = _weatherManager.m_currentRain;
             RainIntensity.eventValueChanged += (_, value) =>
             {
-
                 _weatherManager.m_currentFog = value;
-                _weatherManager.m_targetFog = value; // Fog aswell
+                _weatherManager.m_targetFog = value; // Fog as well
                 _weatherManager.m_targetRain = value;
                 _weatherManager.m_currentRain = value;
-
             };
-
-
         }
+
+
+
 
         /// <summary>
         /// Refreshes the style list display.

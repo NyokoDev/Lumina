@@ -82,7 +82,7 @@
             return newSlider;
         }
 
-        protected UISlider AddGlobalSlider(UIComponent panel, string label, float minValue, float maxValue, int index, ref float currentY)
+        protected UISlider AddGlobalSlider(UIComponent panel, string label, float minValue, float maxValue, int index, ref float currentY, float width)
         {
             // Title label.
             UILabel titleLabel = UILabels.AddLabel(panel, Margin, currentY, label, textScale: SliderTextScale);
@@ -91,7 +91,7 @@
             UILabel newValueLabel = UILabels.AddLabel(panel, ControlWidth, currentY, "0", ValueLabelWidth, SliderTextScale, UIHorizontalAlignment.Right);
 
             // Add slider.
-            UISlider newSlider = UISliders.AddBudgetSlider(panel, Margin, currentY + SliderTextHeight, 300f, maxValue);
+            UISlider newSlider = UISliders.AddBudgetSlider(panel, Margin, currentY + SliderTextHeight, width, maxValue);
             newSlider.minValue = minValue;
             newSlider.stepSize = 0.0001f;
             newSlider.objectUserData = new LuminaSliderData
