@@ -1,7 +1,9 @@
-﻿using HarmonyLib;
-using ColossalFramework.UI;
-using System.Linq;
+﻿using ColossalFramework.UI;
+using HarmonyLib;
 using Lumina;
+using System.Linq;
+using UnityEngine;
+using Logger = Lumina.Logger;
 
 [HarmonyPatch(typeof(OptionsGraphicsPanel), "Awake")]
 public static class Patch_OptionsGraphicsPanel_Awake
@@ -14,6 +16,13 @@ public static class Patch_OptionsGraphicsPanel_Awake
 
     private static System.Collections.IEnumerator InjectBorderlessOption(OptionsGraphicsPanel instance)
     {
+        // Skip on non-Windows platforms
+        if (Application.platform != RuntimePlatform.WindowsPlayer && Application.platform != RuntimePlatform.WindowsEditor)
+        {
+            Logger.Log("[Lumina] Skipping borderless option injection on non-Windows platform.");
+            yield break;
+        }
+
         // Wait one frame to ensure UI elements are initialized
         yield return null;
 
@@ -31,6 +40,21 @@ public static class Patch_OptionsGraphicsPanel_Awake
         {
             items.Add("Fullscreen Borderless");
             dropdown.items = items.ToArray();
+
+            // Create label
+            var label = dropdown.parent.AddUIComponent<UILabel>();
+            label.text = "Powered by Lumina";
+            label.textScale = 0.8f;              // Slightly smaller text
+            label.textAlignment = UIHorizontalAlignment.Center;
+            label.autoSize = false;
+            label.width = dropdown.width;
+            label.height = 20;
+            label.relativePosition = new UnityEngine.Vector3(dropdown.relativePosition.x, dropdown.relativePosition.y - label.height - 4); // 4px gap above dropdown
+            label.textColor = new Color32(200, 200, 200, 255); // light gray
+
+            dropdown.textColor = new Color32(255, 255, 255, 255);    // White text
+            dropdown.color = new Color32(30, 30, 30, 255);           // Dark background
+
         }
 
         dropdown.eventSelectedIndexChanged += (component, index) =>

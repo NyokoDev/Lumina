@@ -2,12 +2,20 @@
 using ColossalFramework.UI;
 using System.Linq;
 using Lumina;
+using UnityEngine;
+using Logger = Lumina.Logger;
 
 [HarmonyPatch(typeof(OptionsGraphicsPanel), "InitDisplayModes")]
 public static class Patch_DisplayModes_Postfix
 {
     static void Postfix(OptionsGraphicsPanel __instance)
     {
+        if (Application.platform != RuntimePlatform.WindowsPlayer && Application.platform != RuntimePlatform.WindowsEditor)
+        {
+            Logger.Log("[Lumina] Skipping borderless option injection on non-Windows platform.");
+            return;
+        }
+
         var dropdown = __instance.Find<UIDropDown>("Fullscreens");
         if (dropdown == null) return;
 
